@@ -122,8 +122,10 @@ class _OtpScreenState extends State<OtpScreen> {
                 child: ButtonElevated(
                     backgroundColor: context.appColor.primarycolor,
                     text: 'Verify OTP',
-                    onPressed: () {
-                      context.push(MyRoutes.PERSONALINFORMATION);
+                    onPressed: () 
+                    {
+                      // context.push(MyRoutes.PERSONALINFORMATION);
+                      context.push(MyRoutes.HOME);
                     })),
           ],
         ),

@@ -1,9 +1,14 @@
 import 'dart:io';
 
 import 'package:delivery_app/src/core/utiils_lib/globle_variable.dart';
+import 'package:delivery_app/src/presentation/auth/document_details.dart';
+import 'package:delivery_app/src/presentation/auth/documents_screen.dart';
+import 'package:delivery_app/src/presentation/auth/list_documnets.dart';
 import 'package:delivery_app/src/presentation/auth/login_screen.dart';
 import 'package:delivery_app/src/presentation/auth/otp_screen.dart';
 import 'package:delivery_app/src/presentation/auth/personal_information.dart';
+import 'package:delivery_app/src/presentation/auth/registration_complete.dart';
+import 'package:delivery_app/src/presentation/dashboard/home_screen.dart';
 import 'package:delivery_app/src/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -29,19 +34,58 @@ class MyRoutes {
         name: LOGIN,
         pageBuilder: (context, state) => LoginScreen(),
       ),
-       animatedGoRoute(
+      animatedGoRoute(
         path: OTPSCREEN,
         name: OTPSCREEN,
         pageBuilder: (context, state) => OtpScreen(),
       ),
-         animatedGoRoute(
+      animatedGoRoute(
         path: PERSONALINFORMATION,
         name: PERSONALINFORMATION,
         pageBuilder: (context, state) => PersonalInformation(),
       ),
+        animatedGoRoute(
+        path: ALLDOCUMNETSINFORMATION,
+        name: ALLDOCUMNETSINFORMATION,
+        pageBuilder: (context, state) => AllDocumentsInformatio(),
+      ),
+      animatedGoRoute(
+        path: LISTDOCUMENTS,
+        name: LISTDOCUMENTS,
+        pageBuilder: (context, state) => ListDocuments(),
+      ),
 
-    
       
+
+
+       animatedGoRoute(
+        path: DOCUMENTSDETAILS,
+        name: DOCUMENTSDETAILS,
+       pageBuilder: (context, state) {
+          // Extract data from `state.extra`
+          final Map<String, dynamic> orderDetails =
+              state.extra as Map<String, dynamic>;
+
+          return DocumentsDetails(
+            orderDetails:
+                orderDetails, // Pass the data to the destination widget
+          );
+        },
+      ),
+
+          animatedGoRoute(
+        path: REGISTRATIONCOMPLETEDSCREEN,
+        name: REGISTRATIONCOMPLETEDSCREEN,
+        pageBuilder: (context, state) => RegistrationCompletedScreen(),
+      ),
+
+         animatedGoRoute(
+        path: HOME,
+        name: HOME,
+        pageBuilder: (context, state) => HomeScreen(),
+      ),
+
+ 
     ],
   );
 
@@ -50,12 +94,22 @@ class MyRoutes {
   static const HOME = "/home";
   static const SELECTACCOUNT = "/selectAccount";
   static const OTPSCREEN = "/OtpScreen";
-    static const PERSONALINFORMATION = "/persionalinformation";
+  static const PERSONALINFORMATION = "/persionalinformation";
+   static const ALLDOCUMNETSINFORMATION = "/alldocumnetsinformation";
+   static const LISTDOCUMENTS = "/listdocuments";
+    static const DOCUMENTSDETAILS = "/documentsdetails";
+        static const REGISTRATIONCOMPLETEDSCREEN = "/registrationcompletedScreen";
+
+      
 
 
 
 
-  static const BOTTOM_NAV = "/home";
+
+
+
+
+
   static const LOGIN = "/login";
   static const ONBOARDING = "/onboarding";
   static const TERMANDCONDITIONS = "/termsandcondition";
@@ -66,8 +120,6 @@ class MyRoutes {
   static const SIGNUP = "/signup";
   static const DASHBOARDSCREEN = "/dashboardscreen";
   static const CUSTOMERORDER = "/customerorder";
-
-
 }
 
 GoRoute animatedGoRoute({

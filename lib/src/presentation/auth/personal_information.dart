@@ -1,4 +1,5 @@
 import 'package:delivery_app/src/core/image/app_images.dart';
+import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/core/utiils_lib/string/app_string.dart';
 import 'package:delivery_app/src/presentation/widgets/custom_text_field.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class PersonalInformation extends StatefulWidget {
   const PersonalInformation({super.key});
@@ -318,6 +320,8 @@ class _PersonalInformationState extends State<PersonalInformation> {
                         ),
                       ),
                     )
+               
+               
                   ],
                 ),
               ),
@@ -336,9 +340,10 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   text: 'Submit',
                   backgroundColor: context.appColor.primarycolor,
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Perform form submission
-                    }
+                    context.push(MyRoutes.ALLDOCUMNETSINFORMATION);
+                    // if (_formKey.currentState?.validate() ?? false) {
+                    //   // Perform form submission
+                    // }
                   },
                 ),
               ),
