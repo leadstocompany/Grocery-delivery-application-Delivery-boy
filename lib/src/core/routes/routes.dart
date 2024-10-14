@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:delivery_app/src/core/utiils_lib/globle_variable.dart';
+import 'package:delivery_app/src/logic/provider/leave_provider.dart';
 import 'package:delivery_app/src/presentation/auth/document_details.dart';
 import 'package:delivery_app/src/presentation/auth/documents_screen.dart';
 import 'package:delivery_app/src/presentation/auth/list_documnets.dart';
@@ -9,9 +10,11 @@ import 'package:delivery_app/src/presentation/auth/otp_screen.dart';
 import 'package:delivery_app/src/presentation/auth/personal_information.dart';
 import 'package:delivery_app/src/presentation/auth/registration_complete.dart';
 import 'package:delivery_app/src/presentation/dashboard/home_screen.dart';
+import 'package:delivery_app/src/presentation/leave/requestfor_leave.dart';
 import 'package:delivery_app/src/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 /// Route names as constants
 class MyRoutes {
@@ -85,6 +88,26 @@ class MyRoutes {
         pageBuilder: (context, state) => HomeScreen(),
       ),
 
+      // animatedGoRoute(
+      //   path: REQUESTFORLEAVE,
+      //   name: REQUESTFORLEAVE,
+      //   pageBuilder: (context, state) => RequestForLeave(),
+      // ),
+
+      animatedGoRoute(
+        path: REQUESTFORLEAVE,
+        name: REQUESTFORLEAVE,
+        pageBuilder: (context, state) {
+          return ChangeNotifierProvider(
+            create: (_) =>
+                LeaveProvider(), // Initialize your provider here
+            child: RequestForLeave(), // Your target screen
+          );
+        },
+      ),
+
+      
+
  
     ],
   );
@@ -99,6 +122,8 @@ class MyRoutes {
    static const LISTDOCUMENTS = "/listdocuments";
     static const DOCUMENTSDETAILS = "/documentsdetails";
         static const REGISTRATIONCOMPLETEDSCREEN = "/registrationcompletedScreen";
+
+          static const REQUESTFORLEAVE = "/requestforleave";
 
       
 

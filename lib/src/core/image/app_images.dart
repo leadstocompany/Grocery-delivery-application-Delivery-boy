@@ -10,6 +10,7 @@ class AppImages {
   static const String profile = "${imageURL}profile.png";
   static const String submit = "${imageURL}submit.svg";
   static const String success = "${imageURL}success.svg";
+  static const String product1 = "${imageURL}product1.png";
 
   static const String Avatar = "${imageURL}Avatar.png";
 
@@ -20,18 +21,18 @@ class AppImages {
   static const String totalcan = "${imageURL}totalcan.png";
   static const String totalcom = "${imageURL}totalcom.png";
 
-  static const String icon1 = "${iconURL}icon1.svg";
-  static const String icon2 = "${iconURL}icon2.svg";
-  static const String order = "${iconURL}bag-happy.svg";
-  static const String wallet = "${iconURL}wallet.svg";
-  static const String profileIcon = "${iconURL}profile.svg";
-  static const String chart = "${iconURL}chart.svg";
-  static const String product = "${iconURL}category.svg";
+  static const String hand = "${iconURL}hand.svg";
+  static const String user = "${iconURL}user.svg";
+  static const String location = "${iconURL}location.svg";
+  static const String call = "${iconURL}call.svg";
+  static const String faq = "${iconURL}faq.svg";
+  static const String leave = "${iconURL}leave.svg";
+  static const String like = "${iconURL}like.svg";
+  static const String logout = "${iconURL}logout.svg";
+  static const String Support = "${iconURL}Support.svg";
+  static const String terms = "${iconURL}terms.svg";
+  static const String User_light = "${iconURL}User_light.svg";
 
-
-
-
-
-   static const String Ellipse = "${imageURL}Ellipse.png";
-   static const String car = "${imageURL}carano.png";
+  static const String Ellipse = "${imageURL}Ellipse.png";
+  static const String car = "${imageURL}carano.png";
 }
