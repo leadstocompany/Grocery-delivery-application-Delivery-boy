@@ -1,4 +1,5 @@
 import 'package:delivery_app/src/core/image/app_images.dart';
+import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/logic/provider/order_provider.dart';
 import 'package:delivery_app/src/presentation/widgets/elevated_button.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -51,6 +53,12 @@ class _OrderScreenState extends State<OrderScreen> {
     },
   ];
 
+  @override
+  void initState() {
+    selectedDate = DateTime.now();
+    super.initState();
+  }
+
   // Sample dynamic items for the expanded section for each order
   final Map<int, List<String>> expandableItems = {
     0: ['Item A1', 'Item A2', 'Item A3'],
@@ -63,10 +71,45 @@ class _OrderScreenState extends State<OrderScreen> {
 
   String colorStatus = "";
 
+  DateTime? selectedDate; // Variable to store the selected date
+
+  Future<void> _selectDate(BuildContext context) async {
+    // Show the date picker when the button is pressed
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ??
+          DateTime.now(), // Default to today if no date is selected
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            primaryColor:
+                context.appColor.primarycolor, // Change the color of the header
+            // Change the color of the selected date
+            colorScheme: ColorScheme.light(
+                primary: context.appColor
+                    .primarycolor), // Change the color of the calendar itself
+            buttonTheme: ButtonThemeData(
+                textTheme: ButtonTextTheme.primary), // Change button color
+            dialogBackgroundColor:
+                Colors.white, // Set the background color of the dialog to white
+          ),
+          child: child ?? SizedBox(),
+        );
+      },
+    );
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked; // Update the selected date
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      // Provide the OrderProvider with the length of the items list
       create: (_) => OrderProvider(items.length),
       child: Scaffold(
         appBar: AppBar(
@@ -116,28 +159,35 @@ class _OrderScreenState extends State<OrderScreen> {
                   Spacer(),
                   Card(
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(50.r),
-                      ),
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10.w, vertical: 5),
-                        child: Row(
-                          children: [
-                            Text(
-                              "24/08/2023",
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 12.sp),
-                            ),
-                            Icon(
-                              Icons.keyboard_arrow_down_rounded,
-                              color: Colors.black,
-                            ),
-                          ],
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50.r),
                         ),
-                      ),
-                    ),
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 5),
+                            child: InkWell(
+                              onTap: () async {
+                                _selectDate(context);
+                              },
+                              child: Row(
+                                children: [
+                                  // Fallback text if no date is selected
+                                  Text(
+                                    selectedDate == null
+                                        ? 'select date '
+                                        : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}', // Display the selected date
+
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12.sp),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                            ))),
                   ),
                 ],
               ),
@@ -240,78 +290,83 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     ?.length ??
                                                 0,
                                             itemBuilder: (context, itemIndex) {
-                                              return Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Container(
-                                                            child: SvgPicture
-                                                                .asset(AppImages
-                                                                    .hand)),
-                                                        Gap(5.w),
-                                                        Text("Pickup Center-1",
-                                                            style: context
-                                                                .buttonTestStyle
-                                                                .copyWith(
-                                                                    color: context
-                                                                        .appColor
-                                                                        .blackColor)),
-                                                        Spacer(),
-                                                        Container(
-                                                            child: SvgPicture
-                                                                .asset(AppImages
-                                                                    .call)),
-                                                        Gap(20.w),
-                                                        Container(
+                                              return Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                          child:
+                                                              SvgPicture.asset(
+                                                                  AppImages
+                                                                      .hand)),
+                                                      Gap(5.w),
+                                                      Text("Pickup Center-1",
+                                                          style: context
+                                                              .buttonTestStyle
+                                                              .copyWith(
+                                                                  color: context
+                                                                      .appColor
+                                                                      .blackColor)),
+                                                      Spacer(),
+                                                      Container(
+                                                          child:
+                                                              SvgPicture.asset(
+                                                                  AppImages
+                                                                      .call)),
+                                                      Gap(20.w),
+                                                      InkWell(
+                                                        onTap: () 
+                                                        {
+                                                          context.push(MyRoutes.GOOGLEMAP);
+
+                                                        },
+                                                        child: Container(
                                                             child: SvgPicture
                                                                 .asset(AppImages
                                                                     .location)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20.w),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                            "Nikhita Stores, 201/B, Nirant \nApts, Andheri East 400069"),
+                                                        Gap(10.w),
+                                                        Row(
+                                                          children: [
+                                                            Image.asset(
+                                                              AppImages.product1
+                                                                  .toString(),
+                                                              // height: 200,
+                                                              // width: 350,
+                                                            ),
+                                                            Gap(10.w),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                    "Atta Ladoo"),
+                                                                Text("500g"),
+                                                                Text("Qty: 3"),
+                                                              ],
+                                                            )
+                                                          ],
+                                                        )
                                                       ],
                                                     ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 20.w),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                              "Nikhita Stores, 201/B, Nirant \nApts, Andheri East 400069"),
-                                                          Gap(10.w),
-                                                          Row(
-                                                            children: [
-                                                              Image.asset(
-                                                                AppImages
-                                                                    .product1
-                                                                    .toString(),
-                                                                // height: 200,
-                                                                // width: 350,
-                                                              ),
-                                                              Gap(10.w),
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                      "Atta Ladoo"),
-                                                                  Text("500g"),
-                                                                  Text(
-                                                                      "Qty: 3"),
-                                                                ],
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Divider()
-                                                  ],
-                                                ),
+                                                  ),
+                                                  Divider()
+                                                ],
                                               );
                                             },
                                           ),

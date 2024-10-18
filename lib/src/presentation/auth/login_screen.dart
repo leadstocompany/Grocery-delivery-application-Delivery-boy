@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Gap(20.h),
           Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
+            padding: const EdgeInsets.only(left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -136,7 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   children: [
                     Checkbox(value: true, onChanged: (bool? value) {}),
-                    const Gap(10),
                     RichText(
                       text: TextSpan(
                         text: 'By signing up I agree to the',

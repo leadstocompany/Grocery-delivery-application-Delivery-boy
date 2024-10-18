@@ -10,15 +10,26 @@ class OrderProvider with ChangeNotifier {
   }
 
   // Get expanded state for a specific item
-  bool isExpanded(int index) 
-  {
+  bool isExpanded(int index) {
     return _expandedItems[index];
   }
 
   // Toggle the expanded state for a specific item
-  void toggleExpanded(int index) 
-  {
+  void toggleExpanded(int index) {
     _expandedItems[index] = !_expandedItems[index];
     notifyListeners(); // Notify listeners to rebuild the UI
   }
+
+  
+
+
+    DateTime? fromDate;
+
+
+
+  void updateFromDate(DateTime date) {
+    fromDate = date;
+    notifyListeners(); // Notify listeners to rebuild widgets
+  }
+  
 }

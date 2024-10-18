@@ -171,15 +171,15 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
           ),
           Gap(10.h),
-          Card(
-            elevation: 0.5,
-            color: context.appColor.whiteColor,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: InkWell(
-                onTap: () {
-                  context.push(MyRoutes.REQUESTFORLEAVE);
-                },
+          InkWell(
+            onTap: () {
+              context.push(MyRoutes.REQUESTFORLEAVE);
+            },
+            child: Card(
+              elevation: 0.5,
+              color: context.appColor.whiteColor,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
                 child: Row(
                   children: [
                     Container(child: SvgPicture.asset(AppImages.leave)),
@@ -247,17 +247,42 @@ class _AccountScreenState extends State<AccountScreen> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(child: SvgPicture.asset(AppImages.user)),
+                    SvgPicture.asset(AppImages.user),
                     Gap(5.h),
-                    Text(
-                      'Aman Sharma',
-                      style: context.subTitleStyle,
+                    Container(
+                      width: 130.w,
+                      child: Text(
+                        'Aman Sharma',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.subTitleStyle,
+                      ),
                     ),
+                    Card(
+                      elevation: 0.8,
+                      color: context.appColor.whiteColor,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 5.w, vertical: 0),
+                        child: Row(
+                          children: [
+                            Text(
+                              '4.5 ',
+                              style: context.subTitleStyle,
+                            ),
+                            Icon(
+                              Icons.star,
+                              color: context.appColor.primarycolor,
+                            )
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 Row(

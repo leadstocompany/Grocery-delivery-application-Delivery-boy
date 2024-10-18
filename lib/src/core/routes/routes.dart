@@ -10,6 +10,7 @@ import 'package:delivery_app/src/presentation/auth/otp_screen.dart';
 import 'package:delivery_app/src/presentation/auth/personal_information.dart';
 import 'package:delivery_app/src/presentation/auth/registration_complete.dart';
 import 'package:delivery_app/src/presentation/dashboard/home_screen.dart';
+import 'package:delivery_app/src/presentation/google_map/google_map_screen.dart';
 import 'package:delivery_app/src/presentation/leave/requestfor_leave.dart';
 import 'package:delivery_app/src/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class MyRoutes {
         name: PERSONALINFORMATION,
         pageBuilder: (context, state) => PersonalInformation(),
       ),
-        animatedGoRoute(
+      animatedGoRoute(
         path: ALLDOCUMNETSINFORMATION,
         name: ALLDOCUMNETSINFORMATION,
         pageBuilder: (context, state) => AllDocumentsInformatio(),
@@ -58,13 +59,10 @@ class MyRoutes {
         pageBuilder: (context, state) => ListDocuments(),
       ),
 
-      
-
-
-       animatedGoRoute(
+      animatedGoRoute(
         path: DOCUMENTSDETAILS,
         name: DOCUMENTSDETAILS,
-       pageBuilder: (context, state) {
+        pageBuilder: (context, state) {
           // Extract data from `state.extra`
           final Map<String, dynamic> orderDetails =
               state.extra as Map<String, dynamic>;
@@ -76,13 +74,13 @@ class MyRoutes {
         },
       ),
 
-          animatedGoRoute(
+      animatedGoRoute(
         path: REGISTRATIONCOMPLETEDSCREEN,
         name: REGISTRATIONCOMPLETEDSCREEN,
         pageBuilder: (context, state) => RegistrationCompletedScreen(),
       ),
 
-         animatedGoRoute(
+      animatedGoRoute(
         path: HOME,
         name: HOME,
         pageBuilder: (context, state) => HomeScreen(),
@@ -99,16 +97,17 @@ class MyRoutes {
         name: REQUESTFORLEAVE,
         pageBuilder: (context, state) {
           return ChangeNotifierProvider(
-            create: (_) =>
-                LeaveProvider(), // Initialize your provider here
+            create: (_) => LeaveProvider(), // Initialize your provider here
             child: RequestForLeave(), // Your target screen
           );
         },
       ),
 
-      
-
- 
+      animatedGoRoute(
+        path: GOOGLEMAP,
+        name: GOOGLEMAP,
+        pageBuilder: (context, state) => MapScreen(),
+      ),
     ],
   );
 
@@ -118,24 +117,16 @@ class MyRoutes {
   static const SELECTACCOUNT = "/selectAccount";
   static const OTPSCREEN = "/OtpScreen";
   static const PERSONALINFORMATION = "/persionalinformation";
-   static const ALLDOCUMNETSINFORMATION = "/alldocumnetsinformation";
-   static const LISTDOCUMENTS = "/listdocuments";
-    static const DOCUMENTSDETAILS = "/documentsdetails";
-        static const REGISTRATIONCOMPLETEDSCREEN = "/registrationcompletedScreen";
+  static const ALLDOCUMNETSINFORMATION = "/alldocumnetsinformation";
+  static const LISTDOCUMENTS = "/listdocuments";
+  static const DOCUMENTSDETAILS = "/documentsdetails";
+  static const REGISTRATIONCOMPLETEDSCREEN = "/registrationcompletedScreen";
+  static const REQUESTFORLEAVE = "/requestforleave";
 
-          static const REQUESTFORLEAVE = "/requestforleave";
-
-      
-
-
-
-
-
-
-
-
+  static const GOOGLEMAP = "/googlemap";
 
   static const LOGIN = "/login";
+
   static const ONBOARDING = "/onboarding";
   static const TERMANDCONDITIONS = "/termsandcondition";
   static const SETUPBUSSINESS = "/setupbussiness";

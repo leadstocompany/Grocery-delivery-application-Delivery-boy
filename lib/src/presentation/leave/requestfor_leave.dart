@@ -1,4 +1,3 @@
-
 import 'package:delivery_app/src/presentation/leave/new_application.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +9,7 @@ class RequestForLeave extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
           title: Text('Leave Request'),
           bottom: TabBar(
             tabs: [
