@@ -23,7 +23,8 @@ class _MyApplicationState extends State<MyApplication> {
         overlayColor: context.appColor.whiteColor.withOpacity(0.5),
         useDefaultLoading: false,
         //  overlayWidgetBuilder: (progress) => const GlobalLoader(),
-        child: MaterialApp.router(
+        child:
+         MaterialApp.router(
           routerConfig: MyRoutes.router,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
@@ -35,6 +36,9 @@ class _MyApplicationState extends State<MyApplication> {
           themeMode: ThemeMode.light,
           title: AppString.appName,
         ),
+     
+     
+     
       ),
     );
   }
