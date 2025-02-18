@@ -14,14 +14,14 @@ import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
-class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+class LoginOtpScreen extends StatefulWidget {
+  const LoginOtpScreen({super.key});
 
   @override
-  State<OtpScreen> createState() => _OtpScreenState();
+  State<LoginOtpScreen> createState() => _LoginOtpScreenState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _LoginOtpScreenState extends State<LoginOtpScreen> {
   @override
   void initState() {
     // TODO: implement initState
@@ -127,10 +127,11 @@ class _OtpScreenState extends State<OtpScreen> {
               },
               onCompleted: (value) async {
                 pageNotifier.otpCode = value;
-                final success = await pageNotifier.verifiOtp(value, context);
+                final success =
+                    await pageNotifier.loginVerifiOtp(value, context);
 
                 if (success) {
-                  context.push(MyRoutes.PERSONALINFORMATION);
+                  context.clearAndPush(routePath: MyRoutes.HOME);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -149,12 +150,11 @@ class _OtpScreenState extends State<OtpScreen> {
                     backgroundColor: context.appColor.primarycolor,
                     text: 'Verify OTP',
                     onPressed: () async {
-                      final success = await pageNotifier.verifiOtp(
+                      final success = await pageNotifier.loginVerifiOtp(
                           pageNotifier.otpCode, context);
 
                       if (success) {
-                        context.clearAndPush(
-                            routePath: MyRoutes.PERSONALINFORMATION);
+                        context.clearAndPush(routePath: MyRoutes.HOME);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -168,7 +168,6 @@ class _OtpScreenState extends State<OtpScreen> {
                       // context.push(MyRoutes.PERSONALINFORMATION);
                     })),
             Gap(20.h),
-           
           ],
         ),
       ),

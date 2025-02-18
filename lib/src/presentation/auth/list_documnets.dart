@@ -54,8 +54,10 @@ class _ListDocumentsState extends State<ListDocuments> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
-                  onTap: () {
-                    context.push(MyRoutes.DOCUMENTSDETAILS, extra: {
+                  onTap: () 
+                  {
+                    context.push(MyRoutes.DOCUMENTSDETAILS, extra: 
+                    {
                       "title": 'Aadhar Card ', // String
                       // Color
                     });

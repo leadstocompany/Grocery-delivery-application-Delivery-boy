@@ -1,9 +1,11 @@
 import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/core/utiils_lib/string/app_string.dart';
+import 'package:delivery_app/src/logic/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:provider/provider.dart';
 
 class MyApplication extends StatefulWidget {
   const MyApplication({super.key});
@@ -22,18 +24,22 @@ class _MyApplicationState extends State<MyApplication> {
       builder: (context, child) => GlobalLoaderOverlay(
         overlayColor: context.appColor.whiteColor.withOpacity(0.5),
         useDefaultLoading: false,
-        //  overlayWidgetBuilder: (progress) => const GlobalLoader(),
-        child: MaterialApp.router(
-          routerConfig: MyRoutes.router,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white,
-            canvasColor: const Color.fromRGBO(255, 255, 255, 1),
-            fontFamily: 'GoogleSans',
-            primarySwatch: Colors.blue,
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => AuthProvider()),
+          ],
+          child: MaterialApp.router(
+            routerConfig: MyRoutes.router,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              scaffoldBackgroundColor: Colors.white,
+              canvasColor: const Color.fromRGBO(255, 255, 255, 1),
+              fontFamily: 'GoogleSans',
+              primarySwatch: Colors.blue,
+            ),
+            themeMode: ThemeMode.light,
+            title: AppString.appName,
           ),
-          themeMode: ThemeMode.light,
-          title: AppString.appName,
         ),
       ),
     );

@@ -5,10 +5,13 @@ import 'package:delivery_app/src/logic/provider/leave_provider.dart';
 import 'package:delivery_app/src/presentation/auth/document_details.dart';
 import 'package:delivery_app/src/presentation/auth/documents_screen.dart';
 import 'package:delivery_app/src/presentation/auth/list_documnets.dart';
+import 'package:delivery_app/src/presentation/auth/login_otp_verify.dart';
 import 'package:delivery_app/src/presentation/auth/login_screen.dart';
 import 'package:delivery_app/src/presentation/auth/otp_screen.dart';
-import 'package:delivery_app/src/presentation/auth/personal_information.dart';
+import 'package:delivery_app/src/presentation/auth/signUp_page.dart';
+import 'package:delivery_app/src/presentation/auth/sign_up/personal_information.dart';
 import 'package:delivery_app/src/presentation/auth/registration_complete.dart';
+import 'package:delivery_app/src/presentation/auth/sign_up/sign_up_screen.dart';
 import 'package:delivery_app/src/presentation/dashboard/home_screen.dart';
 import 'package:delivery_app/src/presentation/google_map/google_map_screen.dart';
 import 'package:delivery_app/src/presentation/leave/requestfor_leave.dart';
@@ -46,7 +49,7 @@ class MyRoutes {
       animatedGoRoute(
         path: PERSONALINFORMATION,
         name: PERSONALINFORMATION,
-        pageBuilder: (context, state) => PersonalInformation(),
+        pageBuilder: (context, state) => SignUpInformation(),
       ),
       animatedGoRoute(
         path: ALLDOCUMNETSINFORMATION,
@@ -108,6 +111,18 @@ class MyRoutes {
         name: GOOGLEMAP,
         pageBuilder: (context, state) => MapScreen(),
       ),
+
+      animatedGoRoute(
+        path: SIGNUPPAGESCREEN,
+        name: SIGNUPPAGESCREEN,
+        pageBuilder: (context, state) => SignUpPageScreen(),
+      ),
+
+        animatedGoRoute(
+        path: LOGINOTPSCREEN,
+        name: LOGINOTPSCREEN,
+        pageBuilder: (context, state) => LoginOtpScreen(),
+      ),
     ],
   );
 
@@ -122,6 +137,11 @@ class MyRoutes {
   static const DOCUMENTSDETAILS = "/documentsdetails";
   static const REGISTRATIONCOMPLETEDSCREEN = "/registrationcompletedScreen";
   static const REQUESTFORLEAVE = "/requestforleave";
+  static const SIGNUPPAGESCREEN = "/signUpPageScreen";
+  static const LOGINOTPSCREEN = "/LoginOtpScreen";
+
+
+  
 
   static const GOOGLEMAP = "/googlemap";
 

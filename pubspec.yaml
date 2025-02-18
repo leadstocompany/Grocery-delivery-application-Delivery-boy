@@ -93,6 +93,7 @@ dependencies:
   art_sweetalert: ^0.0.5
 
   dotted_border: ^2.1.0
+  image_picker:
 
   
 

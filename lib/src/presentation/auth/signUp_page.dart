@@ -14,14 +14,14 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpPageScreen extends StatefulWidget {
+  const SignUpPageScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpPageScreen> createState() => _SignUpPageScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpPageScreenState extends State<SignUpPageScreen> {
   TextEditingController phoneController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -175,25 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  RichText(
-                      text: TextSpan(
-                          text: "Don't have an account? ",
-                          style: TextStyle(color: Colors.black, fontSize: 16),
-                          children: [
-                        TextSpan(
-                          text: "Sign Up",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline,
-                          ),
-                          // Navigate to Login Screen when tapped
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              context.push(MyRoutes.SIGNUPPAGESCREEN);
-                            },
-                        ),
-                      ])),
+                
                   const Gap(20),
                   SizedBox(
                     width: double.infinity,
@@ -206,9 +188,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               phoneController.text, context);
 
                           if (success) {
-                            context.push(MyRoutes.LOGINOTPSCREEN);
-                          } else
-                           {
+                            // context.push(MyRoutes.LOGINOTPSCREEN);
+                            context.push(MyRoutes.OTPSCREEN);
+                          } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(

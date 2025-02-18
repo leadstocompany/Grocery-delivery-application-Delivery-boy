@@ -135,7 +135,8 @@ class _AllDocumentsInformatioState extends State<AllDocumentsInformatio> {
               child: ButtonElevated(
                 text: 'Submit',
                 backgroundColor: context.appColor.secondaryColor,
-                onPressed: () {
+                onPressed: () 
+                {
                   context.push(MyRoutes.REGISTRATIONCOMPLETEDSCREEN);
 
                   

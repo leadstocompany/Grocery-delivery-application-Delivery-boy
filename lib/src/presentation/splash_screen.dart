@@ -17,14 +17,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () async {
-      if (await SharedPrefUtils.isFreshInstall()) {
+      print("kjxgkfdghjkfdgjkdfg  ${await SharedPrefUtils.getToken()}");
+      if (await SharedPrefUtils.getToken() == null) {
         context.clearAndPush(routePath: MyRoutes.LOGIN);
       } else {
-        context.clearAndPush(routePath: MyRoutes.LOGIN);
+        context.clearAndPush(routePath: MyRoutes.HOME);
       }
-    }
-        //context.read<SplashCubit>().initApp(),
-        );
+    });
   }
 
   @override
