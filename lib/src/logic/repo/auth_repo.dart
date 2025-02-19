@@ -133,44 +133,20 @@ class AuthRepo {
     }
   }
 
-  // FutureResult<String> forgetPassword(data) async {
-  //   try {
-  //     var response = await _authServices.forgetPassword(data);
-  //     final String model = response.toString();
-  //     return right(model);
-  //   } on DioException catch (e) {
-  //     var error = CustomDioExceptions.handleError(e);
-  //     return left(error);
-  //   }
-  // }
+  FutureResult<String> customerLogOut(data) async {
+    try {
+      var response = await _authServices.customerLogOut(data);
 
-  // FutureResult<String> verifyForgetPassword(data) async {
-  //   try {
-  //     var response = await _authServices.verifyForgetPassword(data);
+      final String model = response.toString();
 
-  //     PasswordModel passwordModel = passwordModelFromJson(response.toString());
-  //     if (passwordModel.data != null) {
-  //       print("JHGhjhg   ${passwordModel.data!.resetToken}");
-  //       await SharedPrefUtils.setResetToken(
-  //           resetToken: passwordModel.data!.resetToken ?? "");
-  //     }
+      return right(model);
+    } on DioException catch (e) {
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
 
-  //     final String model = response.toString();
-  //     return right(model);
-  //   } on DioException catch (e) {
-  //     var error = CustomDioExceptions.handleError(e);
-  //     return left(error);
-  //   }
-  // }
-
-  // FutureResult<String> reset_password(data) async {
-  //   try {
-  //     var response = await _authServices.reset_password(data);
-  //     final String model = response.toString();
-  //     return right(model);
-  //   } on DioException catch (e) {
-  //     var error = CustomDioExceptions.handleError(e);
-  //     return left(error);
-  //   }
-  // }
+  
+  
+  
+  }
 }

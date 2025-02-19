@@ -279,6 +279,16 @@ class _OrderScreenState extends State<OrderScreen> {
                                               Container(
                                                   child: SvgPicture.asset(
                                                       AppImages.call)),
+                                              Gap(20.w),
+                                              InkWell(
+                                                onTap: () {
+                                                  context
+                                                      .push(MyRoutes.GOOGLEMAP);
+                                                },
+                                                child: Container(
+                                                    child: SvgPicture.asset(
+                                                        AppImages.location)),
+                                              ),
                                             ],
                                           ),
                                           Gap(10.h),
@@ -317,10 +327,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                       .call)),
                                                       Gap(20.w),
                                                       InkWell(
-                                                        onTap: () 
-                                                        {
-                                                          context.push(MyRoutes.GOOGLEMAP);
-
+                                                        onTap: () {
+                                                          context.push(MyRoutes
+                                                              .GOOGLEMAP);
                                                         },
                                                         child: Container(
                                                             child: SvgPicture

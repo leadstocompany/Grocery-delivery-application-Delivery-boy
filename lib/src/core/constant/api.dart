@@ -6,12 +6,13 @@ class APIURL {
   static const String loginOtp = "${BASE_URL}auth/login/delivery";
   static const String login = "${BASE_URL}auth/login/vendor";
   static const String customerRegister = "${BASE_URL}auth/register/delivery";
+   static const String customerLogOut = "${BASE_URL}auth/logout/delivery";
 
 
   static const String getAllProduct = "${BASE_URL}products";
   static const String getProductDetails = "${BASE_URL}products/";
   static const String getBanners = "${BASE_URL}banners";
-  static const String customerLogOut = "${BASE_URL}auth/logout/customer";
+ 
   static const String getBestDealProduct = "${BASE_URL}products/best-deals";
   static const String getAllcategory = "${BASE_URL}categories";
   static const String addToWish = "${BASE_URL}carts/wishlist/items";

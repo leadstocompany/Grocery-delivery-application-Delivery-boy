@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:delivery_app/src/core/network_services/service_locator.dart';
+import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
+import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/core/utiils_lib/snack_bar.dart';
 import 'package:delivery_app/src/data/Document.dart';
 import 'package:delivery_app/src/logic/repo/auth_repo.dart';
@@ -31,25 +33,22 @@ class AuthProvider extends ChangeNotifier {
   final TextEditingController emEmail = TextEditingController();
 
   final TextEditingController emAddress = TextEditingController();
-  // final TextEditingController bankName = TextEditingController();
-  // final TextEditingController bankName = TextEditingController();
-
-  // final TextEditingController bankName = TextEditingController();
-  // final TextEditingController bankName = TextEditingController();
-  // final TextEditingController bankName = TextEditingController();
-
-  // final TextEditingController bankName = TextEditingController();
 
   int get currentIndex => _currentIndex;
   PageController get pageController => _pageController;
 
-  // Calculate progress as a percentage
   double get progress => (_currentIndex + 1) / _totalPages;
 
   final _authRepo = getIt<AuthRepo>();
   String numberwithCode = '';
 
   String otpCode = '';
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   Future<bool> sendOtp(String number, BuildContext context) async {
     context.showLoader(show: true);
@@ -256,8 +255,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> loginVerifiOtp(String otp, BuildContext context) async
-   {
+  Future<bool> loginVerifiOtp(String otp, BuildContext context) async {
     context.showLoader(show: true);
     var data = {
       "phone": numberwithCode,
@@ -284,7 +282,7 @@ class AuthProvider extends ChangeNotifier {
           context.showLoader(show: false);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("OTP Verify successful!"),
+              content: Text("Login successfully !"),
               backgroundColor: Colors.green,
             ),
           );
@@ -303,72 +301,6 @@ class AuthProvider extends ChangeNotifier {
       return false;
     }
   }
-
-  // Future<bool> loginOtp(String otp, BuildContext context) async {
-  //   context.showLoader(show: true);
-  //   var data = {
-  //     "phone": numberwithCode,
-  //     "otp": otp,
-  //   };
-
-  //   try {
-  //     var result = await _authRepo.loginOtp(data);
-
-  //     return result.fold(
-  //       (error) {
-  //         // Show error Snackbar
-  //         context.showLoader(show: false);
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(
-  //             content: Text(error.message),
-  //             backgroundColor: Colors.red,
-  //           ),
-  //         );
-  //         return false; // Login failed
-  //       },
-  //       (response) {
-  //         // Login success
-  //         context.showLoader(show: false);
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(
-  //             content: Text("OTP Verify successful!"),
-  //             backgroundColor: Colors.green,
-  //           ),
-  //         );
-  //         return true;
-  //       },
-  //     );
-  //   } catch (e) {
-  //     context.showLoader(show: false);
-
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text("Don't have a account ,please create now!"),
-  //         backgroundColor: Colors.red,
-  //       ),
-  //     );
-  //     return false;
-  //   }
-  // }
-
-  // final TextEditingController firstname = TextEditingController();
-  // final TextEditingController lastName = TextEditingController();
-  // final TextEditingController email = TextEditingController();
-  // final TextEditingController vehicleNumver = TextEditingController();
-  // final TextEditingController vehicleModel = TextEditingController();
-  // final TextEditingController bankName = TextEditingController();
-  // final TextEditingController accountHolderName = TextEditingController();
-  // final TextEditingController accountNumber = TextEditingController();
-  // final TextEditingController ifscCode = TextEditingController();
-  // final TextEditingController withdrowPin = TextEditingController();
-  // final TextEditingController emFullName = TextEditingController();
-  // final TextEditingController emRelation = TextEditingController();
-
-  // final TextEditingController emPrimaryContact = TextEditingController();
-  // final TextEditingController emSecondryContact = TextEditingController();
-  // final TextEditingController emEmail = TextEditingController();
-
-  // final TextEditingController emAddress = TextEditingController();
 
   Future<bool> customerRegister(BuildContext context) async {
     context.showLoader(show: true);
@@ -440,10 +372,52 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
+  Future<bool> customerLogOut(BuildContext context) async {
+    context.showLoader(show: true);
+
+    var data = {};
+
+    try {
+      var result = await _authRepo.customerLogOut(data);
+
+      context.showLoader(show: false);
+
+      return result.fold(
+        (error) {
+          // Show error Snackbar
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return false; // Login failed
+        },
+        (response) async {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Successfully Logout!"),
+              backgroundColor: Colors.green,
+            ),
+          );
+          await SharedPrefUtils.clear();
+          context.clearAndPush(routePath: MyRoutes.LOGIN);
+
+          return true;
+        },
+      );
+    } catch (e) {
+      context.showLoader(show: false);
+      print("Unexpected error: $e");
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Something went wrong. Please try again."),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return false;
+    }
   }
 
   void _showSnackBar(BuildContext context, String message, Color color) {

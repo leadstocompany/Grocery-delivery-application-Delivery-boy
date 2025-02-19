@@ -148,7 +148,7 @@ class _EmergencyContactState extends State<EmergencyContact> {
                     ),
                     Gap(5.h),
                     Text(
-                      'Address',
+                      'Full Address',
                       style: context.subTitleTextStyle.copyWith(),
                     ),
                     Gap(5.h),
@@ -163,6 +163,25 @@ class _EmergencyContactState extends State<EmergencyContact> {
                       maxLength: 64,
                       counterWidget: const Offstage(),
                       hintText: 'address',
+                      fillColor: context.appColor.whiteColor,
+                    ),
+                    Gap(5.h),
+                    Text(
+                      'Pin Code',
+                      style: context.subTitleTextStyle.copyWith(),
+                    ),
+                    Gap(5.h),
+                    CustomTextField(
+                      //controller: pageNotifier.emAddress,
+                      validator: (val) {
+                        if (val == null || val.isEmpty) {
+                          return "Please enter pin code";
+                        }
+                        return null;
+                      },
+                      maxLength: 64,
+                      counterWidget: const Offstage(),
+                      hintText: 'Pin code',
                       fillColor: context.appColor.whiteColor,
                     ),
                   ],

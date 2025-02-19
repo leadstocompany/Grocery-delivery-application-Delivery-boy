@@ -170,10 +170,5 @@ class ProductService extends ApiService {
     return response;
   }
 
-  Future customerLogOut(data) async {
-    var response =
-        await api.post(APIURL.customerLogOut, data: jsonEncode(data));
-
-    return response;
-  }
+ 
 }

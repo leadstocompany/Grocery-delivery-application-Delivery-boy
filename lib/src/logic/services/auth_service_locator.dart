@@ -48,6 +48,12 @@ class AuthServices extends ApiService {
     );
   }
 
+  Future customerLogOut(data) async {
+    var response =
+        await api.post(APIURL.customerLogOut, data: jsonEncode(data));
+
+    return response;
+  }
 
  
   /// Login

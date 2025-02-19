@@ -1,12 +1,14 @@
 import 'package:delivery_app/src/core/image/app_images.dart';
 import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
+import 'package:delivery_app/src/logic/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class AccountScreen extends StatefulWidget {
   @override
@@ -196,21 +198,27 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
           ),
           Gap(10.h),
-          Card(
-            elevation: 0.5,
-            color: context.appColor.whiteColor,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  Container(child: SvgPicture.asset(AppImages.logout)),
-                  Gap(5.w),
-                  Text(
-                    "Log Out",
-                    style: context.subTitleTextStyleBloack
-                        .copyWith(color: context.appColor.primarycolor),
-                  ),
-                ],
+          InkWell(
+            onTap: (){
+               Provider.of<AuthProvider>(context, listen: false)
+                  .customerLogOut(context);
+            },
+            child: Card(
+              elevation: 0.5,
+              color: context.appColor.whiteColor,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    Container(child: SvgPicture.asset(AppImages.logout)),
+                    Gap(5.w),
+                    Text(
+                      "Log Out",
+                      style: context.subTitleTextStyleBloack
+                          .copyWith(color: context.appColor.primarycolor),
+                    ),
+                  ],
+                ),
               ),
             ),
           )

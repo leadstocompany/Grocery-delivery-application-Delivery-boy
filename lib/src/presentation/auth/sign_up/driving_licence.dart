@@ -207,7 +207,9 @@ class _DrivingLicensState extends State<DrivingLicens> {
                             await termsNotifier.customerRegister(context);
                         if (result) 
                         {
-                          context.clearAndPush(routePath: MyRoutes.LOGIN);
+                          
+                          context.clearAndPush(routePath: MyRoutes.APPROVALSCREEN);
+                         
                         }
                       },
                     ),

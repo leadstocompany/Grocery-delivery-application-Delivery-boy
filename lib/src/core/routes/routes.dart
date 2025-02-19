@@ -16,6 +16,7 @@ import 'package:delivery_app/src/presentation/dashboard/home_screen.dart';
 import 'package:delivery_app/src/presentation/google_map/google_map_screen.dart';
 import 'package:delivery_app/src/presentation/leave/requestfor_leave.dart';
 import 'package:delivery_app/src/presentation/splash_screen.dart';
+import 'package:delivery_app/src/presentation/widgets/successfully_created.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -123,6 +124,14 @@ class MyRoutes {
         name: LOGINOTPSCREEN,
         pageBuilder: (context, state) => LoginOtpScreen(),
       ),
+
+      animatedGoRoute(
+        path: APPROVALSCREEN,
+        name: APPROVALSCREEN,
+        pageBuilder: (context, state) => ApprovalScreen(),
+      ),
+
+      
     ],
   );
 
@@ -139,6 +148,8 @@ class MyRoutes {
   static const REQUESTFORLEAVE = "/requestforleave";
   static const SIGNUPPAGESCREEN = "/signUpPageScreen";
   static const LOGINOTPSCREEN = "/LoginOtpScreen";
+
+   static const APPROVALSCREEN = "/approvalScreen";
 
 
   
