@@ -13,9 +13,11 @@ import 'package:delivery_app/src/presentation/auth/sign_up/personal_information.
 import 'package:delivery_app/src/presentation/auth/registration_complete.dart';
 import 'package:delivery_app/src/presentation/auth/sign_up/sign_up_screen.dart';
 import 'package:delivery_app/src/presentation/dashboard/home_screen.dart';
+import 'package:delivery_app/src/presentation/edit_profile/edit_profile_screen.dart';
 import 'package:delivery_app/src/presentation/google_map/google_map_screen.dart';
 import 'package:delivery_app/src/presentation/leave/requestfor_leave.dart';
 import 'package:delivery_app/src/presentation/splash_screen.dart';
+import 'package:delivery_app/src/presentation/transation/transation_history.dart';
 import 'package:delivery_app/src/presentation/widgets/successfully_created.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -119,7 +121,7 @@ class MyRoutes {
         pageBuilder: (context, state) => SignUpPageScreen(),
       ),
 
-        animatedGoRoute(
+      animatedGoRoute(
         path: LOGINOTPSCREEN,
         name: LOGINOTPSCREEN,
         pageBuilder: (context, state) => LoginOtpScreen(),
@@ -131,7 +133,16 @@ class MyRoutes {
         pageBuilder: (context, state) => ApprovalScreen(),
       ),
 
-      
+      animatedGoRoute(
+        path: TRANSACTIONHISTORY,
+        name: TRANSACTIONHISTORY,
+        pageBuilder: (context, state) => TransactionHistory(),
+      ),
+        animatedGoRoute(
+        path: EDITPROFILE,
+        name: EDITPROFILE,
+        pageBuilder: (context, state) => EditProfileScreen(),
+      ),
     ],
   );
 
@@ -148,15 +159,15 @@ class MyRoutes {
   static const REQUESTFORLEAVE = "/requestforleave";
   static const SIGNUPPAGESCREEN = "/signUpPageScreen";
   static const LOGINOTPSCREEN = "/LoginOtpScreen";
+  static const APPROVALSCREEN = "/approvalScreen";
+  static const TRANSACTIONHISTORY = "/transationhistory";
+  static const GOOGLEMAP = "/googlemap";
+  static const LOGIN = "/login";
+   static const EDITPROFILE = "/editProfileScreen";
 
-   static const APPROVALSCREEN = "/approvalScreen";
 
 
   
-
-  static const GOOGLEMAP = "/googlemap";
-
-  static const LOGIN = "/login";
 
   static const ONBOARDING = "/onboarding";
   static const TERMANDCONDITIONS = "/termsandcondition";

@@ -179,7 +179,8 @@ class _EmergencyContactState extends State<EmergencyContact> {
                         }
                         return null;
                       },
-                      maxLength: 64,
+                      maxLength: 6,
+                      keyBoardType: TextInputType.number,
                       counterWidget: const Offstage(),
                       hintText: 'Pin code',
                       fillColor: context.appColor.whiteColor,

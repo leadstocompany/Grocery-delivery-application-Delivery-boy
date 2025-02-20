@@ -16,6 +16,7 @@ class AppImages {
 
   static const String Vector = "${imageURL}Vector.png";
   static const String incoming = "${imageURL}import.png";
+   static const String export = "${imageURL}export.png";
 
   static const String totalOrder = "${imageURL}totalOrder.png";
   static const String totalcan = "${imageURL}totalcan.png";

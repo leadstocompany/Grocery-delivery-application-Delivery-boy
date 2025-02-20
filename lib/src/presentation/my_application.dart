@@ -2,6 +2,7 @@ import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/core/utiils_lib/string/app_string.dart';
 import 'package:delivery_app/src/logic/provider/auth_provider.dart';
+import 'package:delivery_app/src/logic/provider/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -27,6 +28,9 @@ class _MyApplicationState extends State<MyApplication> {
         child: MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => AuthProvider()),
+             ChangeNotifierProvider(create: (_) => ProfileProvider()),
+
+            
           ],
           child: MaterialApp.router(
             routerConfig: MyRoutes.router,

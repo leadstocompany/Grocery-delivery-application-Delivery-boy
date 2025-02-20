@@ -43,16 +43,18 @@ class _AccountScreenState extends State<AccountScreen> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Column(
-        children: [
-          profile(),
-          profileDetail(),
-          Gap(20.h),
-          Text(
-            "App Version 1.0.0 ",
-            style: context.subTitleTxtStyle,
-          )
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            profile(),
+            profileDetail(),
+            Gap(20.h),
+            Text(
+              "App Version 1.0.0 ",
+              style: context.subTitleTxtStyle,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -68,7 +70,9 @@ class _AccountScreenState extends State<AccountScreen> {
             style: context.titleStyleRegular.copyWith(),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              context.push(MyRoutes.EDITPROFILE);
+            },
             child: Card(
               elevation: 0.5,
               color: context.appColor.whiteColor,
@@ -90,25 +94,50 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
           ),
           Gap(10.h),
-          Card(
-            elevation: 0.5,
-            color: context.appColor.whiteColor,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  Container(child: SvgPicture.asset(AppImages.like)),
-                  Gap(5.w),
-                  Text(
-                    "Allotted Area",
-                    style: context.subTitleTextStyleBloack.copyWith(),
-                  ),
-                  Spacer(),
-                  Icon(Icons.arrow_forward_ios_rounded)
-                ],
+          InkWell(
+            onTap: () {
+              context.push(MyRoutes.TRANSACTIONHISTORY);
+            },
+            child: Card(
+              elevation: 0.5,
+              color: context.appColor.whiteColor,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    Container(child: SvgPicture.asset(AppImages.User_light)),
+                    Gap(5.w),
+                    Text(
+                      "Wallet",
+                      style: context.subTitleTextStyleBloack.copyWith(),
+                    ),
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios_rounded)
+                  ],
+                ),
               ),
             ),
           ),
+          // Gap(10.h),
+          // Card(
+          //   elevation: 0.5,
+          //   color: context.appColor.whiteColor,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(12.0),
+          //     child: Row(
+          //       children: [
+          //         Container(child: SvgPicture.asset(AppImages.like)),
+          //         Gap(5.w),
+          //         Text(
+          //           "Allotted Area",
+          //           style: context.subTitleTextStyleBloack.copyWith(),
+          //         ),
+          //         Spacer(),
+          //         Icon(Icons.arrow_forward_ios_rounded)
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Gap(10.h),
           Card(
             elevation: 0.5,
@@ -172,35 +201,36 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
             ),
           ),
+          // Gap(10.h),
+          // InkWell(
+          //   onTap: () {
+          //     context.push(MyRoutes.REQUESTFORLEAVE);
+          //   },
+          //   child: Card(
+          //     elevation: 0.5,
+          //     color: context.appColor.whiteColor,
+          //     child: Padding(
+          //       padding: const EdgeInsets.all(12.0),
+          //       child: Row(
+          //         children: [
+          //           Container(child: SvgPicture.asset(AppImages.leave)),
+          //           Gap(5.w),
+          //           Text(
+          //             "Ask For Leave",
+          //             style: context.subTitleTextStyleBloack.copyWith(),
+          //           ),
+          //           Spacer(),
+          //           Icon(Icons.arrow_forward_ios_rounded)
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
+
           Gap(10.h),
           InkWell(
             onTap: () {
-              context.push(MyRoutes.REQUESTFORLEAVE);
-            },
-            child: Card(
-              elevation: 0.5,
-              color: context.appColor.whiteColor,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    Container(child: SvgPicture.asset(AppImages.leave)),
-                    Gap(5.w),
-                    Text(
-                      "Ask For Leave",
-                      style: context.subTitleTextStyleBloack.copyWith(),
-                    ),
-                    Spacer(),
-                    Icon(Icons.arrow_forward_ios_rounded)
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Gap(10.h),
-          InkWell(
-            onTap: (){
-               Provider.of<AuthProvider>(context, listen: false)
+              Provider.of<AuthProvider>(context, listen: false)
                   .customerLogOut(context);
             },
             child: Card(

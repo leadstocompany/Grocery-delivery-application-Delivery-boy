@@ -137,7 +137,7 @@ class _OrderScreenState extends State<OrderScreen> {
           automaticallyImplyLeading: false,
         ),
         body: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(5.0),
           child: Column(
             children: [
               Row(
@@ -291,94 +291,130 @@ class _OrderScreenState extends State<OrderScreen> {
                                               ),
                                             ],
                                           ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_on_outlined,
+                                                color: Colors.red,
+                                              ),
+                                              Gap(2.w),
+                                              Text(
+                                                  "Nikhita Stores, 201/B, Nirant \nApts, Andheri East 400069"),
+                                            ],
+                                          ),
+                                          Gap(10.w),
                                           Gap(10.h),
-                                          ListView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            itemCount: expandableItems[index]
-                                                    ?.length ??
-                                                0,
-                                            itemBuilder: (context, itemIndex) {
-                                              return Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
+                                          Container(
+                                              child: DottedBorder(
+                                            color: context.appColor
+                                                .primarycolor, // The color of the dots
+                                            strokeWidth:
+                                                1, // Width of the dotted border
+                                            dashPattern: [
+                                              6,
+                                              3
+                                            ], // Dash and space length
+                                            borderType: BorderType.RRect,
+                                            radius: Radius.circular(1.r),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                itemCount:
+                                                    expandableItems[index]
+                                                            ?.length ??
+                                                        0,
+                                                itemBuilder:
+                                                    (context, itemIndex) {
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Container(
-                                                          child:
-                                                              SvgPicture.asset(
-                                                                  AppImages
+                                                      Row(
+                                                        children: [
+                                                          Container(
+                                                              child: SvgPicture
+                                                                  .asset(AppImages
                                                                       .hand)),
-                                                      Gap(5.w),
-                                                      Text("Pickup Center-1",
-                                                          style: context
-                                                              .buttonTestStyle
-                                                              .copyWith(
-                                                                  color: context
-                                                                      .appColor
-                                                                      .blackColor)),
-                                                      Spacer(),
-                                                      Container(
-                                                          child:
-                                                              SvgPicture.asset(
-                                                                  AppImages
+                                                          Gap(5.w),
+                                                          Text(
+                                                              "Pickup Center-1",
+                                                              style: context
+                                                                  .buttonTestStyle
+                                                                  .copyWith(
+                                                                      color: context
+                                                                          .appColor
+                                                                          .blackColor)),
+                                                          Spacer(),
+                                                          Container(
+                                                              child: SvgPicture
+                                                                  .asset(AppImages
                                                                       .call)),
-                                                      Gap(20.w),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          context.push(MyRoutes
-                                                              .GOOGLEMAP);
-                                                        },
-                                                        child: Container(
-                                                            child: SvgPicture
-                                                                .asset(AppImages
-                                                                    .location)),
+                                                          Gap(20.w),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              context.push(
+                                                                  MyRoutes
+                                                                      .GOOGLEMAP);
+                                                            },
+                                                            child: Container(
+                                                                child: SvgPicture
+                                                                    .asset(AppImages
+                                                                        .location)),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 20.w),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                            "Nikhita Stores, 201/B, Nirant \nApts, Andheri East 400069"),
-                                                        Gap(10.w),
-                                                        Row(
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 20.w),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
-                                                            Image.asset(
-                                                              AppImages.product1
-                                                                  .toString(),
-                                                              // height: 200,
-                                                              // width: 350,
-                                                            ),
+                                                            Text(
+                                                                "Nikhita Stores, 201/B, Nirant \nApts, Andheri East 400069"),
                                                             Gap(10.w),
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                            Row(
                                                               children: [
-                                                                Text(
-                                                                    "Atta Ladoo"),
-                                                                Text("500g"),
-                                                                Text("Qty: 3"),
+                                                                Image.asset(
+                                                                  AppImages
+                                                                      .product1
+                                                                      .toString(),
+                                                                  // height: 200,
+                                                                  // width: 350,
+                                                                ),
+                                                                Gap(10.w),
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                        "Atta Ladoo"),
+                                                                    Text(
+                                                                        "500g"),
+                                                                    Text(
+                                                                        "Qty: 3"),
+                                                                  ],
+                                                                )
                                                               ],
                                                             )
                                                           ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Divider()
-                                                ],
-                                              );
-                                            },
-                                          ),
+                                                        ),
+                                                      ),
+                                                      Divider()
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          )),
                                           orderProcess()
                                         ],
                                       )
