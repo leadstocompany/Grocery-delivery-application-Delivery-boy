@@ -14,7 +14,8 @@ class ProductService extends ApiService {
     return response;
   }
 
-  Future refresh_token(data) async {
+  Future refresh_token(data) async 
+  {
     var response = await api.post(APIURL.refresh_token, data: jsonEncode(data));
 
     return response;

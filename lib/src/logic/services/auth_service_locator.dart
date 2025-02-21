@@ -29,7 +29,12 @@ class AuthServices extends ApiService {
 
     return response;
   }
+  Future refresh_token(data) async {
+    var response = await api.post(APIURL.refresh_token, data: jsonEncode(data));
+    //response.statusCode
 
+    return response;
+  }
 
 
   Future userRegister(data) async {

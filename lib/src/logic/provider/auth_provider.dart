@@ -289,12 +289,13 @@ class AuthProvider extends ChangeNotifier {
           return true;
         },
       );
-    } catch (e) {
+    } catch (e)
+     {
       context.showLoader(show: false);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Already have account Please login !"),
+          content: Text("User not found!"),
           backgroundColor: Colors.red,
         ),
       );
@@ -423,5 +424,23 @@ class AuthProvider extends ChangeNotifier {
 
   void _showSnackBar(BuildContext context, String message, Color color) {
     showTopSnackBar(context, message, color);
+  }
+
+
+
+   Future<bool> refreshToken(BuildContext context) async {
+    var data = {"refresh_token": "${await SharedPrefUtils.getRefreshToken()}"};
+
+    var result = await _authRepo.refreshToken(data, context);
+    return result.fold(
+      (error) {
+        print("dkjhsfgjkdfkg");
+        return true;
+      },
+      (response) {
+        print("dkjhssfdgdfgdfgfgjkdfkg");
+        return true;
+      },
+    );
   }
 }

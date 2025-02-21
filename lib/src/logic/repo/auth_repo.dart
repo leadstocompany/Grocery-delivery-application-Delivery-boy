@@ -9,6 +9,7 @@ import 'package:delivery_app/src/data/upload_image.dart';
 import 'package:delivery_app/src/data/vendor_otpModel.dart';
 import 'package:delivery_app/src/logic/services/auth_service_locator.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 
 class AuthRepo {
@@ -149,4 +150,31 @@ class AuthRepo {
   
   
   }
+
+
+   FutureResult<String> refreshToken(data, BuildContext context) async {
+    try {
+      var response = await _authServices.refresh_token(data);
+      LoginResponse loginResponse = loginResponseFromJson(response.toString());
+
+      if (loginResponse.accessToken != null) {
+        print("chwckData ${loginResponse.accessToken}");
+        await SharedPrefUtils.setToken(
+            authToken: loginResponse.accessToken ?? "");
+        await SharedPrefUtils.setRefreshToken(
+            refresh_token: loginResponse.refreshToken ?? "");
+      
+      }
+
+      final String model = response.toString();
+
+      return right(model);
+    } on DioException catch (e) {
+      
+
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
 }

@@ -48,7 +48,7 @@ extension ThemeExt on BuildContext {
   TextStyle get subTitleTextStyle => GoogleFonts.nunito(
         fontWeight: FontWeight.w400,
         color: appColor.greyColor,
-        fontSize: 16.sp,
+        fontSize: 13.sp,
       );
   TextStyle get subTitleTextStyleBloack => GoogleFonts.nunito(
         fontWeight: FontWeight.w500,
@@ -315,9 +315,6 @@ extension ColorExt on ColorScheme {
   Color get secondaryColor => Color.fromARGB(255, 243, 129, 136);
 
   Color get primarycolor => Color(0xffFF5963);
-
-  
-
 
   // Color get reviewColor =>
   //     brightness == Brightness.dark ? Colors.green : const Color(0xff006D60);

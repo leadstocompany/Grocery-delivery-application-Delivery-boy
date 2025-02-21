@@ -6,7 +6,11 @@ class APIURL {
   static const String loginOtp = "${BASE_URL}auth/login/delivery";
   static const String login = "${BASE_URL}auth/login/vendor";
   static const String customerRegister = "${BASE_URL}auth/register/delivery";
-   static const String customerLogOut = "${BASE_URL}auth/logout/delivery";
+  static const String customerLogOut = "${BASE_URL}auth/logout/delivery";
+  static const String myOrder = "${BASE_URL}delivery/delivery-details";
+
+
+
 
 
   static const String getAllProduct = "${BASE_URL}products";
@@ -27,11 +31,12 @@ class APIURL {
   static const String addAddress = "${BASE_URL}user/addresses";
   static const String getprofile = "${BASE_URL}user/profile/customer";
   static const String refresh_token = "${BASE_URL}auth/refresh-token";
+  
   static const String uploadImage = "${BASE_URL}images/upload";
   static const String updateProfile = "${BASE_URL}user/profile";
   static const String paymentOrder = "${BASE_URL}payment/initiate";
   static const String paymentCODOrder = "${BASE_URL}orders";
-  static const String myOrder = "${BASE_URL}orders/my-orders";
+ 
   static const String offerCoupon = "${BASE_URL}coupons";
   static const String applyCoupon = "${BASE_URL}coupons/validate";
   static const String forgetPassword = "${BASE_URL}auth/forgot-password/vendor";

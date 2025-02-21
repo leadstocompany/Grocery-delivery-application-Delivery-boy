@@ -8,7 +8,7 @@ class OrderService extends ApiService
 {
 
 
-  Future myOrder(data) async {
+  Future getOrder(data) async {
     var response = await api.get(APIURL.myOrder, data: jsonEncode(data));
 
     return response;
