@@ -131,6 +131,34 @@ class _OrderScreenState extends State<OrderScreen> {
                   fontWeight: FontWeight.w900,
                 ),
               ),
+              Spacer(),
+              Consumer<OrderProvider>(
+                builder: (context, provider, child) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // provider.isLoading
+                      //     ? CircularProgressIndicator() // Show loading when API is calling
+                      //     :
+                      Text(
+                        provider.isOnline ? "Online" : "Offline",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10),
+                      Switch(
+                         
+                        value: provider.isOnline,
+                        onChanged: (value) {
+                          provider.toggleStatus(!value);
+                        },
+                        activeColor: Colors.green,
+                        inactiveThumbColor: Colors.red,
+                      ),
+                    ],
+                  );
+                },
+              ),
             ],
           ),
         ),

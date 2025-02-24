@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:delivery_app/src/core/network_services/service_locator.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/logic/repo/order_repo.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class OrderProvider with ChangeNotifier {
   // Store the expanded state of each item
@@ -61,5 +64,40 @@ class OrderProvider with ChangeNotifier {
       isloading = false;
       notifyListeners();
     }
+  }
+
+  bool _isOnline = false;
+  bool _isLoading = false;
+
+  bool get isOnline => _isOnline;
+  bool get isLoading => _isLoading;
+
+  Future<void> toggleStatus(bool status) async {
+    print("lkdfjjg  ${status}");
+    _isOnline = !status;
+    notifyListeners();
+
+    //   String apiUrl = "https://yourapi.com/driver/status";
+    //   try {
+    //     final response = await http.post(
+    //       Uri.parse(apiUrl),
+    //       body: jsonEncode({"is_online": status}),
+    //       headers: {"Content-Type": "application/json"},
+    //     );
+
+    //     if (response.statusCode == 200)
+    //     {
+    //       _isOnline = status;
+    //     } else {
+    //       _isOnline = true;
+    //       print("Failed to update status");
+    //     }
+    //   } catch (e) {
+    //     print("Error: $e");
+    //   }
+
+    //   _isLoading = false;
+    //   notifyListeners();
+    // }
   }
 }
