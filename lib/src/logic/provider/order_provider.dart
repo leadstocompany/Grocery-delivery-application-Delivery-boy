@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:delivery_app/src/core/network_services/service_locator.dart';
+import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/logic/repo/order_repo.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class OrderProvider with ChangeNotifier {
   // Store the expanded state of each item
@@ -66,38 +64,98 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-  bool _isOnline = false;
-  bool _isLoading = false;
+  bool isSendOtp = false;
 
-  bool get isOnline => _isOnline;
-  bool get isLoading => _isLoading;
+  Future<void> getAssignedOtp(BuildContext context, String assignmentId) async {
+    isSendOtp = true;
 
-  Future<void> toggleStatus(bool status) async {
-    print("lkdfjjg  ${status}");
-    _isOnline = !status;
     notifyListeners();
+    var data = {"assignmentId": assignmentId};
 
-    //   String apiUrl = "https://yourapi.com/driver/status";
-    //   try {
-    //     final response = await http.post(
-    //       Uri.parse(apiUrl),
-    //       body: jsonEncode({"is_online": status}),
-    //       headers: {"Content-Type": "application/json"},
-    //     );
+    print("ldflkgfkgjdh   ${data}");
 
-    //     if (response.statusCode == 200)
-    //     {
-    //       _isOnline = status;
-    //     } else {
-    //       _isOnline = true;
-    //       print("Failed to update status");
-    //     }
-    //   } catch (e) {
-    //     print("Error: $e");
-    //   }
+    try {
+      var result = await _orderRepo.getAssignedOtp(data);
 
-    //   _isLoading = false;
-    //   notifyListeners();
-    // }
+      return result.fold(
+        (error) {
+          isSendOtp = false;
+
+          notifyListeners();
+        },
+        (response) {
+          _showOtpPopup(context, response.code!); //
+
+          isSendOtp = false;
+          notifyListeners();
+        },
+      );
+    } catch (e) {
+      isSendOtp = false;
+      notifyListeners();
+    }
   }
+
+  void _showOtpPopup(BuildContext context, String otp) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Center(child: Text("Your OTP")), // Center the title
+        content: Column(
+          mainAxisSize: MainAxisSize.min, // Prevent excessive height
+          children: [
+            Center(
+              child: Text(
+                otp,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Center(
+            child: TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+  Future<bool> updateOTP(
+      BuildContext context, String deliveryAssignmentId, String otpCode) async {
+    context.showLoader(show: true);
+
+    var data = {"deliveryAssignmentId": deliveryAssignmentId, "otpCode": otpCode};
+    try {
+      var result = await _orderRepo.updateOTP(data);
+
+      return result.fold(
+        (error) {
+          context.showLoader(show: false);
+          return false;
+        },
+        (response) {
+          context.showLoader(show: false);
+            return true;
+        },
+      );
+    } catch (e) {
+     
+      context.showLoader(show: false);
+        return false;
+    }
+  }
+
+
+
+
 }

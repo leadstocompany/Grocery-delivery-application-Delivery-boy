@@ -8,15 +8,14 @@ class APIURL {
   static const String customerRegister = "${BASE_URL}auth/register/delivery";
   static const String customerLogOut = "${BASE_URL}auth/logout/delivery";
   static const String myOrder = "${BASE_URL}delivery/delivery-details";
-
-
-
-
+  static const String getAssignedOtp =   "${BASE_URL}delivery/delivery-partner-otp";
+  static const String updateOTP = "${BASE_URL}delivery/verify-customer-otp";
+ 
 
   static const String getAllProduct = "${BASE_URL}products";
   static const String getProductDetails = "${BASE_URL}products/";
   static const String getBanners = "${BASE_URL}banners";
- 
+
   static const String getBestDealProduct = "${BASE_URL}products/best-deals";
   static const String getAllcategory = "${BASE_URL}categories";
   static const String addToWish = "${BASE_URL}carts/wishlist/items";
@@ -31,12 +30,12 @@ class APIURL {
   static const String addAddress = "${BASE_URL}user/addresses";
   static const String getprofile = "${BASE_URL}user/profile/customer";
   static const String refresh_token = "${BASE_URL}auth/refresh-token";
-  
+
   static const String uploadImage = "${BASE_URL}images/upload";
   static const String updateProfile = "${BASE_URL}user/profile";
   static const String paymentOrder = "${BASE_URL}payment/initiate";
   static const String paymentCODOrder = "${BASE_URL}orders";
- 
+
   static const String offerCoupon = "${BASE_URL}coupons";
   static const String applyCoupon = "${BASE_URL}coupons/validate";
   static const String forgetPassword = "${BASE_URL}auth/forgot-password/vendor";
