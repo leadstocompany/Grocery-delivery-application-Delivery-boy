@@ -14,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -384,9 +385,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                     left: 8.0,
                                                                     right: 8),
                                                             child: Text(
-                                                              orderitems
-                                                                  .orderDetails!
-                                                                  .orderStatus!,
+                                                              productlist
+                                                                  .status,
                                                               style: context
                                                                   .subTitleTextStyleBloack
                                                                   .copyWith(
@@ -777,6 +777,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   void _updateDeliveredProductBottomSheet(
       BuildContext context, Datum orderitems) {
+    String otpCode = '';
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -840,6 +841,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 ),
                 onChanged: (value) {},
                 onCompleted: (value) async {
+                  otpCode = value;
                   var status =
                       await Provider.of<OrderProvider>(context, listen: false)
                           .updateOTP(context, orderitems.assignmentId, value);
@@ -854,8 +856,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             type: ArtSweetAlertType.success,
                             title: "Status Update",
                             text: "Your product successfully picked up"));
-                  } else 
-                  {
+                  } else {
                     // ArtSweetAlert.show(
                     //     context: context,
                     //     artDialogArgs: ArtDialogArgs(
@@ -873,14 +874,43 @@ class _OrderScreenState extends State<OrderScreen> {
                     width: double.infinity,
                     child: ButtonElevated(
                         text: 'Process Order',
-                        onPressed: () {
-                          Navigator.pop(context);
-                          ArtSweetAlert.show(
-                              context: context,
-                              artDialogArgs: ArtDialogArgs(
-                                  type: ArtSweetAlertType.success,
-                                  title: "Money Sent",
-                                  text: "Your funds is on its way to you"));
+                        onPressed: () async {
+                          if (otpCode.length < 6) {
+                            Fluttertoast.showToast(
+                              msg: "Please enter volid otp",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 14.0,
+                            );
+                          } else {
+                            var status = await Provider.of<OrderProvider>(
+                                    context,
+                                    listen: false)
+                                .updateOTP(
+                                    context, orderitems.assignmentId, otpCode);
+
+                            if (status) {
+                              Provider.of<OrderProvider>(context, listen: false)
+                                  .getMyOrder(context);
+                              Navigator.pop(context);
+                              ArtSweetAlert.show(
+                                  context: context,
+                                  artDialogArgs: ArtDialogArgs(
+                                      type: ArtSweetAlertType.success,
+                                      title: "Status Update",
+                                      text:
+                                          "Your product successfully picked up"));
+                            } else {
+                              // ArtSweetAlert.show(
+                              //     context: context,
+                              //     artDialogArgs: ArtDialogArgs(
+                              //         type: ArtSweetAlertType.success,
+                              //         title: "OTP IN",
+                              //         text: ""));
+                            }
+                          }
                         },
                         backgroundColor: context.appColor.primarycolor),
                   ),
