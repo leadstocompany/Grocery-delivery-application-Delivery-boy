@@ -4,6 +4,7 @@ import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/logic/provider/order_provider.dart';
+import 'package:delivery_app/src/presentation/data_notfound.dart';
 import 'package:delivery_app/src/presentation/widgets/elevated_button.dart';
 import 'package:delivery_app/src/presentation/widgets/network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -169,7 +170,14 @@ class _OrderScreenState extends State<OrderScreen> {
                 }
 
                 if (orderProvider.orderList.isEmpty) {
-                  return Center(child: Text('No orders found!'));
+                  return Center(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 150),
+                    child: DataNotFound(
+                      imagePath: 'assets/images/notfound.jpg',
+                      message: "No Order Available! ",
+                    ),
+                  ));
                 }
                 return Expanded(
                   child: ListView.builder(
@@ -245,7 +253,16 @@ class _OrderScreenState extends State<OrderScreen> {
                               ),
                               orderProvider.isExpanded(index)
                                   ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
+                                        Text("For Customer",
+                                            style: context.buttonTestStyle
+                                                .copyWith(
+                                                    color: context
+                                                        .appColor.darkGreen,
+                                                    fontWeight: FontWeight.w900,
+                                                    fontSize: 18.sp)),
                                         Row(
                                           children: [
                                             Container(
@@ -332,8 +349,23 @@ class _OrderScreenState extends State<OrderScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
+                                                    Text("For Grocery Store",
+                                                        style: context
+                                                            .buttonTestStyle
+                                                            .copyWith(
+                                                                color: context
+                                                                    .appColor
+                                                                    .darkGreen,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900,
+                                                                fontSize:
+                                                                    18.sp)),
                                                     Row(
                                                       children: [
+                                                        // if (productlist
+                                                        //         .status !=
+                                                        //     "SHIPPED")
                                                         RichText(
                                                           text: TextSpan(
                                                             text: "OTP : ",
@@ -898,9 +930,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                       type: ArtSweetAlertType.success,
                                       title: "Status Updateed",
                                       text: "Product delivered successfully"));
-                            } else {
-                             
-                            }
+                            } else {}
                           }
                         },
                         backgroundColor: context.appColor.primarycolor),
@@ -927,8 +957,7 @@ class _OrderScreenState extends State<OrderScreen> {
     }
   }
 
-  Color getStatus() 
-  {
+  Color getStatus() {
     switch (colorStatus) {
       case 'Pickup Pending':
         return Color(0xffFFDEDE);

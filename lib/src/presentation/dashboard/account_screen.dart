@@ -138,66 +138,76 @@ class _AccountScreenState extends State<AccountScreen> {
           //     ),
           //   ),
           // ),
+          // Gap(10.h),
+          // Card(
+          //   elevation: 0.5,
+          //   color: context.appColor.whiteColor,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(12.0),
+          //     child: Row(
+          //       children: [
+          //         Container(child: SvgPicture.asset(AppImages.Support)),
+          //         Gap(5.w),
+          //         Text(
+          //           "Support",
+          //           style: context.subTitleTextStyleBloack.copyWith(),
+          //         ),
+          //         Spacer(),
+          //         Icon(Icons.arrow_forward_ios_rounded)
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Gap(10.h),
-          Card(
-            elevation: 0.5,
-            color: context.appColor.whiteColor,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  Container(child: SvgPicture.asset(AppImages.Support)),
-                  Gap(5.w),
-                  Text(
-                    "Support",
-                    style: context.subTitleTextStyleBloack.copyWith(),
-                  ),
-                  Spacer(),
-                  Icon(Icons.arrow_forward_ios_rounded)
-                ],
+          InkWell(
+            onTap: () {
+              context.push(MyRoutes.TERMANDCONDITIONS);
+            },
+            child: Card(
+              elevation: 0.5,
+              color: context.appColor.whiteColor,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    Container(child: SvgPicture.asset(AppImages.terms)),
+                    Gap(5.w),
+                    Text(
+                      "Terms and Conditions",
+                      style: context.subTitleTextStyleBloack.copyWith(),
+                    ),
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios_rounded)
+                  ],
+                ),
               ),
             ),
           ),
           Gap(10.h),
-          Card(
-            elevation: 0.5,
-            color: context.appColor.whiteColor,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  Container(child: SvgPicture.asset(AppImages.terms)),
-                  Gap(5.w),
-                  Text(
-                    "Terms and Conditions",
-                    style: context.subTitleTextStyleBloack.copyWith(),
-                  ),
-                  Spacer(),
-                  Icon(Icons.arrow_forward_ios_rounded)
-                ],
-              ),
-            ),
-          ),
-          Gap(10.h),
-          Card(
-            elevation: 0.5,
-            color: context.appColor.whiteColor,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.remove_red_eye,
-                    color: context.appColor.secondaryColor,
-                  ),
-                  Gap(5.w),
-                  Text(
-                    "Privacy Policy",
-                    style: context.subTitleTextStyleBloack.copyWith(),
-                  ),
-                  Spacer(),
-                  Icon(Icons.arrow_forward_ios_rounded)
-                ],
+          InkWell(
+            onTap: () {
+              context.push(MyRoutes.PRIVACY);
+            },
+            child: Card(
+              elevation: 0.5,
+              color: context.appColor.whiteColor,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.remove_red_eye,
+                      color: context.appColor.secondaryColor,
+                    ),
+                    Gap(5.w),
+                    Text(
+                      "Privacy Policy",
+                      style: context.subTitleTextStyleBloack.copyWith(),
+                    ),
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios_rounded)
+                  ],
+                ),
               ),
             ),
           ),

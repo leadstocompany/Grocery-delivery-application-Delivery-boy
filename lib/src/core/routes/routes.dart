@@ -17,6 +17,8 @@ import 'package:delivery_app/src/presentation/edit_profile/edit_profile_screen.d
 import 'package:delivery_app/src/presentation/google_map/google_map_screen.dart';
 import 'package:delivery_app/src/presentation/leave/requestfor_leave.dart';
 import 'package:delivery_app/src/presentation/splash_screen.dart';
+import 'package:delivery_app/src/presentation/static_page/privacyandpolicy.dart';
+import 'package:delivery_app/src/presentation/static_page/tersandconditions.dart';
 import 'package:delivery_app/src/presentation/transation/transation_history.dart';
 import 'package:delivery_app/src/presentation/widgets/successfully_created.dart';
 import 'package:flutter/material.dart';
@@ -143,6 +145,18 @@ class MyRoutes {
         name: EDITPROFILE,
         pageBuilder: (context, state) => EditProfileScreen(),
       ),
+
+       animatedGoRoute(
+        path: TERMANDCONDITIONS,
+        name: TERMANDCONDITIONS,
+        pageBuilder: (context, state) => const TermsAndConditionsScreen(),
+      ),
+
+      animatedGoRoute(
+        path: PRIVACY,
+        name: PRIVACY,
+        pageBuilder: (context, state) => const PrivacyPolicy(),
+      ),
     ],
   );
 
@@ -165,12 +179,14 @@ class MyRoutes {
   static const LOGIN = "/login";
    static const EDITPROFILE = "/editProfileScreen";
 
+  static const TERMANDCONDITIONS = "/termsandcondition";
 
+  static const PRIVACY = "/privacyandpolicy";
 
   
 
   static const ONBOARDING = "/onboarding";
-  static const TERMANDCONDITIONS = "/termsandcondition";
+
   static const SETUPBUSSINESS = "/setupbussiness";
   static const CREATESTORE = "/createStore";
   static const SUBMITSCREEN = "/submitscreen";
