@@ -3,6 +3,7 @@ import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/logic/repo/order_repo.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class OrderProvider with ChangeNotifier {
   // Store the expanded state of each item
@@ -128,34 +129,56 @@ class OrderProvider with ChangeNotifier {
     );
   }
 
-
-
   Future<bool> updateOTP(
       BuildContext context, String deliveryAssignmentId, String otpCode) async {
     context.showLoader(show: true);
 
-    var data = {"deliveryAssignmentId": deliveryAssignmentId, "otpCode": otpCode};
+    var data = {
+      "deliveryAssignmentId": deliveryAssignmentId,
+      "otpCode": otpCode
+    };
     try {
       var result = await _orderRepo.updateOTP(data);
 
       return result.fold(
         (error) {
           context.showLoader(show: false);
+          Fluttertoast.showToast(
+            msg: " Invalid, used, or expired OTP",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
           return false;
         },
         (response) {
           context.showLoader(show: false);
-            return true;
+          getMyOrder(context);
+          Fluttertoast.showToast(
+            msg: "Product delivered successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+
+          return true;
         },
       );
     } catch (e) {
-     
       context.showLoader(show: false);
-        return false;
+      Fluttertoast.showToast(
+        msg: " Invalid, used, or expired OTP",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      return false;
     }
   }
-
-
-
-
 }

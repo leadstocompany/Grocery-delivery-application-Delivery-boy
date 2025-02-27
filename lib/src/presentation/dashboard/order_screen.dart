@@ -847,15 +847,14 @@ class _OrderScreenState extends State<OrderScreen> {
                           .updateOTP(context, orderitems.assignmentId, value);
 
                   if (status) {
-                    Provider.of<OrderProvider>(context, listen: false)
-                        .getMyOrder(context);
+                    // Provider.of<OrderProvider>(context, listen: false).getMyOrder(context);
                     Navigator.pop(context);
                     ArtSweetAlert.show(
                         context: context,
                         artDialogArgs: ArtDialogArgs(
                             type: ArtSweetAlertType.success,
-                            title: "Status Update",
-                            text: "Your product successfully picked up"));
+                            title: "Status Updateed",
+                            text: "Product delivered successfully"));
                   } else {
                     // ArtSweetAlert.show(
                     //     context: context,
@@ -892,23 +891,15 @@ class _OrderScreenState extends State<OrderScreen> {
                                     context, orderitems.assignmentId, otpCode);
 
                             if (status) {
-                              Provider.of<OrderProvider>(context, listen: false)
-                                  .getMyOrder(context);
                               Navigator.pop(context);
                               ArtSweetAlert.show(
                                   context: context,
                                   artDialogArgs: ArtDialogArgs(
                                       type: ArtSweetAlertType.success,
-                                      title: "Status Update",
-                                      text:
-                                          "Your product successfully picked up"));
+                                      title: "Status Updateed",
+                                      text: "Product delivered successfully"));
                             } else {
-                              // ArtSweetAlert.show(
-                              //     context: context,
-                              //     artDialogArgs: ArtDialogArgs(
-                              //         type: ArtSweetAlertType.success,
-                              //         title: "OTP IN",
-                              //         text: ""));
+                             
                             }
                           }
                         },
@@ -936,7 +927,8 @@ class _OrderScreenState extends State<OrderScreen> {
     }
   }
 
-  Color getStatus() {
+  Color getStatus() 
+  {
     switch (colorStatus) {
       case 'Pickup Pending':
         return Color(0xffFFDEDE);
