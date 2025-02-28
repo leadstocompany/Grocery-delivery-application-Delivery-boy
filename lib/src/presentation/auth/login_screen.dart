@@ -108,8 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           return;
                         }
                       },
-                      counterWidget: const Offstage(),
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                     // counterWidget: const Offstage(),
+                     // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyBoardType: TextInputType.number,
                       prefix: Row(
                         mainAxisSize: MainAxisSize.min,

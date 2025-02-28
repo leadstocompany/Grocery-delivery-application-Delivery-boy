@@ -99,6 +99,11 @@ dependencies:
   url_launcher: ^6.3.1
   cached_network_image: 
   fluttertoast:
+  socket_io_client: ^3.0.2
+  flutter_local_notifications: 
+  
+  flutter_ringtone_player: ^3.2.0
+  flutter_timer_countdown: 
 
   
 

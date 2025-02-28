@@ -44,6 +44,7 @@ class SharedPrefUtils {
   static const String KEY_EMAIL = "KEY_EMAIL";
   static const String KEY_PROFILE = "KEY_PROFILE";
 
+
   // static Future<void> saveUser({
   //   required UserProfile user,
   // }) async {
@@ -236,7 +237,8 @@ class SharedPrefUtils {
   }
 
   ///Set profile url
-  static Future<bool> setUserId({required String id}) {
+  static Future<bool> setUserId({required String id})
+   {
     return SharedPreferences.getInstance()
         .then((sp) async => await sp.setString(USER_ID, id));
   }

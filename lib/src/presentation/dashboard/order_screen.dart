@@ -2,8 +2,10 @@ import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:delivery_app/src/core/image/app_images.dart';
 import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
+import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/logic/provider/order_provider.dart';
+import 'package:delivery_app/src/logic/services/SocketService.dart';
 import 'package:delivery_app/src/presentation/data_notfound.dart';
 import 'package:delivery_app/src/presentation/widgets/elevated_button.dart';
 import 'package:delivery_app/src/presentation/widgets/network_image.dart';
@@ -29,11 +31,67 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  bool isOnline = false;
   @override
   void initState() {
     Provider.of<OrderProvider>(context, listen: false).getMyOrder(context);
     selectedDate = DateTime.now();
     super.initState();
+    initiateSocket();
+  }
+
+  initiateSocket() async {
+    String driverId = await SharedPrefUtils.getUserId();
+
+    print("userId  ${driverId}");
+
+    socketService = SocketService(
+      driverId,
+      (data) {
+        setState(() {
+          orderData = data;
+        });
+
+        // Show popup
+        _showOrderPopup(data);
+      },
+    );
+
+    socketService.connect();
+  }
+
+  late SocketService socketService;
+  Map<String, dynamic>? orderData;
+
+  @override
+  void dispose() {
+    socketService.disconnect();
+    super.dispose();
+  }
+
+  void _showOrderPopup(Map<String, dynamic> data) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('New Order Assigned'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Order ID: ${data['assignmentId']}'),
+              Text(
+                  'Expires At: ${DateTime.fromMillisecondsSinceEpoch(data['expiresAt'])}'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   String colorStatus = "";
@@ -79,8 +137,21 @@ class _OrderScreenState extends State<OrderScreen> {
     });
   }
 
+  void _toggleOnlineStatus(bool status) {
+    setState(() {
+      isOnline = status;
+    });
+
+    // if (isOnline) {
+    //   socketService.connect();
+    // } else {
+    //   socketService.disconnect();
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var driverProvider = Provider.of<OrderProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -100,6 +171,17 @@ class _OrderScreenState extends State<OrderScreen> {
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w900,
                 ),
+              ),
+              Spacer(),
+              Text(
+                driverProvider.isOnline ? "🟢 Online" : "🔴 Offline",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Switch(
+                value: driverProvider.isOnline,
+                onChanged: (_) => driverProvider.toggleOnlineStatus(),
+                activeColor: Colors.green,
+                inactiveThumbColor: Colors.red,
               ),
             ],
           ),

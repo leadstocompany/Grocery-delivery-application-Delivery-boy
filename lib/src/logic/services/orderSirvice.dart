@@ -25,6 +25,24 @@ class OrderService extends ApiService {
     return response;
   }
 
+  Future getMe(data) async {
+    var response = await api.get(APIURL.getMe, data: jsonEncode(data));
+    //response.statusCode
+
+    return response;
+  }
+
+  Future updateStatus(data) async {
+    var response = await api.patch(APIURL.updateStatus, data: jsonEncode(data));
+    //response.statusCode
+
+    return response;
+  }
+
+
+
+
+
 
   
 }

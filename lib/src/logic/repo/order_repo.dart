@@ -1,7 +1,9 @@
 import 'package:delivery_app/src/core/utiils_lib/custom_dio_exception.dart';
 import 'package:delivery_app/src/core/utiils_lib/response_type_def.dart';
+import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/data/order_OTP.dart';
+import 'package:delivery_app/src/data/user_response.dart';
 import 'package:delivery_app/src/logic/services/orderSirvice.dart';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
@@ -38,7 +40,7 @@ class OrderRepo {
       return right(storeModel);
     } on DioException catch (e) {
       var error = CustomDioExceptions.handleError(e);
-      
+
       return left(error);
     }
   }
@@ -51,6 +53,49 @@ class OrderRepo {
 
       final String model = response.toString();
       return right(model);
+    } on DioException catch (e) {
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
+    FutureResult<String> updateStatus(data) async {
+    try {
+      var response = await _orderService.updateStatus(data);
+
+      //  DeliveryOtpmodel storeModel = deliveryOtpmodelFromJson(response.toString());
+
+      final String model = response.toString();
+      return right(model);
+    } on DioException catch (e) {
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
+  
+
+  FutureResult<UserResponse> getMe(data) async {
+    try {
+      var response = await _orderService.getMe(data);
+
+      final UserResponse vendorModel =
+          UserResponseFromJson(response.toString());
+
+      if (vendorModel != null) {
+        print("kjdhgjkfjkghkjfg    ${vendorModel.id}");
+        // SharedPrefUtils.USER_NAME =
+        //     vendorModel.firstName + " " + vendorModel.lastName;
+        // SharedPrefUtils.PHONE = vendorModel.phone;
+
+        // print("dkfjhdkfhkfk  ${SharedPrefUtils.USER_NAME}");
+
+        await SharedPrefUtils.setUserId(id: vendorModel.id);
+      }
+
+      final String model = response.toString();
+
+      return right(vendorModel);
     } on DioException catch (e) {
       var error = CustomDioExceptions.handleError(e);
       return left(error);

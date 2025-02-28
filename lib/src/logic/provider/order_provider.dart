@@ -1,5 +1,6 @@
 import 'package:delivery_app/src/core/network_services/service_locator.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
+import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/logic/repo/order_repo.dart';
 import 'package:flutter/material.dart';
@@ -181,4 +182,98 @@ class OrderProvider with ChangeNotifier {
       return false;
     }
   }
+
+  bool _isOnline = false;
+
+  bool get isOnline => _isOnline;
+
+
+    void toggleOnlineStatus() {
+    _isOnline = !_isOnline;
+
+ 
+
+    notifyListeners();
+  }
+
+Future<bool> updateStatus(
+      BuildContext context, String orderStatus) async 
+      {
+    context.showLoader(show: true);
+
+    var data = {
+      "status": orderStatus,
+    };
+    try {
+      var result = await _orderRepo.updateStatus(data);
+
+      return result.fold(
+        (error) {
+          context.showLoader(show: false);
+          Fluttertoast.showToast(
+            msg: "Something went wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+          return false;
+        },
+        (response) {
+          context.showLoader(show: false);
+      
+          Fluttertoast.showToast(
+            msg: "Product delivered successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+
+          return true;
+        },
+      );
+    } catch (e) {
+      context.showLoader(show: false);
+      Fluttertoast.showToast(
+        msg: " Invalid, used, or expired OTP",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      return false;
+    }
+  }
+
+
+
+
+
+
+  Future<void> getMe() async {
+    var data = {};
+
+    try {
+      var result = await _orderRepo.getMe(data);
+
+      return result.fold(
+        (error) {},
+        (response) {
+          // setUserName(response.firstName + " " + response.lastName);
+          // setPhone(response.phone);
+
+          SharedPrefUtils.USER_NAME =
+              response.firstName + " " + response.lastName;
+          SharedPrefUtils.PHONE = response.phone;
+          notifyListeners();
+        },
+      );
+    } catch (e) {}
+  }
+
+
 }

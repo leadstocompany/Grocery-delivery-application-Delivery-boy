@@ -1,3 +1,4 @@
+import 'package:delivery_app/src/logic/provider/order_provider.dart';
 import 'package:delivery_app/src/presentation/dashboard/account_screen.dart';
 import 'package:delivery_app/src/presentation/dashboard/order_screen.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,10 +17,18 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   // List of screens for the custom bottom navigation bar
-  final List<Widget> _screens = [
+  final List<Widget> _screens = 
+  [
     OrderScreen(),
     AccountScreen(),
   ];
+
+  @override
+  void initState()
+   {
+    Provider.of<OrderProvider>(context, listen: false).getMe();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
