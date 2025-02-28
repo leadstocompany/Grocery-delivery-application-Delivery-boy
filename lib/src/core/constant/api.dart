@@ -8,16 +8,13 @@ class APIURL {
   static const String customerRegister = "${BASE_URL}auth/register/delivery";
   static const String customerLogOut = "${BASE_URL}auth/logout/delivery";
   static const String myOrder = "${BASE_URL}delivery/delivery-details/me";
-  static const String getAssignedOtp =   "${BASE_URL}delivery/delivery-partner-otp";
+  static const String getAssignedOtp =
+      "${BASE_URL}delivery/delivery-partner-otp";
   static const String updateOTP = "${BASE_URL}delivery/verify-customer-otp";
   static const String getMe = "${BASE_URL}auth/me";
-   static const String updateStatus = "${BASE_URL}delivery/driver/status";
-
-
-
-
-
- 
+  static const String updateStatus = "${BASE_URL}delivery/driver/status";
+  static const String declineAssign = "${BASE_URL}delivery/decline-assignment";
+  static const String acceptAssign = "${BASE_URL}delivery/accept-assignment";
 
   static const String getAllProduct = "${BASE_URL}products";
   static const String getProductDetails = "${BASE_URL}products/";
@@ -52,7 +49,6 @@ class APIURL {
 
   static const String getProduct = "${BASE_URL}products";
   static const String getCategoryByLevel = "${BASE_URL}categories/by-level/1";
- 
 
   static const String createProduct = "${BASE_URL}products";
 

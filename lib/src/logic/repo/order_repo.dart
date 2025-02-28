@@ -3,6 +3,7 @@ import 'package:delivery_app/src/core/utiils_lib/response_type_def.dart';
 import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/data/order_OTP.dart';
+import 'package:delivery_app/src/data/status_response.dart';
 import 'package:delivery_app/src/data/user_response.dart';
 import 'package:delivery_app/src/logic/services/orderSirvice.dart';
 import 'package:dio/dio.dart';
@@ -59,14 +60,43 @@ class OrderRepo {
     }
   }
 
-    FutureResult<String> updateStatus(data) async {
+    FutureResult<StatusResponse> updateStatus(data) async {
     try {
       var response = await _orderService.updateStatus(data);
 
-      //  DeliveryOtpmodel storeModel = deliveryOtpmodelFromJson(response.toString());
+        StatusResponse storeModel = statusResponseFromJson(response.toString());
 
-      final String model = response.toString();
-      return right(model);
+     // final String storeModelmodel = response.toString();
+      return right(storeModel);
+    } on DioException catch (e) {
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
+
+    FutureResult<String> declineAssign(data) async {
+    try {
+      var response = await _orderService.declineAssign(data);
+
+       // StatusResponse storeModel = statusResponseFromJson(response.toString());
+
+      final String storeModelmodel = response.toString();
+      return right(storeModelmodel);
+    } on DioException catch (e) {
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
+    FutureResult<String> acceptAssign(data) async {
+    try {
+      var response = await _orderService.acceptAssign(data);
+
+       // StatusResponse storeModel = statusResponseFromJson(response.toString());
+
+      final String storeModelmodel = response.toString();
+      return right(storeModelmodel);
     } on DioException catch (e) {
       var error = CustomDioExceptions.handleError(e);
       return left(error);

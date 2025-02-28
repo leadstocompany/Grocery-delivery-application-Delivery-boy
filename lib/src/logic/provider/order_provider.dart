@@ -101,7 +101,8 @@ class OrderProvider with ChangeNotifier {
   void _showOtpPopup(BuildContext context, String otp) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) =>
+       AlertDialog(
         title: Center(child: Text("Your OTP")), // Center the title
         content: Column(
           mainAxisSize: MainAxisSize.min, // Prevent excessive height
@@ -127,6 +128,8 @@ class OrderProvider with ChangeNotifier {
           ),
         ],
       ),
+    
+    
     );
   }
 
@@ -187,18 +190,22 @@ class OrderProvider with ChangeNotifier {
 
   bool get isOnline => _isOnline;
 
+  void toggleOnlineStatus(BuildContext context, bool isOnline) {
+    print("dkfjgkj  ${isOnline}");
+    if (!isOnline) {
+      _isOnline = true;
+      notifyListeners();
 
-    void toggleOnlineStatus() {
-    _isOnline = !_isOnline;
-
- 
-
-    notifyListeners();
+      updateStatus(context, "ONLINE");
+    } else {
+      _isOnline = false;
+      notifyListeners();
+      updateStatus(context, "OFFLINE");
+    }
+    // _isOnline = !_isOnline;
   }
 
-Future<bool> updateStatus(
-      BuildContext context, String orderStatus) async 
-      {
+  Future<bool> updateStatus(BuildContext context, String orderStatus) async {
     context.showLoader(show: true);
 
     var data = {
@@ -222,12 +229,13 @@ Future<bool> updateStatus(
         },
         (response) {
           context.showLoader(show: false);
-      
+          print("dkljhgkfdhg  ${response}");
+
           Fluttertoast.showToast(
-            msg: "Product delivered successfully",
+            msg: "${response.message}",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 14.0,
           );
@@ -249,10 +257,108 @@ Future<bool> updateStatus(
     }
   }
 
+  Future<bool> acceptAssign(BuildContext context, String assignmentId) async {
+    context.showLoader(show: true);
 
+    var data = {"assignmentId": assignmentId};
+    try {
+      var result = await _orderRepo.acceptAssign(data);
 
+      return result.fold(
+        (error) {
+          context.showLoader(show: false);
+          Fluttertoast.showToast(
+            msg: "Something went wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+          return false;
+        },
+        (response) {
+          context.showLoader(show: false);
+          print("dkljhgkfdhg  ${response}");
 
+          Fluttertoast.showToast(
+            msg: "",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
 
+          return true;
+        },
+      );
+    } catch (e) {
+      context.showLoader(show: false);
+      Fluttertoast.showToast(
+        msg: " Invalid, used, or expired OTP",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      return false;
+    }
+  }
+
+  Future<bool> declineAssign(BuildContext context, String assignmentId) async {
+    context.showLoader(show: true);
+
+    var data = {
+      "assignmentId": assignmentId,
+      "reason": "Driver is unavailable"
+    };
+    try {
+      var result = await _orderRepo.declineAssign(data);
+
+      return result.fold(
+        (error) {
+          context.showLoader(show: false);
+          Fluttertoast.showToast(
+            msg: "Something went wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+          return false;
+        },
+        (response) {
+          context.showLoader(show: false);
+          print("dkljhgkfdhg  ${response}");
+
+          Fluttertoast.showToast(
+            msg: "",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+
+          return true;
+        },
+      );
+    } catch (e) {
+      context.showLoader(show: false);
+      Fluttertoast.showToast(
+        msg: " Invalid, used, or expired OTP",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      return false;
+    }
+  }
 
   Future<void> getMe() async {
     var data = {};
@@ -274,6 +380,4 @@ Future<bool> updateStatus(
       );
     } catch (e) {}
   }
-
-
 }

@@ -38,6 +38,19 @@ class OrderService extends ApiService {
 
     return response;
   }
+   Future declineAssign(data) async {
+    var response = await api.post(APIURL.declineAssign, data: jsonEncode(data));
+    //response.statusCode
+
+    return response;
+  }
+
+   Future acceptAssign(data) async {
+    var response = await api.post(APIURL.acceptAssign, data: jsonEncode(data));
+    //response.statusCode
+
+    return response;
+  }
 
 
 

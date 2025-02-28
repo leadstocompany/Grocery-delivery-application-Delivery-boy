@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:delivery_app/src/core/image/app_images.dart';
 import 'package:delivery_app/src/core/routes/routes.dart';
@@ -38,6 +40,7 @@ class _OrderScreenState extends State<OrderScreen> {
     selectedDate = DateTime.now();
     super.initState();
     initiateSocket();
+    //
   }
 
   initiateSocket() async {
@@ -70,28 +73,81 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   void _showOrderPopup(Map<String, dynamic> data) {
+    int remainingSeconds = 120; // 2 minutes
+    Timer? timer;
+
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text('New Order Assigned'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Order ID: ${data['assignmentId']}'),
-              Text(
-                  'Expires At: ${DateTime.fromMillisecondsSinceEpoch(data['expiresAt'])}'),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
+        return StatefulBuilder(
+          builder: (context, setState) {
+            // Start the timer only once
+            if (timer == null) {
+              timer = Timer.periodic(Duration(seconds: 1), (timer) {
+                if (remainingSeconds > 0) {
+                  setState(() => remainingSeconds--);
+                } else {
+                  timer.cancel();
+                  Navigator.pop(
+                      context); // Auto-close the dialog when time is up
+                }
+              });
+            }
+
+            return AlertDialog(
+              title: Center(child: Text("Assign New Order ")), // Centered title
+              content: Column(
+                mainAxisSize: MainAxisSize.min, // Prevent excessive height
+                children: [
+                  Text("Time remaining: ${remainingSeconds}s",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red)),
+
+                  // Text('Order ID: ${data['assignmentId']}'),
+                  // Text(
+                  //     'Expires At: ${DateTime.fromMillisecondsSinceEpoch(data['expiresAt'])}'),
+                ],
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        timer?.cancel();
+
+                        if (!mounted) return;
+
+                        print(
+                            "Accepting order with ID: ${data['assignmentId']}");
+
+                        Provider.of<OrderProvider>(context, listen: false)
+                            .acceptAssign(context, data['assignmentId']);
+
+                        Navigator.pop(context);
+                      },
+                      child: Text("Accept"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        timer?.cancel();
+                        Navigator.pop(context);
+                      },
+                      child: Text("Reject"),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
         );
       },
-    );
+    ).then((_) {
+      // Cancel the timer when the dialog is dismissed manually
+      timer?.cancel();
+    });
   }
 
   String colorStatus = "";
@@ -137,18 +193,6 @@ class _OrderScreenState extends State<OrderScreen> {
     });
   }
 
-  void _toggleOnlineStatus(bool status) {
-    setState(() {
-      isOnline = status;
-    });
-
-    // if (isOnline) {
-    //   socketService.connect();
-    // } else {
-    //   socketService.disconnect();
-    // }
-  }
-
   @override
   Widget build(BuildContext context) {
     var driverProvider = Provider.of<OrderProvider>(context);
@@ -173,15 +217,18 @@ class _OrderScreenState extends State<OrderScreen> {
                 ),
               ),
               Spacer(),
-              Text(
-                driverProvider.isOnline ? "🟢 Online" : "🔴 Offline",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+              // 🟢🔴
+
               Switch(
                 value: driverProvider.isOnline,
-                onChanged: (_) => driverProvider.toggleOnlineStatus(),
+                onChanged: (_) => driverProvider.toggleOnlineStatus(
+                    context, driverProvider.isOnline),
                 activeColor: Colors.green,
                 inactiveThumbColor: Colors.red,
+              ),
+              Text(
+                driverProvider.isOnline ? " On Duty" : " Off Duty",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ],
           ),
