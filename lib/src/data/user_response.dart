@@ -3,51 +3,69 @@
 //     final UserResponse = UserResponseFromJson(jsondynamic);
 
 import 'dart:convert';
+// To parse this JSON data, do
+//
+//     final userResponse = userResponseFromJson(jsondynamic);
 
-UserResponse UserResponseFromJson(dynamic str) => UserResponse.fromJson(json.decode(str));
+import 'dart:convert';
 
-dynamic UserResponseToJson(UserResponse data) => json.encode(data.toJson());
+UserResponse userResponseFromJson(dynamic str) =>
+    UserResponse.fromJson(json.decode(str));
+
+dynamic userResponseToJson(UserResponse data) => json.encode(data.toJson());
 
 class UserResponse {
-    dynamic id;
-    dynamic phone;
-    dynamic firstName;
-    dynamic lastName;
-    dynamic name;
-    dynamic role;
-    bool? isPhoneVerified;
-    dynamic storeId;
+  dynamic id;
+  dynamic phone;
+  dynamic email;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic name;
+  dynamic role;
+  bool? isPhoneVerified;
+  dynamic img;
+  dynamic storeId;
+  dynamic currentStatus;
 
-    UserResponse({
-        this.id,
-        this.phone,
-        this.firstName,
-        this.lastName,
-        this.name,
-        this.role,
-        this.isPhoneVerified,
-        this.storeId,
-    });
+  UserResponse({
+    this.id,
+    this.phone,
+    this.email,
+    this.firstName,
+    this.lastName,
+    this.name,
+    this.role,
+    this.isPhoneVerified,
+    this.img,
+    this.storeId,
+    this.currentStatus,
+  });
 
-    factory UserResponse.fromJson(Map<dynamic, dynamic> json) => UserResponse(
+  factory UserResponse.fromJson(Map<dynamic, dynamic> json) => UserResponse(
         id: json["id"],
         phone: json["phone"],
+        email: json["email"],
         firstName: json["firstName"],
         lastName: json["lastName"],
         name: json["name"],
         role: json["role"],
         isPhoneVerified: json["isPhoneVerified"],
+        img: json["img"],
         storeId: json["storeId"],
-    );
+        currentStatus: json["currentStatus"],
+      );
 
-    Map<dynamic, dynamic> toJson() => {
+  Map<dynamic, dynamic> toJson() => {
         "id": id,
         "phone": phone,
+        "email": email,
         "firstName": firstName,
         "lastName": lastName,
         "name": name,
         "role": role,
         "isPhoneVerified": isPhoneVerified,
+        "img": img,
         "storeId": storeId,
-    };
+        "currentStatus": currentStatus,
+      };
 }

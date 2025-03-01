@@ -9,6 +9,7 @@ import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/logic/provider/order_provider.dart';
 import 'package:delivery_app/src/logic/services/SocketService.dart';
 import 'package:delivery_app/src/presentation/data_notfound.dart';
+import 'package:delivery_app/src/presentation/google_map/map_webView.dart';
 import 'package:delivery_app/src/presentation/widgets/elevated_button.dart';
 import 'package:delivery_app/src/presentation/widgets/network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -36,7 +37,10 @@ class _OrderScreenState extends State<OrderScreen> {
   bool isOnline = false;
   @override
   void initState() {
-    Provider.of<OrderProvider>(context, listen: false).getMyOrder(context);
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
+    orderProvider.getMyOrder(context);
+    orderProvider.loadOnlineStatus();
     selectedDate = DateTime.now();
     super.initState();
     initiateSocket();
@@ -55,7 +59,6 @@ class _OrderScreenState extends State<OrderScreen> {
           orderData = data;
         });
 
-        // Show popup
         _showOrderPopup(data);
       },
     );
@@ -68,7 +71,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   void dispose() {
-    socketService.disconnect();
+    /// socketService.disconnect();
     super.dispose();
   }
 
@@ -77,19 +80,18 @@ class _OrderScreenState extends State<OrderScreen> {
     Timer? timer;
 
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            // Start the timer only once
             if (timer == null) {
               timer = Timer.periodic(Duration(seconds: 1), (timer) {
                 if (remainingSeconds > 0) {
                   setState(() => remainingSeconds--);
                 } else {
                   timer.cancel();
-                  Navigator.pop(
-                      context); // Auto-close the dialog when time is up
+                  Navigator.pop(context);
                 }
               });
             }
@@ -99,7 +101,7 @@ class _OrderScreenState extends State<OrderScreen> {
               content: Column(
                 mainAxisSize: MainAxisSize.min, // Prevent excessive height
                 children: [
-                  Text("Time remaining: ${remainingSeconds}s",
+                  Text("Time remaining: ${remainingSeconds}S",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -118,7 +120,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       onPressed: () {
                         timer?.cancel();
 
-                        if (!mounted) return;
+                        // if (!mounted) return;
 
                         print(
                             "Accepting order with ID: ${data['assignmentId']}");
@@ -133,6 +135,13 @@ class _OrderScreenState extends State<OrderScreen> {
                     TextButton(
                       onPressed: () {
                         timer?.cancel();
+
+                        print(
+                            "Accepting order with ID: ${data['assignmentId']}");
+
+                        Provider.of<OrderProvider>(context, listen: false)
+                            .declineAssign(context, data['assignmentId']);
+
                         Navigator.pop(context);
                       },
                       child: Text("Reject"),
@@ -423,8 +432,20 @@ class _OrderScreenState extends State<OrderScreen> {
                                             Gap(20.w),
                                             InkWell(
                                               onTap: () {
-                                                context
-                                                    .push(MyRoutes.GOOGLEMAP);
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MapWebView(
+                                                      origin:
+                                                          "28.7041,77.1025", // Example: New Delhi
+                                                      destination:
+                                                          "27.1751,78.0421", // Example: Taj Mahal
+                                                    ),
+                                                  ),
+                                                );
+                                                // context
+                                                //     .push(MyRoutes.GOOGLEMAP);
                                               },
                                               child: Container(
                                                   child: SvgPicture.asset(
@@ -578,9 +599,22 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         Gap(20.w),
                                                         InkWell(
                                                           onTap: () {
-                                                            context.push(
-                                                                MyRoutes
-                                                                    .GOOGLEMAP);
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        MapWebView(
+                                                                  origin:
+                                                                      "28.7041,77.1025", // Example: New Delhi
+                                                                  destination:
+                                                                      "27.1751,78.0421", // Example: Taj Mahal
+                                                                ),
+                                                              ),
+                                                            );
+                                                            // context.push(
+                                                            //     MyRoutes
+                                                            //         .GOOGLEMAP);
                                                           },
                                                           child: Container(
                                                               child: SvgPicture

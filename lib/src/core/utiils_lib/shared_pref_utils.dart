@@ -1,10 +1,8 @@
 // ignore_for_file: constant_identifier_names
 
-
-
-
 // Shared preference for the app to store data locally
 import 'package:delivery_app/src/core/utiils_lib/string/app_string.dart';
+import 'package:delivery_app/src/data/user_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefUtils {
@@ -43,19 +41,32 @@ class SharedPrefUtils {
   static const String KEY_LAST_NAME = "KEY_LAST_NAME";
   static const String KEY_EMAIL = "KEY_EMAIL";
   static const String KEY_PROFILE = "KEY_PROFILE";
+  static const String ON_DUTY = "false";
 
+  static Future<void> saveUser({
+    required UserResponse user,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  // static Future<void> saveUser({
-  //   required UserProfile user,
-  // }) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    print("lkdjglkdfhgkhl  ${user.firstName}");
+    await prefs.setString(KEY_FIRSTNAME, user.firstName ?? "");
+    await prefs.setString(KEY_LAST_NAME, user.lastName ?? "");
+    await prefs.setString(KEY_EMAIL, user.email ?? " ");
+    await prefs.setString(PHONE, user.phone ?? " ");
+    await prefs.setString(KEY_PROFILE, user.img ?? " ");
+  }
 
-  //   print("lkdjglkdfhgkhl  ${user.firstName}");
-  //   await prefs.setString(KEY_FIRSTNAME, user.firstName ?? "");
-  //   await prefs.setString(KEY_LAST_NAME, user.lastName ?? "");
-  //   await prefs.setString(KEY_EMAIL, user.email ?? " ");
-  //   await prefs.setString(KEY_PROFILE, user.img ?? " ");
-  // }
+  static Future<bool> setOnDuty({required bool status}) {
+    return SharedPreferences.getInstance()
+        .then((sp) async => await sp.setBool(ON_DUTY, status));
+  }
+
+  static Future<bool?> getOnDuty() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    print("kjdshfgjkhdf  ${prefs.getBool(ON_DUTY)}");
+    return prefs.getBool(ON_DUTY);
+  }
 
   static Future<String?> getFirstName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -130,11 +141,6 @@ class SharedPrefUtils {
         .then((sp) async => await sp.setString(PASSWORD, password));
   }
 
-  static Future<bool> setPhone({required int phone}) {
-    return SharedPreferences.getInstance()
-        .then((sp) async => await sp.setInt(PHONE, phone));
-  }
-
   static Future<bool> getBackPopStatus() async {
     final sp = await SharedPreferences.getInstance();
     return sp.getBool(BACK_STATUS) ?? true;
@@ -195,9 +201,9 @@ class SharedPrefUtils {
     return sp.getBool(IS_FRESH_INSTALL) ?? true;
   }
 
-  static Future<int> getPhone() async {
+  static Future<String> getPhone() async {
     final sp = await SharedPreferences.getInstance();
-    return sp.getInt(PHONE) ?? 0;
+    return sp.getString(PHONE) ?? '';
   }
 
   /// Get Selected profile, will be used
@@ -237,8 +243,7 @@ class SharedPrefUtils {
   }
 
   ///Set profile url
-  static Future<bool> setUserId({required String id})
-   {
+  static Future<bool> setUserId({required String id}) {
     return SharedPreferences.getInstance()
         .then((sp) async => await sp.setString(USER_ID, id));
   }
@@ -263,15 +268,6 @@ class SharedPrefUtils {
   static Future setNerarByInstruction({required bool status}) async {
     final sp = await SharedPreferences.getInstance();
     sp.setBool(INS_NearBy, status);
-  }
-
-  /// Get username
-  ///
-  ///
-
-  static Future<String> getEmail() async {
-    final sp = await SharedPreferences.getInstance();
-    return sp.getString(EMAIL) ?? "";
   }
 
   static Future<String> getPassword() async {

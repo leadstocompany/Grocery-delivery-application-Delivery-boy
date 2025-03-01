@@ -101,8 +101,7 @@ class OrderProvider with ChangeNotifier {
   void _showOtpPopup(BuildContext context, String otp) {
     showDialog(
       context: context,
-      builder: (context) =>
-       AlertDialog(
+      builder: (context) => AlertDialog(
         title: Center(child: Text("Your OTP")), // Center the title
         content: Column(
           mainAxisSize: MainAxisSize.min, // Prevent excessive height
@@ -128,8 +127,6 @@ class OrderProvider with ChangeNotifier {
           ),
         ],
       ),
-    
-    
     );
   }
 
@@ -175,7 +172,7 @@ class OrderProvider with ChangeNotifier {
     } catch (e) {
       context.showLoader(show: false);
       Fluttertoast.showToast(
-        msg: " Invalid, used, or expired OTP",
+        msg: "$e",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
@@ -190,17 +187,23 @@ class OrderProvider with ChangeNotifier {
 
   bool get isOnline => _isOnline;
 
-  void toggleOnlineStatus(BuildContext context, bool isOnline) {
-    print("dkfjgkj  ${isOnline}");
+  Future<void> loadOnlineStatus() async {
+    _isOnline = await SharedPrefUtils.getOnDuty() ?? false;
+    notifyListeners();
+  }
+
+  Future<void> toggleOnlineStatus(BuildContext context, bool isOnline) async {
     if (!isOnline) {
       _isOnline = true;
       notifyListeners();
 
       updateStatus(context, "ONLINE");
+      await SharedPrefUtils.setOnDuty(status: true);
     } else {
       _isOnline = false;
       notifyListeners();
       updateStatus(context, "OFFLINE");
+      await SharedPrefUtils.setOnDuty(status: false);
     }
     // _isOnline = !_isOnline;
   }
@@ -229,7 +232,7 @@ class OrderProvider with ChangeNotifier {
         },
         (response) {
           context.showLoader(show: false);
-          print("dkljhgkfdhg  ${response}");
+          
 
           Fluttertoast.showToast(
             msg: "${response.message}",
@@ -246,7 +249,7 @@ class OrderProvider with ChangeNotifier {
     } catch (e) {
       context.showLoader(show: false);
       Fluttertoast.showToast(
-        msg: " Invalid, used, or expired OTP",
+        msg: " $e",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
@@ -279,10 +282,10 @@ class OrderProvider with ChangeNotifier {
         },
         (response) {
           context.showLoader(show: false);
-          print("dkljhgkfdhg  ${response}");
+          getMyOrder(context);
 
           Fluttertoast.showToast(
-            msg: "",
+            msg: "Order accepted successfully",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             backgroundColor: Colors.green,
@@ -332,10 +335,8 @@ class OrderProvider with ChangeNotifier {
         },
         (response) {
           context.showLoader(show: false);
-          print("dkljhgkfdhg  ${response}");
-
           Fluttertoast.showToast(
-            msg: "",
+            msg: "Order declined successfully",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             backgroundColor: Colors.green,
@@ -368,9 +369,22 @@ class OrderProvider with ChangeNotifier {
 
       return result.fold(
         (error) {},
-        (response) {
+        (response) async {
           // setUserName(response.firstName + " " + response.lastName);
           // setPhone(response.phone);
+
+          if (response.currentStatus != null) {
+            if (response.currentStatus == "ONLINE") {
+              print("lkjdhfgfjkgfgkjk  ${response.currentStatus}");
+              await SharedPrefUtils.setOnDuty(status: true);
+            } else {
+              await SharedPrefUtils.setOnDuty(status: false);
+            }
+          }
+
+          if (response.firstName != null && response.lastName != null) {
+            SharedPrefUtils.saveUser(user: response);
+          }
 
           SharedPrefUtils.USER_NAME =
               response.firstName + " " + response.lastName;

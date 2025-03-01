@@ -110,20 +110,22 @@ class OrderRepo {
       var response = await _orderService.getMe(data);
 
       final UserResponse vendorModel =
-          UserResponseFromJson(response.toString());
+          userResponseFromJson(response.toString());
 
-      if (vendorModel != null) {
-        print("kjdhgjkfjkghkjfg    ${vendorModel.id}");
-        // SharedPrefUtils.USER_NAME =
-        //     vendorModel.firstName + " " + vendorModel.lastName;
-        // SharedPrefUtils.PHONE = vendorModel.phone;
+      if (vendorModel != null) 
+      {
+            print("kjdhgjkfjkghkjfg    ${vendorModel.id}");
+         
+          //SharedPrefUtils.USER_NAME =
+         //vendorModel.firstName + " " + vendorModel.lastName;
+        //SharedPrefUtils.PHONE = vendorModel.phone;
+       //print("dkfjhdkfhkfk  ${SharedPrefUtils.USER_NAME}");
 
-        // print("dkfjhdkfhkfk  ${SharedPrefUtils.USER_NAME}");
 
         await SharedPrefUtils.setUserId(id: vendorModel.id);
       }
 
-      final String model = response.toString();
+     // final String model = response.toString();
 
       return right(vendorModel);
     } on DioException catch (e) {

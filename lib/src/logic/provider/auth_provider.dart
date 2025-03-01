@@ -83,7 +83,7 @@ class AuthProvider extends ChangeNotifier {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Something went wrong. Please try again."),
+          content: Text("$e"),
           backgroundColor: Colors.red,
         ),
       );
@@ -130,7 +130,7 @@ class AuthProvider extends ChangeNotifier {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Already have account Please login !"),
+          content: Text("$e"),
           backgroundColor: Colors.red,
         ),
       );
@@ -289,13 +289,12 @@ class AuthProvider extends ChangeNotifier {
           return true;
         },
       );
-    } catch (e)
-     {
+    } catch (e) {
       context.showLoader(show: false);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("User not found!"),
+          content: Text("$e"),
           backgroundColor: Colors.red,
         ),
       );
@@ -366,7 +365,7 @@ class AuthProvider extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content:
-              Text("Email is already registered please use another email! "),
+              Text("$e "),
           backgroundColor: Colors.red,
         ),
       );
@@ -414,7 +413,7 @@ class AuthProvider extends ChangeNotifier {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Something went wrong. Please try again."),
+          content: Text("$e"),
           backgroundColor: Colors.red,
         ),
       );
@@ -426,9 +425,7 @@ class AuthProvider extends ChangeNotifier {
     showTopSnackBar(context, message, color);
   }
 
-
-
-   Future<bool> refreshToken(BuildContext context) async {
+  Future<bool> refreshToken(BuildContext context) async {
     var data = {"refresh_token": "${await SharedPrefUtils.getRefreshToken()}"};
 
     var result = await _authRepo.refreshToken(data, context);

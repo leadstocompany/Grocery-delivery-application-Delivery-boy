@@ -4,6 +4,7 @@ import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/core/utiils_lib/string/app_string.dart';
 import 'package:delivery_app/src/logic/provider/auth_provider.dart';
+import 'package:delivery_app/src/presentation/static_page/pdf_viewer_page.dart';
 import 'package:delivery_app/src/presentation/widgets/custom_text_field.dart';
 import 'package:delivery_app/src/presentation/widgets/elevated_button.dart';
 import 'package:flutter/gestures.dart';
@@ -25,6 +26,13 @@ class _SignUpPageScreenState extends State<SignUpPageScreen> {
   TextEditingController phoneController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final pageNotifier = Provider.of<AuthProvider>(context, listen: false);
@@ -103,13 +111,6 @@ class _SignUpPageScreenState extends State<SignUpPageScreen> {
                     child: CustomTextField(
                       controller: phoneController,
                       maxLength: 10,
-                      onChanged: (value) {
-                        if (value.length == 10) {
-                          return;
-                        }
-                      },
-                      counterWidget: const Offstage(),
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyBoardType: TextInputType.number,
                       prefix: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -144,38 +145,107 @@ class _SignUpPageScreenState extends State<SignUpPageScreen> {
                       ),
                       hintText: AppString.enterYourMobileNo,
                       fillColor: Colors.transparent,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your mobile number.";
+                        } else if (value.length != 10) {
+                          return "Mobile number must be 10 digits.";
+                        }
+                        return null;
+                      },
                     ),
                   ),
+
+                  // Form(
+                  //   key: _formKey,
+                  //   child: CustomTextField(
+                  //     controller: phoneController,
+                  //     maxLength: 10,
+                  //     onChanged: (value) {
+                  //       if (value.length == 10) {
+                  //         return;
+                  //       }
+                  //     },
+                  //     counterWidget: const Offstage(),
+                  //     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  //     keyBoardType: TextInputType.number,
+                  //     prefix: Row(
+                  //       mainAxisSize: MainAxisSize.min,
+                  //       children: [
+                  //         SizedBox(
+                  //           width: 65,
+                  //           child: CountryCodePicker(
+                  //             textStyle: context.bodyTxtStyle,
+                  //             onChanged: (value) {},
+                  //             initialSelection: 'IN',
+                  //             favorite: const ['+91', 'IN'],
+                  //             showCountryOnly: true,
+                  //             showFlag: false,
+                  //             showOnlyCountryWhenClosed: false,
+                  //             showDropDownButton: false,
+                  //             showFlagMain: false,
+                  //             alignLeft: false,
+                  //             padding: EdgeInsets.zero,
+                  //           ),
+                  //         ),
+                  //         const SizedBox(
+                  //           height: 44,
+                  //           width: 2,
+                  //           child: VerticalDivider(
+                  //             width: 1,
+                  //             color: Colors.grey,
+                  //             thickness: 1,
+                  //           ),
+                  //         ),
+                  //         const Gap(10)
+                  //       ],
+                  //     ),
+                  //     hintText: AppString.enterYourMobileNo,
+                  //     fillColor: Colors.transparent,
+                  //   ),
+                  // ),
+
                   Row(
                     children: [
                       Checkbox(value: true, onChanged: (bool? value) {}),
-                      RichText(
-                        text: TextSpan(
-                          text: 'By signing up I agree to the',
-                          style:
-                              context.smallTxtStyle.copyWith(fontSize: 13.sp),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: ' Terms of use \n',
-                                recognizer: TapGestureRecognizer(),
-                                //   ..onTap = () => context.push(MyRoutes.TERM_CONDITION),
-                                style: TextStyle(
-                                    color: context.appColor.secondaryColor)),
-                            const TextSpan(
-                              text: " and  ",
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PdfViewerPage(
+                                assetPath: 'assets/terms_and_conditions.pdf',
+                              ),
                             ),
-                            TextSpan(
-                                recognizer: TapGestureRecognizer(),
-                                //   ..onTap = () => context.push(MyRoutes.PRIVACY_POLICY),
-                                text: 'Privacy Policy.',
-                                style: TextStyle(
-                                    color: context.appColor.secondaryColor)),
-                          ],
+                          );
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'By signing up I agree to the',
+                            style:
+                                context.smallTxtStyle.copyWith(fontSize: 13.sp),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: ' Terms of use \n',
+                                  recognizer: TapGestureRecognizer(),
+                                  //   ..onTap = () => context.push(MyRoutes.TERM_CONDITION),
+                                  style: TextStyle(
+                                      color: context.appColor.secondaryColor)),
+                              const TextSpan(
+                                text: " and  ",
+                              ),
+                              TextSpan(
+                                  recognizer: TapGestureRecognizer(),
+                                  //   ..onTap = () => context.push(MyRoutes.PRIVACY_POLICY),
+                                  text: 'Privacy Policy.',
+                                  style: TextStyle(
+                                      color: context.appColor.secondaryColor)),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
-                
                   const Gap(20),
                   SizedBox(
                     width: double.infinity,
@@ -183,7 +253,8 @@ class _SignUpPageScreenState extends State<SignUpPageScreen> {
                       backgroundColor: context.appColor.primarycolor,
                       text: AppString.getOtp,
                       onPressed: () async {
-                        if (_formKey.currentState?.validate() ?? false) {
+                        if (_formKey.currentState!.validate()) {
+                          print("fjghklflkghjl ");
                           final success = await pageNotifier.sendOtp(
                               phoneController.text, context);
 
@@ -191,12 +262,12 @@ class _SignUpPageScreenState extends State<SignUpPageScreen> {
                             // context.push(MyRoutes.LOGINOTPSCREEN);
                             context.push(MyRoutes.OTPSCREEN);
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    "Failed to send OTP. Please try again."),
-                              ),
-                            );
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   SnackBar(
+                            //     content: Text(
+                            //         "Failed to send OTP. Please try again."),
+                            //   ),
+                            // );
                           }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(

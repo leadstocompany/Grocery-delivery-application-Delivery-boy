@@ -104,6 +104,9 @@ dependencies:
   
   flutter_ringtone_player: ^3.2.0
   flutter_timer_countdown: 
+  firebase_core:
+  firebase_messaging: 
+  flutter_pdfview: 
 
   
 
@@ -141,6 +144,7 @@ flutter:
   assets:
     - assets/icon/
     - assets/images/
+    - assets/terms_and_conditions.pdf
    
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -30,15 +30,10 @@ class _MapWebViewState extends State<MapWebView> {
             height: 20,
             width: 20,
             child: InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: SvgPicture.asset(
-                "assets/icons/back.svg", // Change this to your actual asset
-                height: 20,
-                width: 20,
-              ),
-            ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Icon(Icons.arrow_back_ios_new)),
           ),
         ),
         title: const Text(

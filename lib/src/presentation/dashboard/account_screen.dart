@@ -1,6 +1,7 @@
 import 'package:delivery_app/src/core/image/app_images.dart';
 import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
+import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/logic/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,6 +17,25 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  String username = '';
+  String email = '';
+  String phone = "";
+
+  @override
+  void initState() {
+    getUserProfile();
+    super.initState();
+  }
+
+  getUserProfile() async {
+    username = (await SharedPrefUtils.getFirstName())! +
+        " " +
+        (await SharedPrefUtils.getLastName())!;
+    email = (await SharedPrefUtils.getUserEmail())!;
+    phone = (await SharedPrefUtils.getPhone())!;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -305,60 +325,62 @@ class _AccountScreenState extends State<AccountScreen> {
                     Container(
                       width: 130.w,
                       child: Text(
-                        'Aman Sharma',
+                        username,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: context.subTitleStyle,
                       ),
                     ),
-                    Card(
-                      elevation: 0.8,
-                      color: context.appColor.whiteColor,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5.w, vertical: 0),
-                        child: Row(
-                          children: [
-                            Text(
-                              '4.5 ',
-                              style: context.subTitleStyle,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: context.appColor.primarycolor,
-                            )
-                          ],
-                        ),
+                    // Card(
+                    //   elevation: 0.8,
+                    //   color: context.appColor.whiteColor,
+                    //   child: Padding(
+                    //     padding:
+                    //         EdgeInsets.symmetric(horizontal: 5.w, vertical: 0),
+                    //     child: Row(
+                    //       children: [
+                    //         Text(
+                    //           '4.5 ',
+                    //           style: context.subTitleStyle,
+                    //         ),
+                    //         Icon(
+                    //           Icons.star,
+                    //           color: context.appColor.primarycolor,
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // )
+                  ],
+                ),
+                if (phone.isNotEmpty)
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.call,
+                        color: context.appColor.secondaryColor,
                       ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.call,
-                      color: context.appColor.secondaryColor,
-                    ),
-                    Gap(5.h),
-                    Text(
-                      "+91 9999988888",
-                      style: context.subTitleTxtStyle,
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.email,
-                      color: context.appColor.secondaryColor,
-                    ),
-                    Gap(5.h),
-                    Text(
-                      "loremipsum@gmail.com",
-                      style: context.subTitleTxtStyle,
-                    ),
-                  ],
-                ),
+                      Gap(5.h),
+                      Text(
+                        phone,
+                        style: context.subTitleTxtStyle,
+                      ),
+                    ],
+                  ),
+                if (email.isNotEmpty)
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.email,
+                        color: context.appColor.secondaryColor,
+                      ),
+                      Gap(5.h),
+                      Text(
+                        email,
+                        style: context.subTitleTxtStyle,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
