@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:delivery_app/src/core/utiils_lib/custom_dio_exception.dart';
 import 'package:delivery_app/src/core/utiils_lib/response_type_def.dart';
 import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/data/order_OTP.dart';
 import 'package:delivery_app/src/data/status_response.dart';
+import 'package:delivery_app/src/data/upload_image.dart';
 import 'package:delivery_app/src/data/user_response.dart';
 import 'package:delivery_app/src/logic/services/orderSirvice.dart';
 import 'package:dio/dio.dart';
@@ -133,4 +136,31 @@ class OrderRepo {
       return left(error);
     }
   }
+
+
+
+    FutureResult<UploadImage> uploadImage(File imageFile) async {
+    try {
+      final response = await _orderService.uploadImage(imageFile);
+      UploadImage upload = uploadImageFromJson(response.toString());
+      return right(upload);
+    } on DioException catch (e) {
+      final error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
+    FutureResult<String> updateProfile(data) async {
+    try {
+      var response = await _orderService.updateProfile(data);
+
+      final String model = response.toString();
+      return right(model);
+    } on DioException catch (e) {
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
+
 }

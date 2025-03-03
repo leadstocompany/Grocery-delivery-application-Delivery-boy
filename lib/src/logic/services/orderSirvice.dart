@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:delivery_app/src/core/constant/api.dart';
 import 'package:delivery_app/src/core/network_services/api_services.dart';
+import 'package:dio/dio.dart';
 
 class OrderService extends ApiService {
   Future getOrder(data) async {
@@ -53,8 +55,20 @@ class OrderService extends ApiService {
   }
 
 
-
-
+  Future updateProfile(data) async {
+    var response =
+        await api.patch(APIURL.updateProfile, data: jsonEncode(data));
+    return response;
+  }
+  Future<Response> uploadImage(File imageFile,
+      {Map<String, dynamic>? additionalFields}) async {
+    const String url = APIURL.uploadImage;
+    return await api.uploadImage(
+      url,
+      imageFile,
+      additionalFields: additionalFields,
+    );
+  }
 
 
   

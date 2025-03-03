@@ -7,7 +7,7 @@ class APIURL {
   static const String login = "${BASE_URL}auth/login/vendor";
   static const String customerRegister = "${BASE_URL}auth/register/delivery";
   static const String customerLogOut = "${BASE_URL}auth/logout/delivery";
-  static const String myOrder = "${BASE_URL}delivery/delivery-details/me";
+  static const String myOrder = "${BASE_URL}delivery/delivery-details/me/";
   static const String getAssignedOtp =
       "${BASE_URL}delivery/delivery-partner-otp";
   static const String updateOTP = "${BASE_URL}delivery/verify-customer-otp";

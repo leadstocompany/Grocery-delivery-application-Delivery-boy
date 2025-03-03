@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:delivery_app/src/core/network_services/service_locator.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
+import 'package:delivery_app/src/core/utiils_lib/snack_bar.dart';
+import 'package:delivery_app/src/core/utiils_lib/string/app_string.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/logic/repo/order_repo.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +135,8 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<bool> updateOTP(
-      BuildContext context, String deliveryAssignmentId, String otpCode) async {
+      BuildContext context, String deliveryAssignmentId, String otpCode) async
+       {
     context.showLoader(show: true);
 
     var data = {
@@ -232,7 +237,6 @@ class OrderProvider with ChangeNotifier {
         },
         (response) {
           context.showLoader(show: false);
-          
 
           Fluttertoast.showToast(
             msg: "${response.message}",
@@ -361,6 +365,25 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
+
+
+  String _profile = '';
+  String get profile => _profile;
+  String _name = '';
+  String get name => _name;
+  String _email = '';
+  String get email => _email;
+
+  setValue() async 
+  {
+    _name = (await SharedPrefUtils.getFirstName())! +
+        " " +
+        (await SharedPrefUtils.getLastName())!;
+    _email = (await SharedPrefUtils.getUserEmail())!;
+    _profile = (await SharedPrefUtils.getUserProfile())!;
+    notifyListeners();
+  }
+
   Future<void> getMe() async {
     var data = {};
 
@@ -384,6 +407,14 @@ class OrderProvider with ChangeNotifier {
 
           if (response.firstName != null && response.lastName != null) {
             SharedPrefUtils.saveUser(user: response);
+
+            _profile = response.img ?? '';
+            _name = response.firstName + " " + response.lastName;
+            _email = response.email ?? "";
+
+            AppString.userName = response.firstName ?? "";
+            AppString.userLastName = response.lastName ?? "";
+            AppString.userProfile = response.img ?? "";
           }
 
           SharedPrefUtils.USER_NAME =
@@ -393,5 +424,84 @@ class OrderProvider with ChangeNotifier {
         },
       );
     } catch (e) {}
+  }
+
+  bool _isImageLoading = false;
+  bool get isImageLoading => _isImageLoading;
+  String _uploadedUrl = '';
+  Future<bool> uploadImage(BuildContext context, File? _selectedImage) async {
+    context.showLoader(show: true);
+    _isImageLoading = false;
+    final result = await _orderRepo.uploadImage(_selectedImage!);
+    context.showLoader(show: false);
+
+    return result.fold(
+      (error) {
+        _showSnackBar(context, error.message, Colors.red);
+        return false;
+      },
+      (uploadImage) {
+        _isImageLoading = true;
+        _uploadedUrl = uploadImage.data!.url.toString();
+        notifyListeners();
+
+        _showSnackBar(context, "Image uploaded successfully !", Colors.green);
+        return true;
+      },
+    );
+  }
+
+  Future<bool> updateProfile(
+      BuildContext context, String firstName, String lastName) async {
+    context.showLoader(show: true);
+
+    var data = {
+      "firstName": firstName,
+      "lastName": lastName,
+      "img": _uploadedUrl
+    };
+
+    try {
+      var result = await _orderRepo.updateProfile(data);
+
+      context.showLoader(show: false);
+
+      return result.fold(
+        (error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return false;
+        },
+        (response) {
+          getMe();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Profile updated"),
+              backgroundColor: Colors.green,
+            ),
+          );
+          return true;
+        },
+      );
+    } catch (e) {
+      context.showLoader(show: false);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Something went wrong. Please try again."),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return false;
+    }
+  }
+
+  void _showSnackBar(BuildContext context, String message, Color color) {
+    showTopSnackBar(context, message, color);
   }
 }

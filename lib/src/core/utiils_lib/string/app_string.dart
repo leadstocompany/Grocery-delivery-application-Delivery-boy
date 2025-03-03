@@ -121,56 +121,11 @@ class AppString {
   static const String seeYouSoon = 'See you soon';
   static const String sureToLogout = 'Are you sure you want to logout?';
   static const String logOut = 'Log Out';
-  static const String totalPointInfo =
-      """<h3><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome to ApeBuzz Reward Point Calculation System.</strong><strong><br /></strong><strong><br /></strong><span style="font-weight: 400;">Get reward points by performing different tasks &amp; get a Chance to be on our leaderboard.</span><strong><br /></strong><strong><br /></strong><strong>🔢 Total Reward Point Calculation:</strong></h3>
-  <ul>
-      <li style="font-weight: 400;"><strong>Daily Login:</strong></li>
-  <ul>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>Points:</strong><span style="font-weight: 400;"> 5, 10, 15, 20, ...</span></li>
-  <li style="font-weight: 400;"><strong>Rule:</strong><span style="font-weight: 400;"> Increases daily by 5 points for consecutive logins.</span></li>
-  <li style="font-weight: 400;"><strong>Reset:</strong><span style="font-weight: 400;"> Resets to 10 after a missed day.</span></li>
-  </ul>
-  <li style="font-weight: 400;"><strong>Send a Buzz:</strong></li>
-  <ul>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>Points:</strong><span style="font-weight: 400;"> 3</span></li>
-  <li style="font-weight: 400;"><strong>Rule:</strong><span style="font-weight: 400;"> Send a buzz and earn points!</span></li>
-  </ul>
-  <li style="font-weight: 400;"><strong>Receive a Buzz:</strong></li>
-  <ul>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>Points:</strong><span style="font-weight: 400;"> 5</span></li>
-  <li style="font-weight: 400;"><strong>Rule:</strong><span style="font-weight: 400;"> Get buzzed by someone and earn points!</span></li>
-  </ul>
-  <li style="font-weight: 400;"><strong>Provide App Feedback:</strong></li>
-  <ul>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>Points:</strong><span style="font-weight: 400;"> 50</span></li>
-  <li style="font-weight: 400;"><strong>Rule:</strong><span style="font-weight: 400;"> Valid once a month. Critical feedback must be actionable.</span></li>
-  </ul>
-  <li style="font-weight: 400;"><strong>Weekly Leaderboard:</strong></li>
-  <ul>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>1st Place:</strong><span style="font-weight: 400;"> 500 points</span></li>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>2nd Place:</strong><span style="font-weight: 400;"> 300 points</span></li>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>3rd Place:</strong><span style="font-weight: 400;"> 200 points</span></li>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>Top 10%</strong> <strong>Participants:</strong><span style="font-weight: 400;">&nbsp; 50 points</span></li>
-  </ul>
-  <li style="font-weight: 400;"><strong>Monthly Leaderboard:</strong></li>
-  <ul>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>1st Place:</strong><span style="font-weight: 400;"> 1000 points</span></li>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>2nd Place:</strong><span style="font-weight: 400;"> 750 points</span></li>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>3rd Place:</strong><span style="font-weight: 400;"> 500 points</span></li>
-  <li style="font-weight: 400;"><span style="font-weight: 400;">⭐ </span><strong>Top 10%</strong> <strong>Participants:</strong><span style="font-weight: 400;"> 100 points</span></li>
-  </ul>
-  </ul>
-  <p>&nbsp;</p>""";
 
-  // static const avtarList = [
-  //   AppImages.avatarBlue,
-  //   AppImages.avatarYellow,
-  //   AppImages.avatarPink,
-  //   AppImages.avatarPurple,
-  // ];
+   static String userName = "user_name";
+  static String userLastName = "user_name";
+  static String emailName = "user_email";
+  static String userProfile = "user_profile";
 
-  AppString._();
 }
 
-const CUSTOMER = "Customer";
-const BUSINESS = "Business";

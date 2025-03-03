@@ -41,6 +41,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
     orderProvider.getMyOrder(context);
     orderProvider.loadOnlineStatus();
+    orderProvider.setValue();
     selectedDate = DateTime.now();
     super.initState();
     initiateSocket();
@@ -49,8 +50,6 @@ class _OrderScreenState extends State<OrderScreen> {
 
   initiateSocket() async {
     String driverId = await SharedPrefUtils.getUserId();
-
-    print("userId  ${driverId}");
 
     socketService = SocketService(
       driverId,
@@ -62,21 +61,14 @@ class _OrderScreenState extends State<OrderScreen> {
         _showOrderPopup(data);
       },
     );
-
     socketService.connect();
   }
 
   late SocketService socketService;
   Map<String, dynamic>? orderData;
 
-  @override
-  void dispose() {
-    /// socketService.disconnect();
-    super.dispose();
-  }
-
   void _showOrderPopup(Map<String, dynamic> data) {
-    int remainingSeconds = 120; // 2 minutes
+    int remainingSeconds = 120;
     Timer? timer;
 
     showDialog(
@@ -154,7 +146,6 @@ class _OrderScreenState extends State<OrderScreen> {
         );
       },
     ).then((_) {
-      // Cancel the timer when the dialog is dismissed manually
       timer?.cancel();
     });
   }
@@ -513,43 +504,44 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                     18.sp)),
                                                     Row(
                                                       children: [
-                                                        // if (productlist
-                                                        //         .status !=
-                                                        //     "SHIPPED")
-                                                        RichText(
-                                                          text: TextSpan(
-                                                            text: "OTP : ",
-                                                            style: context
-                                                                .buttonTestStyle
-                                                                .copyWith(
-                                                              color: context
-                                                                  .appColor
-                                                                  .blackColor,
-                                                            ),
-                                                            children: [
-                                                              TextSpan(
-                                                                text: "GET OTP",
-                                                                style: context
-                                                                    .buttonTestStyle
-                                                                    .copyWith(
-                                                                  color: Colors
-                                                                      .blue,
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .underline,
-                                                                ),
-                                                                recognizer:
-                                                                    TapGestureRecognizer()
-                                                                      ..onTap =
-                                                                          () {
-                                                                        orderProvider.getAssignedOtp(
-                                                                            context,
-                                                                            orderitems.assignmentId);
-                                                                      },
+                                                        if (productlist
+                                                                .status !=
+                                                            "SHIPPED")
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              text: "OTP : ",
+                                                              style: context
+                                                                  .buttonTestStyle
+                                                                  .copyWith(
+                                                                color: context
+                                                                    .appColor
+                                                                    .blackColor,
                                                               ),
-                                                            ],
+                                                              children: [
+                                                                TextSpan(
+                                                                  text:
+                                                                      "GET OTP",
+                                                                  style: context
+                                                                      .buttonTestStyle
+                                                                      .copyWith(
+                                                                    color: Colors
+                                                                        .blue,
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                  ),
+                                                                  recognizer:
+                                                                      TapGestureRecognizer()
+                                                                        ..onTap =
+                                                                            () {
+                                                                          orderProvider.getAssignedOtp(
+                                                                              context,
+                                                                              orderitems.assignmentId);
+                                                                        },
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
                                                         Spacer(),
                                                         Container(
                                                           decoration:
@@ -975,134 +967,144 @@ class _OrderScreenState extends State<OrderScreen> {
     String otpCode = '';
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
-        return Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: context.appColor.greyColor400),
-            color: context.appColor.whiteColor,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.0),
-                topRight: Radius.circular(20.0)),
-          ),
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Centered App Logo
-              Center(
-                child: Image.asset(
-                  AppImages.applogo, // Replace with your logo path
-                  height: 100.h, // Adjust height as necessary
-                ),
+        return Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context)
+                  .viewInsets
+                  .bottom, // Adjusts for keyboard
+            ),
+            child: SingleChildScrollView(
+                child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: context.appColor.greyColor400),
+                color: context.appColor.whiteColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0)),
               ),
+              padding: EdgeInsets.all(20.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Centered App Logo
+                  Center(
+                    child: Image.asset(
+                      AppImages.applogo, // Replace with your logo path
+                      height: 100.h, // Adjust height as necessary
+                    ),
+                  ),
 
-              Align(
-                alignment: Alignment.center,
-                child: Text('Please Enter OTP', style: context.subTitleStyle),
-              ),
+                  Align(
+                    alignment: Alignment.center,
+                    child:
+                        Text('Please Enter OTP', style: context.subTitleStyle),
+                  ),
 
-              Gap(20.h),
-              Pinput(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                length: 6,
-                defaultPinTheme: PinTheme(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 5.h,
-                    horizontal: 8.w,
-                  ),
-                  decoration: BoxDecoration(
-                    color: context.appColor.whiteColor,
-                    borderRadius: BorderRadius.circular(4.r),
-                    border: Border.all(
-                        color: context.appColor.greyColor400, width: 1),
-                  ),
-                  textStyle:
-                      context.subTitleTextStyle.copyWith(fontSize: 20.sp),
-                ),
-                focusedPinTheme: PinTheme(
-                  decoration: BoxDecoration(
-                    color: context.appColor.greyColor100,
-                    borderRadius: BorderRadius.circular(4.r),
-                    border:
-                        Border.all(color: context.appColor.primary, width: 1),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 5.h,
-                    horizontal: 8.w,
-                  ),
-                  textStyle:
-                      context.subTitleTextStyle.copyWith(fontSize: 20.sp),
-                ),
-                onChanged: (value) {},
-                onCompleted: (value) async {
-                  otpCode = value;
-                  var status =
-                      await Provider.of<OrderProvider>(context, listen: false)
+                  Gap(20.h),
+                  Pinput(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                    length: 6,
+                    defaultPinTheme: PinTheme(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5.h,
+                        horizontal: 8.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: context.appColor.whiteColor,
+                        borderRadius: BorderRadius.circular(4.r),
+                        border: Border.all(
+                            color: context.appColor.greyColor400, width: 1),
+                      ),
+                      textStyle:
+                          context.subTitleTextStyle.copyWith(fontSize: 20.sp),
+                    ),
+                    focusedPinTheme: PinTheme(
+                      decoration: BoxDecoration(
+                        color: context.appColor.greyColor100,
+                        borderRadius: BorderRadius.circular(4.r),
+                        border: Border.all(
+                            color: context.appColor.primary, width: 1),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5.h,
+                        horizontal: 8.w,
+                      ),
+                      textStyle:
+                          context.subTitleTextStyle.copyWith(fontSize: 20.sp),
+                    ),
+                    onChanged: (value) {},
+                    onCompleted: (value) async {
+                      otpCode = value;
+                      var status = await Provider.of<OrderProvider>(context,
+                              listen: false)
                           .updateOTP(context, orderitems.assignmentId, value);
 
-                  if (status) {
-                    // Provider.of<OrderProvider>(context, listen: false).getMyOrder(context);
-                    Navigator.pop(context);
-                    ArtSweetAlert.show(
-                        context: context,
-                        artDialogArgs: ArtDialogArgs(
-                            type: ArtSweetAlertType.success,
-                            title: "Status Updateed",
-                            text: "Product delivered successfully"));
-                  } else {
-                    // ArtSweetAlert.show(
-                    //     context: context,
-                    //     artDialogArgs: ArtDialogArgs(
-                    //         type: ArtSweetAlertType.success,
-                    //         title: "OTP IN",
-                    //         text: ""));
-                  }
-                },
-              ),
-              Gap(50.h),
-
-              Center(
-                child: SizedBox(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ButtonElevated(
-                        text: 'Process Order',
-                        onPressed: () async {
-                          if (otpCode.length < 6) {
-                            Fluttertoast.showToast(
-                              msg: "Please enter volid otp",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 14.0,
-                            );
-                          } else {
-                            var status = await Provider.of<OrderProvider>(
-                                    context,
-                                    listen: false)
-                                .updateOTP(
-                                    context, orderitems.assignmentId, otpCode);
-
-                            if (status) {
-                              Navigator.pop(context);
-                              ArtSweetAlert.show(
-                                  context: context,
-                                  artDialogArgs: ArtDialogArgs(
-                                      type: ArtSweetAlertType.success,
-                                      title: "Status Updateed",
-                                      text: "Product delivered successfully"));
-                            } else {}
-                          }
-                        },
-                        backgroundColor: context.appColor.primarycolor),
+                      if (status) {
+                        // Provider.of<OrderProvider>(context, listen: false).getMyOrder(context);
+                        Navigator.pop(context);
+                        ArtSweetAlert.show(
+                            context: context,
+                            artDialogArgs: ArtDialogArgs(
+                                type: ArtSweetAlertType.success,
+                                title: "Status Updateed",
+                                text: "Product delivered successfully"));
+                      } else {
+                        // ArtSweetAlert.show(
+                        //     context: context,
+                        //     artDialogArgs: ArtDialogArgs(
+                        //         type: ArtSweetAlertType.success,
+                        //         title: "OTP IN",
+                        //         text: ""));
+                      }
+                    },
                   ),
-                ),
+                  Gap(50.h),
+
+                  Center(
+                    child: SizedBox(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ButtonElevated(
+                            text: 'Process Order',
+                            onPressed: () async {
+                              if (otpCode.length < 6) {
+                                Fluttertoast.showToast(
+                                  msg: "Please enter volid otp",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 14.0,
+                                );
+                              } else {
+                                var status = await Provider.of<OrderProvider>(
+                                        context,
+                                        listen: false)
+                                    .updateOTP(context, orderitems.assignmentId,
+                                        otpCode);
+
+                                if (status) {
+                                  Navigator.pop(context);
+                                  ArtSweetAlert.show(
+                                      context: context,
+                                      artDialogArgs: ArtDialogArgs(
+                                          type: ArtSweetAlertType.success,
+                                          title: "Status Updateed",
+                                          text:
+                                              "Product delivered successfully"));
+                                } else {}
+                              }
+                            },
+                            backgroundColor: context.appColor.primarycolor),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
+            )));
       },
     );
   }
@@ -1293,6 +1295,8 @@ class _OrderScreenState extends State<OrderScreen> {
           //   ),
           // ),
           Gap(10.h),
+          // if (
+          //     orderitems.status != "DELIVERED")
           SizedBox(
             width: double.infinity,
             height: 40,

@@ -3,6 +3,7 @@ import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/logic/provider/auth_provider.dart';
+import 'package:delivery_app/src/logic/provider/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +21,7 @@ class _AccountScreenState extends State<AccountScreen> {
   String username = '';
   String email = '';
   String phone = "";
+  String profiles = "";
 
   @override
   void initState() {
@@ -33,6 +35,8 @@ class _AccountScreenState extends State<AccountScreen> {
         (await SharedPrefUtils.getLastName())!;
     email = (await SharedPrefUtils.getUserEmail())!;
     phone = (await SharedPrefUtils.getPhone())!;
+    profiles = (await SharedPrefUtils.getUserProfile())!;
+
     setState(() {});
   }
 
@@ -288,104 +292,88 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Widget profile() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Row(
-        children: [
-          InkWell(
-            onTap: () {},
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(25),
-              child: Image.network(
-                "",
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    AppImages.Avatar,
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                  );
-                },
+    return Consumer<OrderProvider>(builder: (context, imageProvider, child) {
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        child: Row(
+          children: [
+            InkWell(
+              onTap: () {},
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: Image.network(
+                  imageProvider.profile ?? '',
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      AppImages.Avatar,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset(AppImages.user),
-                    Gap(5.h),
-                    Container(
-                      width: 130.w,
-                      child: Text(
-                        username,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.subTitleStyle,
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SvgPicture.asset(AppImages.user),
+                      Gap(5.h),
+                      Container(
+                        width: 130.w,
+                        child: Text(
+                          imageProvider.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.subTitleStyle,
+                        ),
                       ),
+                    ],
+                  ),
+                  if (imageProvider.profile.isNotEmpty)
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.call,
+                          color: context.appColor.secondaryColor,
+                        ),
+                        Gap(5.h),
+                        Text(
+                          phone,
+                          style: context.subTitleTxtStyle,
+                        ),
+                      ],
                     ),
-                    // Card(
-                    //   elevation: 0.8,
-                    //   color: context.appColor.whiteColor,
-                    //   child: Padding(
-                    //     padding:
-                    //         EdgeInsets.symmetric(horizontal: 5.w, vertical: 0),
-                    //     child: Row(
-                    //       children: [
-                    //         Text(
-                    //           '4.5 ',
-                    //           style: context.subTitleStyle,
-                    //         ),
-                    //         Icon(
-                    //           Icons.star,
-                    //           color: context.appColor.primarycolor,
-                    //         )
-                    //       ],
-                    //     ),
-                    //   ),
-                    // )
-                  ],
-                ),
-                if (phone.isNotEmpty)
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.call,
-                        color: context.appColor.secondaryColor,
-                      ),
-                      Gap(5.h),
-                      Text(
-                        phone,
-                        style: context.subTitleTxtStyle,
-                      ),
-                    ],
-                  ),
-                if (email.isNotEmpty)
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.email,
-                        color: context.appColor.secondaryColor,
-                      ),
-                      Gap(5.h),
-                      Text(
-                        email,
-                        style: context.subTitleTxtStyle,
-                      ),
-                    ],
-                  ),
-              ],
+                  if (imageProvider.email.isNotEmpty)
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.email,
+                          color: context.appColor.secondaryColor,
+                        ),
+                        Gap(5.h),
+                        Container(
+                            width: 200.w,
+                            child: Text(
+                              imageProvider.email,
+                              style: context.subTitleTxtStyle,
+                            )),
+                      ],
+                    ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }

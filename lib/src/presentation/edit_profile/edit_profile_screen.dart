@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
+import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
+import 'package:delivery_app/src/logic/provider/order_provider.dart';
 import 'package:delivery_app/src/logic/provider/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -34,14 +36,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   getUserDetails() async {
-    // firstController.text = APPSTRING.userName;
-    // lastController.text = APPSTRING.userLastName;
-    // profile = APPSTRING.userProfile;
+    firstController.text = (await SharedPrefUtils.getFirstName())!;
+    lastController.text = (await SharedPrefUtils.getLastName())!;
+    profile = (await SharedPrefUtils.getUserProfile())!;
+    setState(() {});
 
     print("jshdgjkdhfg  ${profile}");
   }
 
-  /// Pick image from gallery or camera
+  // Pick image from gallery or camera
+
   Future<void> _pickImage() async {
     final XFile? pickedFile =
         await _picker.pickImage(source: ImageSource.gallery);
@@ -52,8 +56,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _image = File(pickedFile.path);
       });
 
-      // Provider.of<ProfileProvider>(context, listen: false)
-      //     .uploadImage(context, _image);
+      Provider.of<OrderProvider>(context, listen: false)
+          .uploadImage(context, _image);
 
       await _saveProfileImage(pickedFile.path);
     }
@@ -95,7 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
       bottomNavigationBar:
-          Consumer<ProfileProvider>(builder: (context, imageProvider, child) {
+          Consumer<OrderProvider>(builder: (context, imageProvider, child) {
         return Container(
           color: Colors.transparent,
           height: 60,
@@ -108,35 +112,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap:
-                        // imageProvider.isImageLoading
-                        //     ?
+                    onTap: imageProvider.isImageLoading
+                        ? () async {
+                            var status = await imageProvider.updateProfile(
+                                context,
+                                firstController.text,
+                                lastController.text);
 
-                        () async {
-                      // var status = await imageProvider.updateProfile(
-                      //     context,
-                      //     firstController.text,
-                      //     lastController.text);
-
-                      // if (status) {
-                      //   print('dksfjghdkfgh');
-
-                      //   Navigator.pop(context);
-                      // }
-                    },
-                    //  : null,
+                            if (status) {
+                              Navigator.pop(context);
+                            }
+                          }
+                        : null,
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
-                          color: Colors.greenAccent,
+                          color: Colors.red,
                           // color: imageProvider.isImageLoading
                           //     ? APPCOLOR.lightGreen
                           //     : APPCOLOR.grey666666,
                           borderRadius: BorderRadius.circular(10)),
                       child: Center(
                         child: Text(
-                          "Update",
-                          // style: context.customRegular(Colors.white, 16),
+                          "Update Profile",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
@@ -163,14 +162,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.grey,
-                      backgroundImage: _image != null
-                          ? FileImage(_image!)
-                          : (profile != null && profile!.isNotEmpty
-                              ? NetworkImage(profile!)
-                              : const AssetImage("assets/default_profile.png")),
+                    InkWell(
+                      onTap: () {
+                        _pickImage();
+                      },
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.grey,
+                        backgroundImage: _image != null
+                            ? FileImage(_image!)
+                            : (profile != null && profile!.isNotEmpty
+                                ? NetworkImage(profile!)
+                                : const AssetImage(
+                                    "assets/images/profile.png")),
+                      ),
                     ),
                     Positioned(
                         bottom: 0,

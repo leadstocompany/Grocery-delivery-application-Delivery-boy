@@ -218,7 +218,7 @@ class SocketService with WidgetsBindingObserver {
   }
 
   void showNotification(Map<String, dynamic> data) async {
-    if (!_isAppInBackground()) return; // Prevent notification if app is open
+    if (!_isAppInBackground()) return;
 
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
@@ -226,6 +226,9 @@ class SocketService with WidgetsBindingObserver {
       'Timer Updates',
       importance: Importance.high,
       priority: Priority.high,
+      // sound: RawResourceAndroidNotificationSound(
+      //     'notification_sound'),
+      playSound: true,
     );
 
     const NotificationDetails details =
@@ -234,11 +237,19 @@ class SocketService with WidgetsBindingObserver {
     await flutterLocalNotificationsPlugin.show(
       0,
       "New Order Assigned",
-      "Tap to view the timer",
+      "You have a new order request. Tap to view details and take action.",
       details,
       payload: jsonEncode(data),
     );
 
     FlutterRingtonePlayer.playNotification();
+
+    // FlutterRingtonePlayer.play(
+    //   android: AndroidSounds.notification, // Default notification sound
+    //   ios: IosSounds.glass,
+    //   looping: false,
+    //   volume: 1.0,
+    //   asAlarm: false,
+    // );
   }
 }
