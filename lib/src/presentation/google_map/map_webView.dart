@@ -1,40 +1,97 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_svg/svg.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+// import 'package:flutter_svg/svg.dart';
 
-class MapWebView extends StatefulWidget {
+// class MapWebView extends StatefulWidget {
+//   final String origin; // Current location (lat,lng)
+//   final String destination; // Destination location (lat,lng)
+
+//   MapWebView({required this.origin, required this.destination});
+
+//   @override
+//   _MapWebViewState createState() => _MapWebViewState();
+// }
+
+// class _MapWebViewState extends State<MapWebView> {
+//   InAppWebViewController? webViewController;
+//   bool _isLoading = true;
+
+//   @override
+//   Widget build(BuildContext context) {
+
+//     String googleMapsUrl = "https://www.google.com/maps/dir/?api=1&origin=${widget.origin}&destination=${widget.destination}&travelmode=driving";
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Colors.white,
+//         centerTitle: true,
+//         leading: Center(
+//           child: SizedBox(
+//             height: 20,
+//             width: 20,
+//             child: InkWell(
+//                 onTap: () {
+//                   Navigator.of(context).pop();
+//                 },
+//                 child: Icon(Icons.arrow_back_ios_new)),
+//           ),
+//         ),
+//         title: const Text(
+//           "Navigate to Destination",
+//           style: TextStyle(
+//             fontSize: 20,
+//             fontWeight: FontWeight.w700,
+//           ),
+//         ),
+//       ),
+//       body: Stack(
+//         children: [
+//           InAppWebView(
+//             initialUrlRequest:
+//                 URLRequest(url: WebUri.uri(Uri.parse(googleMapsUrl))),
+//             onWebViewCreated: (controller) {
+//               webViewController = controller;
+//             },
+//             onLoadStop: (controller, url) {
+//               setState(() {
+//                 _isLoading = false;
+//               });
+//             },
+//           ),
+//           // Loader Overlay
+//           if (_isLoading)
+//             const Center(
+//               child: CircularProgressIndicator(
+//                 color: Colors.green,
+//               ),
+//             ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class MapWebView extends StatelessWidget {
   final String origin; // Current location (lat,lng)
   final String destination; // Destination location (lat,lng)
 
   MapWebView({required this.origin, required this.destination});
 
   @override
-  _MapWebViewState createState() => _MapWebViewState();
-}
-
-class _MapWebViewState extends State<MapWebView> {
-  InAppWebViewController? webViewController;
-  bool _isLoading = true;
-
-  @override
   Widget build(BuildContext context) {
     String googleMapsUrl =
-        "https://www.google.com/maps/dir/?api=1&origin=${widget.origin}&destination=${widget.destination}&travelmode=driving";
+        "https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=driving";
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        leading: Center(
-          child: SizedBox(
-            height: 20,
-            width: 20,
-            child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Icon(Icons.arrow_back_ios_new)),
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
           "Navigate to Destination",
@@ -44,28 +101,28 @@ class _MapWebViewState extends State<MapWebView> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          InAppWebView(
-            initialUrlRequest:
-                URLRequest(url: WebUri.uri(Uri.parse(googleMapsUrl))),
-            onWebViewCreated: (controller) {
-              webViewController = controller;
-            },
-            onLoadStop: (controller, url) {
-              setState(() {
-                _isLoading = false;
-              });
-            },
+      body: Center(
+        child: ElevatedButton.icon(
+          onPressed: () async
+          
+           {
+            final Uri url = Uri.parse(googleMapsUrl);
+            if (await canLaunchUrl(url)) 
+            {
+              await launchUrl(url, mode: LaunchMode.externalApplication);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Could not launch Google Maps")),
+              );
+            }
+          },
+          icon: Icon(Icons.map),
+          label: Text("Open Google Maps"),
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            textStyle: TextStyle(fontSize: 18),
           ),
-          // Loader Overlay
-          if (_isLoading)
-            const Center(
-              child: CircularProgressIndicator(
-                color: Colors.green,
-              ),
-            ),
-        ],
+        ),
       ),
     );
   }

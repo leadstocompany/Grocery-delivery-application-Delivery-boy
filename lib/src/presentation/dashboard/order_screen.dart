@@ -22,7 +22,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +47,7 @@ class _OrderScreenState extends State<OrderScreen> {
     selectedDate = DateTime.now();
     super.initState();
     initiateSocket();
+    _determinePosition();
     //
   }
 
@@ -191,6 +194,31 @@ class _OrderScreenState extends State<OrderScreen> {
     setState(() {
       Provider.of<OrderProvider>(context, listen: false).getMyOrder(context);
     });
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw Exception("Location services are disabled.");
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception("Location permission denied.");
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception(
+          "Location permissions are permanently denied. Enable them in settings.");
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 
   @override
@@ -422,21 +450,32 @@ class _OrderScreenState extends State<OrderScreen> {
                                             ),
                                             Gap(20.w),
                                             InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MapWebView(
-                                                      origin:
-                                                          "28.7041,77.1025", // Example: New Delhi
-                                                      destination:
-                                                          "27.1751,78.0421", // Example: Taj Mahal
-                                                    ),
-                                                  ),
-                                                );
-                                                // context
-                                                //     .push(MyRoutes.GOOGLEMAP);
+                                              onTap: () async {
+                                                Position position =
+                                                    await _determinePosition();
+                                                String origin =
+                                                    "${position.latitude},${position.longitude}";
+                                                String destination =
+                                                    "${orderitems.customerDetails!.deliveryAddress!.latitude},${orderitems.customerDetails!.deliveryAddress!.longitude}";
+
+                                                print(
+                                                    "lkjgdlkfdgjklh  $origin   $destination  ");
+
+                                                openGoogleMaps(
+                                                    origin, destination);
+
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) =>
+                                                //         MapWebView(
+                                                //       origin:
+                                                //           "28.7041,77.1025", // Example: New Delhi
+                                                //       destination:
+                                                //           "27.1751,78.0421", // Example: Taj Mahal
+                                                //     ),
+                                                //   ),
+                                                // );
                                               },
                                               child: Container(
                                                   child: SvgPicture.asset(
@@ -590,23 +629,38 @@ class _OrderScreenState extends State<OrderScreen> {
                                                         ),
                                                         Gap(20.w),
                                                         InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        MapWebView(
-                                                                  origin:
-                                                                      "28.7041,77.1025", // Example: New Delhi
-                                                                  destination:
-                                                                      "27.1751,78.0421", // Example: Taj Mahal
-                                                                ),
-                                                              ),
-                                                            );
+                                                          onTap: () async {
+                                                            Position position =
+                                                                await _determinePosition();
+                                                            String origin =
+                                                                "${position.latitude},${position.longitude}";
+                                                            String destination =
+                                                                "${productlist.vendor!.vendorAddress!.latitude},${productlist.vendor!.vendorAddress!.longitude}";
+
+                                                            print(
+                                                                "lkjgdlkfdgjklh  $origin   $destination  ");
+
+                                                            openGoogleMaps(
+                                                                origin,
+                                                                destination);
+
+                                                            // Navigator.push(
+                                                            //   context,
+                                                            //   MaterialPageRoute(
+                                                            //     builder:
+                                                            //         (context) =>
+                                                            //             MapWebView(
+                                                            //       origin:
+                                                            //           "28.7041,77.1025", // Example: New Delhi
+                                                            //       destination:
+                                                            //           "27.1751,78.0421", // Example: Taj Mahal
+                                                            //     ),
+                                                            //   ),
+                                                            // );
                                                             // context.push(
                                                             //     MyRoutes
                                                             //         .GOOGLEMAP);
+                                                        
                                                           },
                                                           child: Container(
                                                               child: SvgPicture
@@ -1119,6 +1173,18 @@ class _OrderScreenState extends State<OrderScreen> {
       }
     } catch (e) {
       print("Error launching phone call: $e");
+    }
+  }
+
+  void openGoogleMaps(String origin, String destination) async {
+    String googleMapsUrl =
+        "https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=driving";
+
+    final Uri uri = Uri.parse(googleMapsUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      print("Could not launch $googleMapsUrl");
     }
   }
 

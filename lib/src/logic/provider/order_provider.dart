@@ -265,7 +265,7 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<bool> acceptAssign(BuildContext context, String assignmentId) async {
-    context.showLoader(show: true);
+   // context.showLoader(show: true);
 
     var data = {"assignmentId": assignmentId};
     try {
@@ -273,7 +273,7 @@ class OrderProvider with ChangeNotifier {
 
       return result.fold(
         (error) {
-          context.showLoader(show: false);
+         // context.showLoader(show: false);
           Fluttertoast.showToast(
             msg: "Something went wrong",
             toastLength: Toast.LENGTH_SHORT,
@@ -285,7 +285,7 @@ class OrderProvider with ChangeNotifier {
           return false;
         },
         (response) {
-          context.showLoader(show: false);
+         // context.showLoader(show: false);
           getMyOrder(context);
 
           Fluttertoast.showToast(
@@ -315,7 +315,7 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<bool> declineAssign(BuildContext context, String assignmentId) async {
-    context.showLoader(show: true);
+   // context.showLoader(show: true);
 
     var data = {
       "assignmentId": assignmentId,
@@ -326,7 +326,7 @@ class OrderProvider with ChangeNotifier {
 
       return result.fold(
         (error) {
-          context.showLoader(show: false);
+        //  context.showLoader(show: false);
           Fluttertoast.showToast(
             msg: "Something went wrong",
             toastLength: Toast.LENGTH_SHORT,
@@ -338,7 +338,7 @@ class OrderProvider with ChangeNotifier {
           return false;
         },
         (response) {
-          context.showLoader(show: false);
+        //  context.showLoader(show: false);
           Fluttertoast.showToast(
             msg: "Order declined successfully",
             toastLength: Toast.LENGTH_SHORT,

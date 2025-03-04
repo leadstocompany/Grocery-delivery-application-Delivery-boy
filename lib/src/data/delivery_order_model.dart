@@ -708,6 +708,9 @@ class Address {
   bool? isDeliverable;
   bool? isDefault;
   dynamic additionalInstructions;
+  dynamic latitude;
+  dynamic longitude;
+
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -727,6 +730,8 @@ class Address {
     this.isDeliverable,
     this.isDefault,
     this.additionalInstructions,
+    this.latitude,
+    this.longitude,
     this.createdAt,
     this.updatedAt,
   });
@@ -747,6 +752,8 @@ class Address {
         isDeliverable: json["isDeliverable"],
         isDefault: json["isDefault"],
         additionalInstructions: json["additionalInstructions"],
+        latitude: json["latitude"],
+        longitude: json["longitude"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
       );
@@ -767,6 +774,8 @@ class Address {
         "isDeliverable": isDeliverable,
         "isDefault": isDefault,
         "additionalInstructions": additionalInstructions,
+        "latitude": latitude,
+        "longitude": longitude,
         "createdAt": createdAt,
         "updatedAt": updatedAt,
       };
@@ -887,14 +896,14 @@ class OrderDetails {
 
 class OrderItem {
   Product? product;
-   Vendor? vendor;
+  Vendor? vendor;
   int? quantity;
   dynamic totalPrice;
   dynamic status;
 
   OrderItem({
     this.product,
-      this.vendor,
+    this.vendor,
     this.quantity,
     this.totalPrice,
     this.status,
@@ -902,7 +911,7 @@ class OrderItem {
 
   factory OrderItem.fromJson(Map<dynamic, dynamic> json) => OrderItem(
         product: Product.fromJson(json["product"]),
-            vendor: Vendor.fromJson(json["vendor"]),
+        vendor: Vendor.fromJson(json["vendor"]),
         quantity: json["quantity"],
         totalPrice: json["totalPrice"],
         status: json["status"],
@@ -910,7 +919,7 @@ class OrderItem {
 
   Map<dynamic, dynamic> toJson() => {
         "product": product!.toJson(),
-          "vendor": vendor!.toJson(),
+        "vendor": vendor!.toJson(),
         "quantity": quantity,
         "totalPrice": totalPrice,
         "status": status,
@@ -923,12 +932,12 @@ class Product {
   List<dynamic>? images;
   List<Highlight>? highlights;
   // dynamic brand;
-   dynamic price;
+  dynamic price;
   // dynamic discountPrice;
   // dynamic manufacturer;
   // DateTime? expiryDate;
   // dynamic careDetails;
-   Store? store;
+  Store? store;
   // Category? category;
   // dynamic productType;
   // dynamic timeSlot;
@@ -943,12 +952,12 @@ class Product {
     this.images,
     this.highlights,
     // this.brand,
-     this.price,
+    this.price,
     // this.discountPrice,
     // this.manufacturer,
     // this.expiryDate,
     // this.careDetails,
-     this.store,
+    this.store,
     // this.category,
     // this.productType,
     // this.timeSlot,
@@ -965,12 +974,12 @@ class Product {
         highlights: List<Highlight>.from(
             json["highlights"].map((x) => Highlight.fromJson(x))),
         // brand: json["brand"],
-         price: json["price"],
+        price: json["price"],
         // discountPrice: json["discountPrice"],
         // manufacturer: json["manufacturer"],
         // expiryDate: DateTime.parse(json["expiryDate"]),
         // careDetails: json["careDetails"],
-         store: Store.fromJson(json["store"]),
+        store: Store.fromJson(json["store"]),
         // category: Category.fromJson(json["category"]),
         // productType: json["productType"],
         // timeSlot: json["timeSlot"],
@@ -988,12 +997,12 @@ class Product {
         "images": List<dynamic>.from(images!.map((x) => x)),
         "highlights": List<dynamic>.from(highlights!.map((x) => x.toJson())),
         // "brand": brand,
-         "price": price,
+        "price": price,
         // "discountPrice": discountPrice,
         // "manufacturer": manufacturer,
         // "expiryDate": expiryDate,
         // "careDetails": careDetails,
-         "store": store!.toJson(),
+        "store": store!.toJson(),
         // "category": category!.toJson(),
         // "productType": productType,
         // "timeSlot": timeSlot,
@@ -1103,7 +1112,7 @@ class Vendor {
   dynamic storeAddress;
   dynamic storePhone;
   dynamic gstNumber;
-  // Address? vendorAddress;
+   Address? vendorAddress;
 
   Vendor({
     this.storeName,
@@ -1112,7 +1121,7 @@ class Vendor {
     this.storeAddress,
     this.storePhone,
     this.gstNumber,
-    // this.vendorAddress,
+     this.vendorAddress,
   });
 
   factory Vendor.fromJson(Map<dynamic, dynamic> json) => Vendor(
@@ -1122,7 +1131,7 @@ class Vendor {
         storeAddress: json["storeAddress"],
         storePhone: json["storePhone"],
         gstNumber: json["gstNumber"],
-        //  vendorAddress: Address.fromJson(json["vendorAddress"]),
+          vendorAddress: Address.fromJson(json["vendorAddress"]),
       );
 
   Map<dynamic, dynamic> toJson() => {
@@ -1132,7 +1141,7 @@ class Vendor {
         "storeAddress": storeAddress,
         "storePhone": storePhone,
         "gstNumber": gstNumber,
-        // "vendorAddress": vendorAddress!.toJson(),
+         "vendorAddress": vendorAddress!.toJson(),
       };
 }
 

@@ -9,37 +9,32 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("💬 Background Message Received: ${message.notification?.title}");
 }
 
-void main() {
+Future<void> main() async {
+   WidgetsFlutterBinding.ensureInitialized(); 
   ServiceLocator.setup();
-  requestNotificationPermission();
+await requestNotificationPermission();
   runApp(const MyApplication());
 }
 
-// void requestNotificationPermission() async {
-//   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//       FlutterLocalNotificationsPlugin();
 
-//   final bool? granted = await flutterLocalNotificationsPlugin
-//       .resolvePlatformSpecificImplementation<
-//           AndroidFlutterLocalNotificationsPlugin>()!
-//       .requestNotificationsPermission(); // ✅ Correct method
 
-//   if (granted != null && granted) {
-//     print("✅ Notification permission granted");
-//   } else {
-//     print("❌ Notification permission denied");
-//   }
-// }
-void requestNotificationPermission() async {
-  if (await Permission.notification.isDenied) {
-    PermissionStatus status = await Permission.notification.request();
-    if (status.isGranted) {
-      print("✅ Notification permission granted");
-    } else {
-      print("❌ Notification permission denied");
-    }
+
+Future<void> requestNotificationPermission() async {
+  PermissionStatus status = await Permission.notification.status;
+
+  if (status.isDenied || status.isPermanentlyDenied) {
+    status = await Permission.notification.request();
+  }
+
+  if (status.isGranted) {
+    print("✅ Notification permission granted");
+  } else if (status.isPermanentlyDenied) {
+    print("⚠️ Notification permission permanently denied. Open settings.");
+    openAppSettings();
   } else {
-    print("🔔 Notification permission already granted");
+    print("❌ Notification permission denied.");
   }
 }
+
+
 

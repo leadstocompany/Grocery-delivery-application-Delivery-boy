@@ -179,7 +179,7 @@ class SocketService with WidgetsBindingObserver {
 
   void connect() {
     socket = IO.io(
-      'http://210.89.44.183:3333',
+      'https://grocery.frontshopemporium.com',
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .setQuery({'driverId': driverId})
@@ -191,9 +191,9 @@ class SocketService with WidgetsBindingObserver {
       print('✅ Connected to WebSocket');
     });
 
-    socket.onDisconnect((_) {
-      print('❌ Disconnected from WebSocket');
-    });
+    // socket.onDisconnect((_) {
+    //   print('❌ Disconnected from WebSocket');
+    // });
 
     socket.on('timerUpdate', (data) {
       print('🕒 Timer Update: $data');
@@ -201,9 +201,14 @@ class SocketService with WidgetsBindingObserver {
         if (_isAppInBackground()) {
           showNotification(data);
         } else {
-          onTimerUpdate(data); // Directly update UI
+          onTimerUpdate(data);
         }
       }
+    });
+
+    // Listen for 'assignmentAccepted' event
+    socket.on('assignmentAccepted', (data) {
+      print('✅ Assignment Accepted: $data');
     });
 
     socket.connect();
@@ -227,7 +232,7 @@ class SocketService with WidgetsBindingObserver {
       importance: Importance.high,
       priority: Priority.high,
       // sound: RawResourceAndroidNotificationSound(
-      //     'notification_sound'),
+      //'notification_sound'),
       playSound: true,
     );
 
