@@ -54,4 +54,6 @@ class APIURL {
 
   static const String deleteProduct = "${BASE_URL}products/";
   static const String updateProduct = "${BASE_URL}products/";
+
+  static const String getWallet = "${BASE_URL}wallet/driver";
 }

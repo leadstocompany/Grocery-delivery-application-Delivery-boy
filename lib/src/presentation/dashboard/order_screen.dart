@@ -30,6 +30,10 @@ import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 class OrderScreen extends StatefulWidget {
   @override
   State<OrderScreen> createState() => _OrderScreenState();
@@ -41,7 +45,7 @@ class _OrderScreenState extends State<OrderScreen> {
   void initState() {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
 
-    orderProvider.getMyOrder(context);
+    orderProvider.getMyOrder(context, "");
     orderProvider.loadOnlineStatus();
     orderProvider.setValue();
     selectedDate = DateTime.now();
@@ -60,8 +64,9 @@ class _OrderScreenState extends State<OrderScreen> {
         setState(() {
           orderData = data;
         });
+        print("fjkxhgkkjfdghkgjfdh $data ");
 
-        _showOrderPopup(data);
+        _showOrderPopup(context, data);
       },
     );
     socketService.connect();
@@ -70,9 +75,199 @@ class _OrderScreenState extends State<OrderScreen> {
   late SocketService socketService;
   Map<String, dynamic>? orderData;
 
-  void _showOrderPopup(Map<String, dynamic> data) {
-    int remainingSeconds = 120;
+  // void _showOrderPopup(Map<String, dynamic> data) {
+  //   int remainingSeconds = 120;
+  //   Timer? timer;
+
+  //   showDialog(
+  //     barrierDismissible: false,
+  //     context: context,
+  //     builder: (context) {
+  //       return StatefulBuilder(
+  //         builder: (context, setState) {
+  //           if (timer == null) {
+  //             timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //               if (remainingSeconds > 0) {
+  //                 setState(() => remainingSeconds--);
+  //               } else {
+  //                 timer.cancel();
+  //                 Navigator.pop(context);
+  //               }
+  //             });
+  //           }
+
+  //           return AlertDialog(
+  //             title: Center(child: Text("Assign New Order ")), // Centered title
+  //             content: Column(
+  //               mainAxisSize: MainAxisSize.min, // Prevent excessive height
+  //               children: [
+  //                 Text("Time remaining: ${remainingSeconds}S",
+  //                     style: TextStyle(
+  //                         fontSize: 16,
+  //                         fontWeight: FontWeight.bold,
+  //                         color: Colors.red)),
+
+  //                 // Text('Order ID: ${data['assignmentId']}'),
+  //                 // Text(
+  //                 //     'Expires At: ${DateTime.fromMillisecondsSinceEpoch(data['expiresAt'])}'),
+  //               ],
+  //             ),
+  //             actions: [
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 children: [
+  //                   TextButton(
+  //                     onPressed: () {
+  //                       timer?.cancel();
+
+  //                       // if (!mounted) return;
+
+  //                       print(
+  //                           "Accepting order with ID: ${data['assignmentId']}");
+
+  //                       Provider.of<OrderProvider>(context, listen: false)
+  //                           .acceptAssign(context, data['assignmentId']);
+
+  //                       Navigator.pop(context);
+  //                     },
+  //                     child: Text("Accept"),
+  //                   ),
+  //                   TextButton(
+  //                     onPressed: () {
+  //                       timer?.cancel();
+
+  //                       print(
+  //                           "Accepting order with ID: ${data['assignmentId']}");
+
+  //                       Provider.of<OrderProvider>(context, listen: false)
+  //                           .declineAssign(context, data['assignmentId']);
+
+  //                       Navigator.pop(context);
+  //                     },
+  //                     child: Text("Reject"),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     },
+  //   ).then((_) {
+  //     timer?.cancel();
+  //   });
+  // }
+
+//   void _showOrderPopup(BuildContext context, Map<String, dynamic> data) {
+//     int remainingSeconds = 120;
+//     Timer? timer;
+
+//     showDialog(
+//       barrierDismissible: false,
+//       context: context,
+//       builder: (context) {
+//         return StatefulBuilder(
+//           builder: (context, setState) {
+//             if (timer == null) {
+//               timer = Timer.periodic(Duration(seconds: 1), (timer) {
+//                 if (remainingSeconds > 0) {
+//                   setState(() => remainingSeconds--);
+//                 } else {
+//                   timer.cancel();
+//                   Navigator.pop(context);
+//                 }
+//               });
+//             }
+
+//             return AlertDialog(
+//               title: Center(child: Text("Assign New Order")),
+//               content: Column(
+//                 mainAxisSize: MainAxisSize.min,
+//                 children:
+//                  [
+
+//                   TweenAnimationBuilder(
+//                     tween:
+//                         Tween<double>(begin: 1.0, end: remainingSeconds / 120),
+//                     duration: Duration(seconds: 1),
+//                     builder: (context, value, child) {
+//                       return Stack(
+//                         alignment: Alignment.center,
+//                         children: [
+//                           SizedBox(
+//                             width: 60,
+//                             height: 60,
+//                             child: CircularProgressIndicator(
+//                               value: remainingSeconds / 120,
+//                               strokeWidth: 6,
+//                               color: Colors.green,
+//                               backgroundColor: Colors.grey.shade300,
+//                             ),
+//                           ),
+//                           Text(
+//                             "$remainingSeconds S",
+//                             style: TextStyle(
+//                                 fontSize: 18,
+//                                 fontWeight: FontWeight.bold,
+//                                 color: Colors.red),
+//                           ),
+//                         ],
+//                       );
+//                     },
+//                   ),
+//                 ],
+//               ),
+//               actions: [
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                   children: [
+//                     TextButton(
+//                       onPressed: () {
+//                         timer?.cancel();
+//                         print(
+//                             "Accepting order with ID: ${data['assignmentId']}");
+//                         Provider.of<OrderProvider>(context, listen: false)
+//                             .acceptAssign(context, data['assignmentId']);
+//                         Navigator.pop(context);
+//                       },
+//                       child: Text("Accept"),
+//                     ),
+//                     TextButton(
+//                       onPressed: () {
+//                         timer?.cancel();
+//                         print(
+//                             "Rejecting order with ID: ${data['assignmentId']}");
+//                         Provider.of<OrderProvider>(context, listen: false)
+//                             .declineAssign(context, data['assignmentId']);
+//                         Navigator.pop(context);
+//                       },
+//                       child: Text("Reject"),
+//                     ),
+//                   ],
+//                 ),
+//               ],
+//             );
+//           },
+//         );
+//       },
+//     ).then((_) {
+//       timer?.cancel();
+//     });
+//   }
+
+// import 'dart:async';
+// import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
+
+  void _showOrderPopup(BuildContext context, Map<String, dynamic> data) {
+    int remainingSeconds = 120; // Start from 2 minutes (120 seconds)
     Timer? timer;
+
+    String formatTime(int seconds) {
+      int minutes = seconds ~/ 60;
+      int sec = seconds % 60;
+      return "$minutes:${sec.toString().padLeft(2, '0')}"; // Format as MM:SS
+    }
 
     showDialog(
       barrierDismissible: false,
@@ -92,19 +287,33 @@ class _OrderScreenState extends State<OrderScreen> {
             }
 
             return AlertDialog(
-              title: Center(child: Text("Assign New Order ")), // Centered title
+              title: Center(child: Text("Assign New Order")),
               content: Column(
-                mainAxisSize: MainAxisSize.min, // Prevent excessive height
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("Time remaining: ${remainingSeconds}S",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red)),
-
-                  // Text('Order ID: ${data['assignmentId']}'),
-                  // Text(
-                  //     'Expires At: ${DateTime.fromMillisecondsSinceEpoch(data['expiresAt'])}'),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: CircularProgressIndicator(
+                          value: remainingSeconds /
+                              120, // Progress from 2:00 to 0:00
+                          strokeWidth: 6,
+                          color: Colors.green,
+                          backgroundColor: Colors.grey.shade300,
+                        ),
+                      ),
+                      Text(
+                        formatTime(remainingSeconds), // Display MM:SS format
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               actions: [
@@ -114,15 +323,10 @@ class _OrderScreenState extends State<OrderScreen> {
                     TextButton(
                       onPressed: () {
                         timer?.cancel();
-
-                        // if (!mounted) return;
-
                         print(
                             "Accepting order with ID: ${data['assignmentId']}");
-
                         Provider.of<OrderProvider>(context, listen: false)
                             .acceptAssign(context, data['assignmentId']);
-
                         Navigator.pop(context);
                       },
                       child: Text("Accept"),
@@ -130,13 +334,10 @@ class _OrderScreenState extends State<OrderScreen> {
                     TextButton(
                       onPressed: () {
                         timer?.cancel();
-
                         print(
-                            "Accepting order with ID: ${data['assignmentId']}");
-
+                            "Rejecting order with ID: ${data['assignmentId']}");
                         Provider.of<OrderProvider>(context, listen: false)
                             .declineAssign(context, data['assignmentId']);
-
                         Navigator.pop(context);
                       },
                       child: Text("Reject"),
@@ -180,6 +381,12 @@ class _OrderScreenState extends State<OrderScreen> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
+        selectedDate = picked;
+        final formattedDate =
+            "${selectedDate!.year}-${selectedDate!.month.toString().padLeft(2, '0')}-${selectedDate!.day.toString().padLeft(2, '0')}";
+        final orderProvider =
+            Provider.of<OrderProvider>(context, listen: false);
+        orderProvider.getMyOrder(context, formattedDate);
       });
     }
   }
@@ -192,7 +399,8 @@ class _OrderScreenState extends State<OrderScreen> {
   Future<void> _refresh() async {
     await Future.delayed(Duration(seconds: 2));
     setState(() {
-      Provider.of<OrderProvider>(context, listen: false).getMyOrder(context);
+      Provider.of<OrderProvider>(context, listen: false)
+          .getMyOrder(context, '');
     });
   }
 
@@ -304,8 +512,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   Text(
                                     selectedDate == null
                                         ? 'select date '
-                                        : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}', // Display the selected date
-
+                                        : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 12.sp),
                                   ),
@@ -426,18 +633,20 @@ class _OrderScreenState extends State<OrderScreen> {
                                                 child: SvgPicture.asset(
                                                     AppImages.user)),
                                             Gap(5.w),
-                                            Text(
-                                                orderitems
-                                                    .customerDetails!.name,
-                                                style:
-                                                    context.buttonTestStyle
-                                                        .copyWith(
-                                                            color: context
-                                                                .appColor
-                                                                .blackColor,
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            fontSize: 18.sp)),
+                                            Container(
+                                              width: 215,
+                                              child: Text(
+                                                  orderitems
+                                                      .customerDetails!.name,
+                                                  style: context.buttonTestStyle
+                                                      .copyWith(
+                                                          color: context
+                                                              .appColor
+                                                              .blackColor,
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                          fontSize: 18.sp)),
+                                            ),
                                             Gap(25.w),
                                             InkWell(
                                               onTap: () {
@@ -634,15 +843,15 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                 await _determinePosition();
                                                             String origin =
                                                                 "${position.latitude},${position.longitude}";
-                                                            String destination =
-                                                                "${productlist.vendor!.vendorAddress!.latitude},${productlist.vendor!.vendorAddress!.longitude}";
+                                                            // String destination =
+                                                            //     "${productlist.vendor!.vendorAddress!.latitude},${productlist.vendor!.vendorAddress!.longitude}";
 
-                                                            print(
-                                                                "lkjgdlkfdgjklh  $origin   $destination  ");
+                                                            // print(
+                                                            //     "lkjgdlkfdgjklh  $origin   $destination  ");
 
-                                                            openGoogleMaps(
-                                                                origin,
-                                                                destination);
+                                                            // openGoogleMaps(
+                                                            //     origin,
+                                                            //     destination);
 
                                                             // Navigator.push(
                                                             //   context,
@@ -660,7 +869,6 @@ class _OrderScreenState extends State<OrderScreen> {
                                                             // context.push(
                                                             //     MyRoutes
                                                             //         .GOOGLEMAP);
-                                                        
                                                           },
                                                           child: Container(
                                                               child: SvgPicture

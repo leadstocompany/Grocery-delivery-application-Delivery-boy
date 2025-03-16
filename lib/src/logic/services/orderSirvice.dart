@@ -7,8 +7,18 @@ import 'package:dio/dio.dart';
 
 class OrderService extends ApiService {
   Future getOrder(data) async {
-    var response = await api.get(APIURL.myOrder, data: jsonEncode(data));
+    print("  djkhfgjkh  ${data}");
 
+    var response;
+    if (data is Map && data.isEmpty) {
+      print("kgjfnhkjfghfgfg  ${data}");
+      response = await api.get(APIURL.myOrder, data: jsonEncode(data));
+    } else {
+      response = await api.get(APIURL.myOrder,
+          data: jsonEncode(data), queryParameters: data);
+    }
+
+    print("ksjfhgdjkhjg  $response");
     return response;
   }
 
@@ -19,10 +29,8 @@ class OrderService extends ApiService {
     return response;
   }
 
-
-    Future updateOTP(data) async {
-    var response = await api.post(APIURL.updateOTP,
-        data: jsonEncode(data));
+  Future updateOTP(data) async {
+    var response = await api.post(APIURL.updateOTP, data: jsonEncode(data));
 
     return response;
   }
@@ -40,26 +48,27 @@ class OrderService extends ApiService {
 
     return response;
   }
-   Future declineAssign(data) async {
+
+  Future declineAssign(data) async {
     var response = await api.post(APIURL.declineAssign, data: jsonEncode(data));
     //response.statusCode
 
     return response;
   }
 
-   Future acceptAssign(data) async {
+  Future acceptAssign(data) async {
     var response = await api.post(APIURL.acceptAssign, data: jsonEncode(data));
     //response.statusCode
 
     return response;
   }
 
-
   Future updateProfile(data) async {
     var response =
         await api.patch(APIURL.updateProfile, data: jsonEncode(data));
     return response;
   }
+
   Future<Response> uploadImage(File imageFile,
       {Map<String, dynamic>? additionalFields}) async {
     const String url = APIURL.uploadImage;
@@ -70,6 +79,10 @@ class OrderService extends ApiService {
     );
   }
 
+  Future getWallet(data) async {
+    var response = await api.get(APIURL.getWallet,
+        data: jsonEncode(data), queryParameters: data);
 
-  
+    return response;
+  }
 }

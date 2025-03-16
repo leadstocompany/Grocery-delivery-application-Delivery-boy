@@ -247,7 +247,8 @@ class SocketService with WidgetsBindingObserver {
       payload: jsonEncode(data),
     );
 
-    FlutterRingtonePlayer.playNotification();
+    //FlutterRingtonePlayer.playNotification();
+    FlutterRingtonePlayer().playNotification();
 
     // FlutterRingtonePlayer.play(
     //   android: AndroidSounds.notification, // Default notification sound

@@ -6,6 +6,7 @@ import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/core/utiils_lib/snack_bar.dart';
 import 'package:delivery_app/src/core/utiils_lib/string/app_string.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
+import 'package:delivery_app/src/data/driver_wallet.dart';
 import 'package:delivery_app/src/logic/repo/order_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -42,8 +43,19 @@ class OrderProvider with ChangeNotifier {
   List<Datum> orderList = [];
   bool isloading = true;
 
-  Future<void> getMyOrder(BuildContext context) async {
-    var data = {};
+  Future<void> getMyOrder(BuildContext context, String selectedDate) async
+   {
+    print(" kdjngjkdjgf  $selectedDate");
+    var data;
+
+    if (selectedDate.isNotEmpty)
+     {
+      data = {"date": selectedDate};
+    } else 
+    {
+      data = {};
+    }
+
     try {
       var result = await _orderRepo.getMyOrder(data);
 
@@ -135,8 +147,7 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<bool> updateOTP(
-      BuildContext context, String deliveryAssignmentId, String otpCode) async
-       {
+      BuildContext context, String deliveryAssignmentId, String otpCode) async {
     context.showLoader(show: true);
 
     var data = {
@@ -161,7 +172,7 @@ class OrderProvider with ChangeNotifier {
         },
         (response) {
           context.showLoader(show: false);
-          getMyOrder(context);
+          getMyOrder(context, "");
           Fluttertoast.showToast(
             msg: "Product delivered successfully",
             toastLength: Toast.LENGTH_SHORT,
@@ -265,7 +276,7 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<bool> acceptAssign(BuildContext context, String assignmentId) async {
-   // context.showLoader(show: true);
+    // context.showLoader(show: true);
 
     var data = {"assignmentId": assignmentId};
     try {
@@ -273,7 +284,7 @@ class OrderProvider with ChangeNotifier {
 
       return result.fold(
         (error) {
-         // context.showLoader(show: false);
+          // context.showLoader(show: false);
           Fluttertoast.showToast(
             msg: "Something went wrong",
             toastLength: Toast.LENGTH_SHORT,
@@ -285,8 +296,8 @@ class OrderProvider with ChangeNotifier {
           return false;
         },
         (response) {
-         // context.showLoader(show: false);
-          getMyOrder(context);
+          // context.showLoader(show: false);
+          getMyOrder(context, "");
 
           Fluttertoast.showToast(
             msg: "Order accepted successfully",
@@ -315,7 +326,7 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<bool> declineAssign(BuildContext context, String assignmentId) async {
-   // context.showLoader(show: true);
+    // context.showLoader(show: true);
 
     var data = {
       "assignmentId": assignmentId,
@@ -326,7 +337,7 @@ class OrderProvider with ChangeNotifier {
 
       return result.fold(
         (error) {
-        //  context.showLoader(show: false);
+          //  context.showLoader(show: false);
           Fluttertoast.showToast(
             msg: "Something went wrong",
             toastLength: Toast.LENGTH_SHORT,
@@ -338,7 +349,7 @@ class OrderProvider with ChangeNotifier {
           return false;
         },
         (response) {
-        //  context.showLoader(show: false);
+          //  context.showLoader(show: false);
           Fluttertoast.showToast(
             msg: "Order declined successfully",
             toastLength: Toast.LENGTH_SHORT,
@@ -365,8 +376,6 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-
-
   String _profile = '';
   String get profile => _profile;
   String _name = '';
@@ -374,8 +383,7 @@ class OrderProvider with ChangeNotifier {
   String _email = '';
   String get email => _email;
 
-  setValue() async 
-  {
+  setValue() async {
     _name = (await SharedPrefUtils.getFirstName())! +
         " " +
         (await SharedPrefUtils.getLastName())!;
@@ -504,4 +512,42 @@ class OrderProvider with ChangeNotifier {
   void _showSnackBar(BuildContext context, String message, Color color) {
     showTopSnackBar(context, message, color);
   }
+
+
+
+    List<Wallet> walletList = [];
+  bool productLisLoadingWallet = true;
+
+  Future<void> getVendorWallet(BuildContext context) async
+   {
+    var now = DateTime.now();
+    var data = {"week": true};
+
+    print("ksjfhgsdjhfg ${data}");
+
+    try {
+      var result = await _orderRepo.getWallet(data);
+
+      return result.fold(
+        (error) {
+          productLisLoadingWallet = false;
+          notifyListeners();
+        },
+        (response) {
+          walletList = response.data!;
+
+          print("kjdhfgkjhjg  ${walletList}");
+          // _totalcancelledOrder = response.totalOrders.toString();
+          // _growthCancelled = response.growthPercentage ?? "0";
+          productLisLoadingWallet = false;
+          notifyListeners();
+        },
+      );
+    } catch (e) {
+      productLisLoadingWallet = false;
+      notifyListeners();
+    }
+  }
+
+
 }

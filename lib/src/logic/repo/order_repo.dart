@@ -4,6 +4,7 @@ import 'package:delivery_app/src/core/utiils_lib/custom_dio_exception.dart';
 import 'package:delivery_app/src/core/utiils_lib/response_type_def.dart';
 import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
+import 'package:delivery_app/src/data/driver_wallet.dart';
 import 'package:delivery_app/src/data/order_OTP.dart';
 import 'package:delivery_app/src/data/status_response.dart';
 import 'package:delivery_app/src/data/upload_image.dart';
@@ -18,10 +19,12 @@ class OrderRepo {
   OrderRepo(this._orderService);
 
   FutureResult<DeliveryOrderModel> getMyOrder(data) async {
+    print("hdgsfhjdfj  ");
     try {
       var response = await _orderService.getOrder(data);
 
-      print("objectdjsfngjkdfjjfjb");
+      print("objectdjsfngjkdfjjfjb  $response");
+
       DeliveryOrderModel storeModel =
           deliveryOrderModelFromJson(response.toString());
 
@@ -63,13 +66,13 @@ class OrderRepo {
     }
   }
 
-    FutureResult<StatusResponse> updateStatus(data) async {
+  FutureResult<StatusResponse> updateStatus(data) async {
     try {
       var response = await _orderService.updateStatus(data);
 
-        StatusResponse storeModel = statusResponseFromJson(response.toString());
+      StatusResponse storeModel = statusResponseFromJson(response.toString());
 
-     // final String storeModelmodel = response.toString();
+      // final String storeModelmodel = response.toString();
       return right(storeModel);
     } on DioException catch (e) {
       var error = CustomDioExceptions.handleError(e);
@@ -77,12 +80,11 @@ class OrderRepo {
     }
   }
 
-
-    FutureResult<String> declineAssign(data) async {
+  FutureResult<String> declineAssign(data) async {
     try {
       var response = await _orderService.declineAssign(data);
 
-       // StatusResponse storeModel = statusResponseFromJson(response.toString());
+      // StatusResponse storeModel = statusResponseFromJson(response.toString());
 
       final String storeModelmodel = response.toString();
       return right(storeModelmodel);
@@ -92,11 +94,11 @@ class OrderRepo {
     }
   }
 
-    FutureResult<String> acceptAssign(data) async {
+  FutureResult<String> acceptAssign(data) async {
     try {
       var response = await _orderService.acceptAssign(data);
 
-       // StatusResponse storeModel = statusResponseFromJson(response.toString());
+      // StatusResponse storeModel = statusResponseFromJson(response.toString());
 
       final String storeModelmodel = response.toString();
       return right(storeModelmodel);
@@ -105,8 +107,6 @@ class OrderRepo {
       return left(error);
     }
   }
-
-  
 
   FutureResult<UserResponse> getMe(data) async {
     try {
@@ -115,20 +115,18 @@ class OrderRepo {
       final UserResponse vendorModel =
           userResponseFromJson(response.toString());
 
-      if (vendorModel != null) 
-      {
-            print("kjdhgjkfjkghkjfg    ${vendorModel.id}");
-         
-          //SharedPrefUtils.USER_NAME =
-         //vendorModel.firstName + " " + vendorModel.lastName;
-        //SharedPrefUtils.PHONE = vendorModel.phone;
-       //print("dkfjhdkfhkfk  ${SharedPrefUtils.USER_NAME}");
+      if (vendorModel != null) {
+        print("kjdhgjkfjkghkjfg    ${vendorModel.id}");
 
+        //SharedPrefUtils.USER_NAME =
+        //vendorModel.firstName + " " + vendorModel.lastName;
+        //SharedPrefUtils.PHONE = vendorModel.phone;
+        //print("dkfjhdkfhkfk  ${SharedPrefUtils.USER_NAME}");
 
         await SharedPrefUtils.setUserId(id: vendorModel.id);
       }
 
-     // final String model = response.toString();
+      // final String model = response.toString();
 
       return right(vendorModel);
     } on DioException catch (e) {
@@ -137,9 +135,7 @@ class OrderRepo {
     }
   }
 
-
-
-    FutureResult<UploadImage> uploadImage(File imageFile) async {
+  FutureResult<UploadImage> uploadImage(File imageFile) async {
     try {
       final response = await _orderService.uploadImage(imageFile);
       UploadImage upload = uploadImageFromJson(response.toString());
@@ -150,7 +146,7 @@ class OrderRepo {
     }
   }
 
-    FutureResult<String> updateProfile(data) async {
+  FutureResult<String> updateProfile(data) async {
     try {
       var response = await _orderService.updateProfile(data);
 
@@ -162,5 +158,22 @@ class OrderRepo {
     }
   }
 
+
+  FutureResult<DriverWallet> getWallet(data) async {
+    try {
+      var response = await _orderService.getWallet(data);
+
+      print("kjdkjfgjkjgghgg    ${response}");
+
+      final DriverWallet prdouctModel =
+          driverWalletFromJson(response.toString());
+      print("fdgrdgfdgfgdfghfghg    ${response}");
+      return right(prdouctModel);
+    } on DioException catch (e) {
+      print("djfkgjgfkj  $e");
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
 
 }
