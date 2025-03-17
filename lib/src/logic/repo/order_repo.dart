@@ -158,16 +158,13 @@ class OrderRepo {
     }
   }
 
-
   FutureResult<DriverWallet> getWallet(data) async {
     try {
       var response = await _orderService.getWallet(data);
 
-      print("kjdkjfgjkjgghgg    ${response}");
-
       final DriverWallet prdouctModel =
           driverWalletFromJson(response.toString());
-      print("fdgrdgfdgfgdfghfghg    ${response}");
+
       return right(prdouctModel);
     } on DioException catch (e) {
       print("djfkgjgfkj  $e");
@@ -175,5 +172,4 @@ class OrderRepo {
       return left(error);
     }
   }
-
 }
