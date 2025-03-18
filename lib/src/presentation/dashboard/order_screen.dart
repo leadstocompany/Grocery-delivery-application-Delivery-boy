@@ -587,21 +587,21 @@ class _OrderScreenState extends State<OrderScreen> {
                                       ),
                                     ],
                                   ),
-                                  // Container(
-                                  //   decoration: BoxDecoration(
-                                  //     color: getStatus(),
-                                  //     borderRadius: BorderRadius.circular(5.r),
-                                  //   ),
-                                  //   child: Padding(
-                                  //     padding: const EdgeInsets.only(
-                                  //         left: 8.0, right: 8),
-                                  //     child: Text(
-                                  //       orderitems.orderDetails!.orderStatus!,
-                                  //       style: context.subTitleTextStyleBloack
-                                  //           .copyWith(color: getTextColor()),
-                                  //     ),
-                                  //   ),
-                                  // ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: getStatus(),
+                                      borderRadius: BorderRadius.circular(5.r),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8),
+                                      child: Text(
+                                        orderitems.orderDetails!.orderStatus!,
+                                        style: context.subTitleTextStyleBloack
+                                            .copyWith(color: getTextColor()),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                               IconButton(
@@ -948,11 +948,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                                                   Text(productlist
                                                                       .product!
                                                                       .name),
-                                                                  Text(productlist
-                                                                      .product!
-                                                                      .price),
                                                                   Text(
                                                                       "Qty: ${productlist.quantity}"),
+                                                                  Text(
+                                                                      "Total Price : ₹${productlist.totalPrice}"),
                                                                 ],
                                                               )
                                                             ],
@@ -1398,11 +1397,11 @@ class _OrderScreenState extends State<OrderScreen> {
 
   Color getStatus() {
     switch (colorStatus) {
-      case 'Pickup Pending':
+      case 'PENDING':
         return Color(0xffFFDEDE);
 
-      case 'Pickup Failed':
-        return Color(0xffFFDEDE);
+      case 'DELIVERED':
+        return Color(0xff34A853);
       case 'Pickup Rescheduled':
         return Color.fromARGB(255, 226, 235, 243);
       case 'Delivery Failed':
@@ -1418,7 +1417,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   Color getTextColor() {
     switch (colorStatus) {
-      case "Pickup Pending":
+      case "PENDING":
         return Color(0xffFF5963);
       case 'Pickup Failed':
         return Color(0xffE81F2B);
@@ -1426,7 +1425,7 @@ class _OrderScreenState extends State<OrderScreen> {
         return Color(0xff0754EA);
       case 'Delivery Failed':
         return Color(0xffE81F2B);
-      case 'Delivered':
+      case 'DELIVERED Delivered':
         return Color(0xff34A853);
       default:
         return Color(0xffA32424);

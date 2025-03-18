@@ -21,30 +21,6 @@ class TransactionHistory extends StatefulWidget {
 
 class _TransactionHistoryState extends State<TransactionHistory> {
   // Mock data for transactions
-  final List<Map<String, dynamic>> transactions = [
-    {
-      'date': 'Today, Nov 25th, 2023',
-      'transactions': [
-        {'title': 'Delivery Payment', 'id': '#212323', 'amount': '\$50,000'},
-        {'title': 'Delivery Refund', 'id': '#212324', 'amount': '\$20,000'},
-      ],
-    },
-    {
-      'date': 'Yesterday, Nov 24th, 2023',
-      'transactions': [
-        {'title': 'Delivery Payment', 'id': '#212322', 'amount': '\$30,000'},
-        {'title': 'Delivery Payment', 'id': '#212322', 'amount': '\$30,000'},
-        {'title': 'Delivery Payment', 'id': '#212322', 'amount': '\$30,000'},
-      ],
-    },
-    {
-      'date': '2023-10-06',
-      'transactions': [
-        {'title': 'Delivery Payment', 'id': '#212321', 'amount': '\$10,000'},
-        {'title': 'Delivery Payment', 'id': '#212321', 'amount': '\$10,000'},
-      ],
-    },
-  ];
 
   @override
   void initState() {
@@ -105,7 +81,6 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                   child: ListView.builder(
                     itemCount: provider.walletList.length,
                     itemBuilder: (context, dateIndex) {
-                      final transactionDate = transactions[dateIndex];
                       var wallet = provider.walletList[dateIndex];
                       return Padding(
                         padding: const EdgeInsets.all(5.0),
@@ -145,8 +120,8 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                                               left: 8.0, right: 8),
                                           child: Text(
                                             wallet.totals!.status == true
-                                                ? "Completed"
-                                                : "Pending",
+                                                ? "COMPLETED"
+                                                : "PENDING",
                                             style: context
                                                 .subTitleTextStyleBloack
                                                 .copyWith(),
@@ -248,9 +223,35 @@ class _TransactionHistoryState extends State<TransactionHistory> {
                                           children: [
                                             Text(
                                                 'Charge : ₹${wallet.items![i].deliveryCharge}',
-                                                style: context.subTitleTxtStyle
-                                                    .copyWith()),
-                                            // Here you can format the date if needed
+                                                style: context.buttonTestStyle
+                                                    .copyWith(fontSize: 12.sp)),
+                                            Container(
+                                                decoration: BoxDecoration(
+                                                  color: wallet
+                                                              .items![i]
+                                                              .deliveryPayment!
+                                                              .status ==
+                                                          "PENDING"
+                                                      ? Color(0xffFFDEDE)
+                                                      : Colors.green,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.r),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0, right: 8),
+                                                  child: Text(
+                                                    wallet
+                                                        .items![i]
+                                                        .deliveryPayment!
+                                                        .status,
+                                                    style: context
+                                                        .subTitleTextStyleBloack
+                                                        .copyWith(),
+                                                  ),
+                                                ))
                                           ],
                                         ),
                                       ),
