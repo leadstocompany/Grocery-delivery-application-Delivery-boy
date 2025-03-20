@@ -27,6 +27,7 @@ class AuthProvider extends ChangeNotifier {
   final TextEditingController withdrowPin = TextEditingController();
   final TextEditingController emFullName = TextEditingController();
   final TextEditingController emRelation = TextEditingController();
+  final TextEditingController upiID = TextEditingController();
 
   final TextEditingController emPrimaryContact = TextEditingController();
   final TextEditingController emSecondryContact = TextEditingController();
@@ -188,6 +189,48 @@ class AuthProvider extends ChangeNotifier {
 
   List<Document> documents = [];
 
+  File? _selectedBarcodeImage;
+
+  File? get selectedBarcodeImage => _selectedBarcodeImage;
+
+  Future<void> pickbarCodeImage(BuildContext context) async {
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      _selectedBarcodeImage = File(pickedFile.path);
+
+      print("ksfhgkdfgkjdfg  ${_selectedBarcodeImage}");
+      uploadBarcodeImage(context);
+      notifyListeners();
+    }
+  }
+
+  String _uploadedBarCodeUrl = '';
+
+  Future<bool> uploadBarcodeImage(BuildContext context) async {
+    context.showLoader(show: true);
+    _isImageLoading = false;
+    final result = await _authRepo.uploadImage(selectedBarcodeImage!);
+    context.showLoader(show: false);
+
+    return result.fold(
+      (error) {
+         context.showLoader(show: false);
+        _showSnackBar(context, error.message, Colors.red);
+        return false;
+      },
+      (uploadImage) {
+        _isImageLoading = true;
+        _uploadedBarCodeUrl = uploadImage.data!.url.toString();
+        notifyListeners();
+        context.showLoader(show: false);
+        _showSnackBar(context, "Image uploaxded successfully!", Colors.green);
+        return true;
+      },
+    );
+  }
+
   void addImageToList(String type, String url, bool isFront) {
     int index = documents.indexWhere((doc) => doc.type == type);
 
@@ -325,7 +368,9 @@ class AuthProvider extends ChangeNotifier {
         "accountHolder": accountHolderName.text,
         "accountNumber": accountNumber.text,
         "ifscCode": ifscCode.text,
-        "appWithdrawalPin": withdrowPin.text
+        "appWithdrawalPin": withdrowPin.text,
+        "upiId": upiID.text,
+        "qrCode": _uploadedBarCodeUrl,
       },
       "documents": documents
       // "${documents.map((d) => d.toJson()).toList()}"
@@ -364,8 +409,7 @@ class AuthProvider extends ChangeNotifier {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content:
-              Text("$e "),
+          content: Text("$e "),
           backgroundColor: Colors.red,
         ),
       );

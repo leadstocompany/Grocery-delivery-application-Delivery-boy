@@ -226,6 +226,55 @@ class _PersonalInformationState extends State<PersonalInformation> {
                       fillColor: context.appColor.whiteColor,
                     ),
 
+                     Gap(10.h),
+                  CustomTextField(
+                    controller: pageNotifier.upiID,
+                    validator: (val) {
+                      if (val.toString().isEmpty) {
+                        return "UPI ID";
+                      }
+                      return null;
+                    },
+                    maxLength: 64,
+                    counterWidget: const Offstage(),
+                    hintText: 'UPI ID',
+                    fillColor: context.appColor.greyColor100,
+                  ),
+                  Gap(10.h),
+                  Text("Upload Your Barcode Image", style: TextStyle()),
+                  Gap(4.h),
+                  Consumer<AuthProvider>(
+                      builder: (context, pinProvider, child) {
+                    return Container(
+                        height: 120.h,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: context.appColor.greyColor400),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: InkWell(
+                          onTap: () {
+                            pinProvider.pickbarCodeImage(context);
+                          },
+                          child: pinProvider.selectedBarcodeImage ==
+                                  null
+                              ? Center(
+                                  child: Icon(
+                                    Icons.camera,
+                                    size: 100,
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Image.file(
+                                    pinProvider.selectedBarcodeImage!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                        ));
+                  }),
+               
+
                     Gap(5.h),
                     Text(
                       'Withdrawal Pin',

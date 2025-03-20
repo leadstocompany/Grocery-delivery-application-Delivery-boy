@@ -69,7 +69,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
               padding: const EdgeInsets.only(top: 150),
               child: DataNotFound(
                 imagePath: 'assets/images/notfound.jpg',
-                message: "Product Not available",
+                message: "Sorry, Don't have any transactions",
               ),
             );
           }
