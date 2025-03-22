@@ -463,11 +463,21 @@ class OrderProvider with ChangeNotifier {
       BuildContext context, String firstName, String lastName) async {
     context.showLoader(show: true);
 
-    var data = {
-      "firstName": firstName,
-      "lastName": lastName,
-      "img": _uploadedUrl
-    };
+     var data;
+    if (_uploadedUrl.isEmpty) {
+      data = {
+        "firstName": firstName,
+        "lastName": lastName,
+      };
+    } else {
+      data = {
+        "firstName": firstName,
+        "lastName": lastName,
+        "img": _uploadedUrl
+      };
+    }
+
+   
 
     try {
       var result = await _orderRepo.updateProfile(data);

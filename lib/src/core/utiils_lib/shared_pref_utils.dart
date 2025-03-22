@@ -56,7 +56,8 @@ class SharedPrefUtils {
     await prefs.setString(KEY_PROFILE, user.img ?? " ");
   }
 
-  static Future<bool> setOnDuty({required bool status}) {
+  static Future<bool> setOnDuty({required bool status}) 
+  {
     return SharedPreferences.getInstance()
         .then((sp) async => await sp.setBool(ON_DUTY, status));
   }

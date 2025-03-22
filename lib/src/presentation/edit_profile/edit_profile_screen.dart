@@ -112,18 +112,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: imageProvider.isImageLoading
-                        ? () async {
-                            var status = await imageProvider.updateProfile(
-                                context,
-                                firstController.text,
-                                lastController.text);
+                    onTap: () async {
+                      var status = await imageProvider.updateProfile(
+                          context, firstController.text, lastController.text);
 
-                            if (status) {
-                              Navigator.pop(context);
-                            }
-                          }
-                        : null,
+                      if (status) {
+                        Navigator.pop(context);
+                      }
+                    },
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
