@@ -1,5 +1,5 @@
 class APIURL {
-  static const BASE_URL = "http://210.89.44.183:3333/xam/";
+  static const BASE_URL = "https://www.mv.frontshopemporium.in/xam/";
   static const String sendOtp = "${BASE_URL}auth/send-otp/delivery";
   static const String verifyOtp = "${BASE_URL}auth/verify-otp/delivery";
 
