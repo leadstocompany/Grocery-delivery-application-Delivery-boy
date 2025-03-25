@@ -178,8 +178,9 @@ class SocketService with WidgetsBindingObserver {
   }
 
   void connect() {
+    print("dkjfglfgdklkfgjh");
     socket = IO.io(
-      'https://grocery.frontshopemporium.com',
+      'https://www.mv.frontshopemporium.in',
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .setQuery({'driverId': driverId})
