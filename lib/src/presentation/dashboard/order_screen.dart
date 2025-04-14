@@ -50,8 +50,8 @@ class _OrderScreenState extends State<OrderScreen> {
     orderProvider.setValue();
     selectedDate = DateTime.now();
     super.initState();
-    initiateSocket();
-    _determinePosition();
+    // initiateSocket();
+    // _determinePosition();
     //
   }
 

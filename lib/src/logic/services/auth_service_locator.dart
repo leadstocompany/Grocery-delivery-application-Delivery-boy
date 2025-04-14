@@ -5,7 +5,6 @@ import 'package:delivery_app/src/core/constant/api.dart';
 import 'package:delivery_app/src/core/network_services/api_services.dart';
 import 'package:dio/dio.dart';
 
-
 class AuthServices extends ApiService {
   /// Login
   Future sendOtp(data) async {
@@ -29,13 +28,19 @@ class AuthServices extends ApiService {
 
     return response;
   }
+
   Future refresh_token(data) async {
     var response = await api.post(APIURL.refresh_token, data: jsonEncode(data));
-    //response.statusCode
 
     return response;
   }
 
+  Future updateDeviceToken(data) async {
+    var response =
+        await api.post(APIURL.upDateDeviceToken, data: jsonEncode(data));
+
+    return response;
+  }
 
   Future userRegister(data) async {
     var response =
@@ -43,7 +48,7 @@ class AuthServices extends ApiService {
     return response;
   }
 
-    Future<Response> uploadImage(File imageFile,
+  Future<Response> uploadImage(File imageFile,
       {Map<String, dynamic>? additionalFields}) async {
     const String url = APIURL.uploadImage;
     return await api.uploadImage(
@@ -60,7 +65,6 @@ class AuthServices extends ApiService {
     return response;
   }
 
- 
   /// Login
   // Future profileUpdate(data) async {
   //   var response = await api.put(Endpoints.update, data: data);

@@ -7,6 +7,7 @@ import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/core/utiils_lib/snack_bar.dart';
 import 'package:delivery_app/src/data/Document.dart';
 import 'package:delivery_app/src/logic/repo/auth_repo.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -216,7 +217,7 @@ class AuthProvider extends ChangeNotifier {
 
     return result.fold(
       (error) {
-         context.showLoader(show: false);
+        context.showLoader(show: false);
         _showSnackBar(context, error.message, Colors.red);
         return false;
       },
@@ -480,6 +481,25 @@ class AuthProvider extends ChangeNotifier {
       },
       (response) {
         print("dkjhssfdgdfgdfgfgjkdfkg");
+        return true;
+      },
+    );
+  }
+
+  Future<bool> updateDeviceToken(BuildContext context) async {
+    var fcm = await FirebaseMessaging.instance.getToken();
+    var data = {"deviceToken": fcm};
+
+    print("dfshgiufdugiufdgh  ${"hjsdgffghhhh  ${data}"}");
+
+    var result = await _authRepo.updateDeviceToken(data, context);
+    return result.fold(
+      (error) {
+        print("dkjhsfgjkdfkg");
+        return true;
+      },
+      (response) {
+        print("token update success");
         return true;
       },
     );

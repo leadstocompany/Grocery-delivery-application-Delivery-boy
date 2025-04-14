@@ -1,6 +1,7 @@
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/logic/provider/auth_provider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +19,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () async 
-    {
-        Provider.of<AuthProvider>(context, listen: false).refreshToken(context);
+    Future.delayed(const Duration(seconds: 2), () async {
+      Provider.of<AuthProvider>(context, listen: false).refreshToken(context);
+     
+
       if (await SharedPrefUtils.getToken() == null) {
         context.clearAndPush(routePath: MyRoutes.LOGIN);
       } else {

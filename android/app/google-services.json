@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "855851990714",
+    "project_id": "frontshop-emporium-8f851",
+    "storage_bucket": "frontshop-emporium-8f851.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855851990714:android:00a09bb4d0b9f1df818c83",
+        "android_client_info": {
+          "package_name": "com.app.frontshop.delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2my5NEUm5almYwz_vUWgoMNMT4OMpGHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855851990714:android:6fb061e1f508cfe1818c83",
+        "android_client_info": {
+          "package_name": "com.frontshop.userapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2my5NEUm5almYwz_vUWgoMNMT4OMpGHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855851990714:android:89710f18cd3afa02818c83",
+        "android_client_info": {
+          "package_name": "com.frontshop.vendor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2my5NEUm5almYwz_vUWgoMNMT4OMpGHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

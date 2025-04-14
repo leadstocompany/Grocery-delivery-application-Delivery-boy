@@ -177,4 +177,24 @@ class AuthRepo {
     }
   }
 
+
+ FutureResult<String> updateDeviceToken(data, BuildContext context) async {
+    try {
+      var response = await _authServices.updateDeviceToken(data);
+    
+
+      final String model = response.toString();
+
+      return right(model);
+    } on DioException catch (e) {
+      
+
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
+
+  
+
 }
