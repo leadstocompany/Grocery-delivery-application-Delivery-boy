@@ -57,6 +57,6 @@ class APIURL {
 
   static const String getWallet = "${BASE_URL}wallet/driver";
 
-   static const String upDateDeviceToken = "${BASE_URL}update-device-token";
+   static const String upDateDeviceToken = "${BASE_URL}devices/register";
 
 }

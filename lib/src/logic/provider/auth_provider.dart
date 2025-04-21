@@ -488,9 +488,12 @@ class AuthProvider extends ChangeNotifier {
 
   Future<bool> updateDeviceToken(BuildContext context) async {
     var fcm = await FirebaseMessaging.instance.getToken();
-    var data = {"deviceToken": fcm};
+    var data = {
+      "deviceToken": fcm,
+      "deviceTpe":"android"
+      };
 
-    print("dfshgiufdugiufdgh  ${"hjsdgffghhhh  ${data}"}");
+    print("fcm token  ${"hjsdgffghhhh  ${data}"}");
 
     var result = await _authRepo.updateDeviceToken(data, context);
     return result.fold(

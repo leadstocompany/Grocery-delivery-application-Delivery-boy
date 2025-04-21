@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     OrderScreen(),
     AccountScreen(),
   ];
-    late SocketService socketService;
+  late SocketService socketService;
   Map<String, dynamic>? orderData;
 
   @override
@@ -35,11 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<OrderProvider>(context, listen: false).getMe();
     Provider.of<AuthProvider>(context, listen: false)
         .updateDeviceToken(context);
-         initiateSocket();
+    initiateSocket();
     _determinePosition();
     super.initState();
   }
-   initiateSocket() async {
+
+  initiateSocket() async {
     String driverId = await SharedPrefUtils.getUserId();
 
     socketService = SocketService(
@@ -55,14 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     socketService.connect();
   }
+
   void _showOrderPopup(BuildContext context, Map<String, dynamic> data) {
-    int remainingSeconds = 120; 
+    int remainingSeconds = 120;
     Timer? timer;
 
     String formatTime(int seconds) {
       int minutes = seconds ~/ 60;
       int sec = seconds % 60;
-      return "$minutes:${sec.toString().padLeft(2, '0')}"; 
+      return "$minutes:${sec.toString().padLeft(2, '0')}";
     }
 
     showDialog(
