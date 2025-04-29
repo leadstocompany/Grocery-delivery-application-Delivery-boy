@@ -65,58 +65,7 @@ class AuthServices extends ApiService {
     return response;
   }
 
-  /// Login
-  // Future profileUpdate(data) async {
-  //   var response = await api.put(Endpoints.update, data: data);
-  //   return response;
-  // }
+  
 
-  // /// Update badges
-  // Future updateBadge(data) async {
-  //   var response = await api.put(Endpoints.updateBadge, data: data);
-  //   return response;
-  // }
-
-  // /// Login
-  // Future getProfile() async {
-  //   var response = await api.get(
-  //     Endpoints.myProfile,
-  //   );
-  //   return response;
-  // }
-
-  // Future getAvatar() async {
-  //   var response = await api.get(
-  //     Endpoints.getAvatar,
-  //   );
-  //   return response;
-  // }
-
-  // Future getAllBadge() async {
-  //   var response = await api.get(
-  //     Endpoints.getAllBadge,
-  //   );
-  //   return response;
-  // }
-
-  // Future getOtherProfile(data) async {
-  //   var response =
-  //       await api.get(Endpoints.getOtherUserProfile, queryParameters: data);
-  //   return response;
-  // }
-
-  // setNotificatinStatus(data) async {
-  //   var response = await api.put(Endpoints.notificationSettings, data: data);
-  //   return response;
-  // }
-
-  // Future reportUser(data) async {
-  //   var response = await api.post(Endpoints.report, data: data);
-  //   return response;
-  // }
-
-  // Future logOut(data) async {
-  //   var response = await api.post(Endpoints.signOut, data: data);
-  //   return response;
-  // }
+ 
 }

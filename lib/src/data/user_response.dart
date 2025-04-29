@@ -26,6 +26,7 @@ class UserResponse {
   dynamic img;
   dynamic storeId;
   dynamic currentStatus;
+   bool? address;
 
   UserResponse({
     this.id,
@@ -38,6 +39,7 @@ class UserResponse {
     this.isPhoneVerified,
     this.img,
     this.storeId,
+      this.address,
     this.currentStatus,
   });
 
@@ -52,6 +54,7 @@ class UserResponse {
         isPhoneVerified: json["isPhoneVerified"],
         img: json["img"],
         storeId: json["storeId"],
+         address: json["address"],
         currentStatus: json["currentStatus"],
       );
 
@@ -66,6 +69,7 @@ class UserResponse {
         "isPhoneVerified": isPhoneVerified,
         "img": img,
         "storeId": storeId,
+           "address": address,
         "currentStatus": currentStatus,
       };
 }

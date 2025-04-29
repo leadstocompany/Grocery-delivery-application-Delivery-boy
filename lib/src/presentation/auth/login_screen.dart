@@ -219,7 +219,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           final success = await pageNotifier.sendOtp(
                               phoneController.text, context);
 
-                          if (success) {
+                          if (success) 
+                          {
                             context.push(MyRoutes.LOGINOTPSCREEN);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(

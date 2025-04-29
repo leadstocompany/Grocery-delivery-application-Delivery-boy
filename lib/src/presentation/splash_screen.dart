@@ -23,9 +23,11 @@ class _SplashScreenState extends State<SplashScreen> {
       Provider.of<AuthProvider>(context, listen: false).refreshToken(context);
      
 
-      if (await SharedPrefUtils.getToken() == null) {
+      if (await SharedPrefUtils.getToken() == null) 
+      {
         context.clearAndPush(routePath: MyRoutes.LOGIN);
-      } else {
+      } else 
+      {
         context.clearAndPush(routePath: MyRoutes.HOME);
       }
     });

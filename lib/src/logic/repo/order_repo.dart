@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:delivery_app/src/core/utiils_lib/custom_dio_exception.dart';
 import 'package:delivery_app/src/core/utiils_lib/response_type_def.dart';
 import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
+import 'package:delivery_app/src/data/check_pin_response.dart';
 import 'package:delivery_app/src/data/delivery_order_model.dart';
 import 'package:delivery_app/src/data/driver_wallet.dart';
 import 'package:delivery_app/src/data/order_OTP.dart';
@@ -108,6 +109,20 @@ class OrderRepo {
     }
   }
 
+  FutureResult<CheckPinResponse> checkPin(data, pin) async {
+    try {
+      var response = await _orderService.checkPin(data, pin);
+      CheckPinResponse allCartItems =
+          checkPinResponseFromJson(response.toString());
+
+      return right(allCartItems);
+    } on DioException catch (e) {
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
+
   FutureResult<UserResponse> getMe(data) async {
     try {
       var response = await _orderService.getMe(data);
@@ -115,7 +130,8 @@ class OrderRepo {
       final UserResponse vendorModel =
           userResponseFromJson(response.toString());
 
-      if (vendorModel != null) {
+      if (vendorModel != null)
+       {
         print("kjdhgjkfjkghkjfg    ${vendorModel.id}");
 
         //SharedPrefUtils.USER_NAME =
@@ -130,6 +146,20 @@ class OrderRepo {
 
       return right(vendorModel);
     } on DioException catch (e) {
+      var error = CustomDioExceptions.handleError(e);
+      return left(error);
+    }
+  }
+
+    FutureResult<String> addAddress(data) async {
+    try {
+      var response = await _orderService.addAddress(data);
+
+      final String model = response.toString();
+
+      return right(model);
+    } on DioException catch (e) {
+      print("djhgfjdfhjg  ${e}");
       var error = CustomDioExceptions.handleError(e);
       return left(error);
     }

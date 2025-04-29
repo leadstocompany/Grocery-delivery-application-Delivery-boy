@@ -2,6 +2,7 @@ import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/core/utiils_lib/string/app_string.dart';
 import 'package:delivery_app/src/logic/provider/auth_provider.dart';
+import 'package:delivery_app/src/logic/provider/order_provider.dart';
 import 'package:delivery_app/src/presentation/widgets/elevated_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +132,10 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                     await pageNotifier.loginVerifiOtp(value, context);
 
                 if (success) {
-                  context.clearAndPush(routePath: MyRoutes.HOME);
+                  Provider.of<OrderProvider>(context, listen: false)
+                      .getMe(context);
+
+                  //  context.clearAndPush(routePath: MyRoutes.HOME);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -154,7 +158,9 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                           pageNotifier.otpCode, context);
 
                       if (success) {
-                        context.clearAndPush(routePath: MyRoutes.HOME);
+                        Provider.of<OrderProvider>(context, listen: false)
+                            .getMe(context);
+                        // context.clearAndPush(routePath: MyRoutes.HOME);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    Provider.of<OrderProvider>(context, listen: false).getMe();
+    Provider.of<OrderProvider>(context, listen: false).getMe(context);
     Provider.of<AuthProvider>(context, listen: false)
         .updateDeviceToken(context);
     initiateSocket();

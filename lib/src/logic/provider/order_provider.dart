@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:delivery_app/src/core/network_services/service_locator.dart';
+import 'package:delivery_app/src/core/routes/routes.dart';
 import 'package:delivery_app/src/core/utiils_lib/extensions.dart';
 import 'package:delivery_app/src/core/utiils_lib/shared_pref_utils.dart';
 import 'package:delivery_app/src/core/utiils_lib/snack_bar.dart';
@@ -43,16 +44,13 @@ class OrderProvider with ChangeNotifier {
   List<Datum> orderList = [];
   bool isloading = true;
 
-  Future<void> getMyOrder(BuildContext context, String selectedDate) async
-   {
+  Future<void> getMyOrder(BuildContext context, String selectedDate) async {
     print(" kdjngjkdjgf  $selectedDate");
     var data;
 
-    if (selectedDate.isNotEmpty)
-     {
+    if (selectedDate.isNotEmpty) {
       data = {"date": selectedDate};
-    } else 
-    {
+    } else {
       data = {};
     }
 
@@ -392,7 +390,7 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getMe() async {
+  Future<void> getMe(BuildContext context) async {
     var data = {};
 
     try {
@@ -401,12 +399,10 @@ class OrderProvider with ChangeNotifier {
       return result.fold(
         (error) {},
         (response) async {
-          // setUserName(response.firstName + " " + response.lastName);
-          // setPhone(response.phone);
+          print("check the addreee  ${response.address}");
 
           if (response.currentStatus != null) {
             if (response.currentStatus == "ONLINE") {
-              print("lkjdhfgfjkgfgkjk  ${response.currentStatus}");
               await SharedPrefUtils.setOnDuty(status: true);
             } else {
               await SharedPrefUtils.setOnDuty(status: false);
@@ -428,6 +424,15 @@ class OrderProvider with ChangeNotifier {
           SharedPrefUtils.USER_NAME =
               response.firstName + " " + response.lastName;
           SharedPrefUtils.PHONE = response.phone;
+
+     if (response.address!) {
+            context.clearAndPush(routePath: MyRoutes.HOME);
+          } else 
+          {
+            context.clearAndPush(routePath: MyRoutes.ADDRESSS);
+          }
+
+
           notifyListeners();
         },
       );
@@ -463,7 +468,7 @@ class OrderProvider with ChangeNotifier {
       BuildContext context, String firstName, String lastName) async {
     context.showLoader(show: true);
 
-     var data;
+    var data;
     if (_uploadedUrl.isEmpty) {
       data = {
         "firstName": firstName,
@@ -476,8 +481,6 @@ class OrderProvider with ChangeNotifier {
         "img": _uploadedUrl
       };
     }
-
-   
 
     try {
       var result = await _orderRepo.updateProfile(data);
@@ -495,7 +498,7 @@ class OrderProvider with ChangeNotifier {
           return false;
         },
         (response) {
-          getMe();
+          getMe(context);
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -523,13 +526,10 @@ class OrderProvider with ChangeNotifier {
     showTopSnackBar(context, message, color);
   }
 
-
-
-    List<Wallet> walletList = [];
+  List<Wallet> walletList = [];
   bool productLisLoadingWallet = true;
 
-  Future<void> getVendorWallet(BuildContext context) async
-   {
+  Future<void> getVendorWallet(BuildContext context) async {
     var now = DateTime.now();
     var data = {"week": true};
 
@@ -558,6 +558,4 @@ class OrderProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
-
 }

@@ -16,7 +16,7 @@ import location
 import path_provider_foundation
 import shared_preferences_foundation
 import smart_auth
-import sqflite_darwin
+import sqflite
 import url_launcher_macos
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {

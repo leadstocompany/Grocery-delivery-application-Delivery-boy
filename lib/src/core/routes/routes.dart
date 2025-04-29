@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:delivery_app/src/core/utiils_lib/globle_variable.dart';
 import 'package:delivery_app/src/logic/provider/leave_provider.dart';
+import 'package:delivery_app/src/presentation/add_address/add_address.dart';
 import 'package:delivery_app/src/presentation/auth/document_details.dart';
 import 'package:delivery_app/src/presentation/auth/documents_screen.dart';
 import 'package:delivery_app/src/presentation/auth/list_documnets.dart';
@@ -157,6 +158,12 @@ class MyRoutes {
         name: PRIVACY,
         pageBuilder: (context, state) => const PrivacyPolicy(),
       ),
+
+       animatedGoRoute(
+        path: ADDRESSS,
+        name: ADDRESSS,
+        pageBuilder: (context, state) => AddLocationAddress(),
+      ),
     ],
   );
 
@@ -194,6 +201,7 @@ class MyRoutes {
   static const SIGNUP = "/signup";
   static const DASHBOARDSCREEN = "/dashboardscreen";
   static const CUSTOMERORDER = "/customerorder";
+    static const ADDRESSS = "/address";
 }
 
 GoRoute animatedGoRoute({

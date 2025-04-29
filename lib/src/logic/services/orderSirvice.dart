@@ -37,10 +37,17 @@ class OrderService extends ApiService {
 
   Future getMe(data) async {
     var response = await api.get(APIURL.getMe, data: jsonEncode(data));
-    //response.statusCode
+   
 
     return response;
   }
+
+   Future addAddress(data) async {
+    var response = await api.post(APIURL.addAddress, data: jsonEncode(data));
+
+    return response;
+  }
+
 
   Future updateStatus(data) async {
     var response = await api.patch(APIURL.updateStatus, data: jsonEncode(data));
@@ -59,6 +66,12 @@ class OrderService extends ApiService {
   Future acceptAssign(data) async {
     var response = await api.post(APIURL.acceptAssign, data: jsonEncode(data));
     //response.statusCode
+
+    return response;
+  }
+
+   Future checkPin(data, pin) async {
+    var response = await api.get(APIURL.checkPin + pin, data: jsonEncode(data));
 
     return response;
   }
