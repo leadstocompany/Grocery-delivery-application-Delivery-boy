@@ -226,76 +226,74 @@ class _PersonalInformationState extends State<PersonalInformation> {
                       fillColor: context.appColor.whiteColor,
                     ),
 
-                     Gap(10.h),
-                  CustomTextField(
-                    controller: pageNotifier.upiID,
-                    validator: (val) {
-                      if (val.toString().isEmpty) {
-                        return "UPI ID";
-                      }
-                      return null;
-                    },
-                    maxLength: 64,
-                    counterWidget: const Offstage(),
-                    hintText: 'UPI ID',
-                    fillColor: context.appColor.greyColor100,
-                  ),
-                  Gap(10.h),
-                  Text("Upload Your Barcode Image", style: TextStyle()),
-                  Gap(4.h),
-                  Consumer<AuthProvider>(
-                      builder: (context, pinProvider, child) {
-                    return Container(
-                        height: 120.h,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: context.appColor.greyColor400),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: InkWell(
-                          onTap: () {
-                            pinProvider.pickbarCodeImage(context);
-                          },
-                          child: pinProvider.selectedBarcodeImage ==
-                                  null
-                              ? Center(
-                                  child: Icon(
-                                    Icons.camera,
-                                    size: 100,
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Image.file(
-                                    pinProvider.selectedBarcodeImage!,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                        ));
-                  }),
-               
-
-                    Gap(5.h),
-                    Text(
-                      'Withdrawal Pin',
-                      style: context.subTitleTextStyle.copyWith(),
-                    ),
-                    Gap(5.h),
+                    Gap(10.h),
                     CustomTextField(
-                      keyBoardType: TextInputType.number,
-                      controller: pageNotifier.withdrowPin,
+                      controller: pageNotifier.upiID,
                       validator: (val) {
-                        if (val == null || val.isEmpty) {
-                          return "Please enter Withdrawal Pin";
+                        if (val.toString().isEmpty) {
+                          return "UPI ID";
                         }
                         return null;
                       },
-                      maxLength: 4,
+                      maxLength: 64,
                       counterWidget: const Offstage(),
-                      hintText: 'Withdrawal Pin',
-                      fillColor: context.appColor.whiteColor,
+                      hintText: 'UPI ID',
+                      fillColor: context.appColor.greyColor100,
                     ),
+                    Gap(10.h),
+                    Text("Upload Your Barcode Image", style: TextStyle()),
+                    Gap(4.h),
+                    Consumer<AuthProvider>(
+                        builder: (context, pinProvider, child) {
+                      return Container(
+                          height: 120.h,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: context.appColor.greyColor400),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: InkWell(
+                            onTap: () {
+                              pinProvider.pickbarCodeImage(context);
+                            },
+                            child: pinProvider.selectedBarcodeImage == null
+                                ? Center(
+                                    child: Icon(
+                                      Icons.camera,
+                                      size: 100,
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Image.file(
+                                      pinProvider.selectedBarcodeImage!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                          ));
+                    }),
+
                     Gap(5.h),
+                    // Text(
+                    //   'Withdrawal Pin',
+                    //   style: context.subTitleTextStyle.copyWith(),
+                    // ),
+                    // Gap(5.h),
+                    // CustomTextField(
+                    //   keyBoardType: TextInputType.number,
+                    //   controller: pageNotifier.withdrowPin,
+                    //   validator: (val) {
+                    //     if (val == null || val.isEmpty) {
+                    //       return "Please enter Withdrawal Pin";
+                    //     }
+                    //     return null;
+                    //   },
+                    //   maxLength: 4,
+                    //   counterWidget: const Offstage(),
+                    //   hintText: 'Withdrawal Pin',
+                    //   fillColor: context.appColor.whiteColor,
+                    // ),
+                    // Gap(5.h),
 
                     Gap(5.h),
                     Text(

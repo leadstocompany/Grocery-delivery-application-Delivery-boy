@@ -369,7 +369,7 @@ class AuthProvider extends ChangeNotifier {
         "accountHolder": accountHolderName.text,
         "accountNumber": accountNumber.text,
         "ifscCode": ifscCode.text,
-        "appWithdrawalPin": withdrowPin.text,
+        "appWithdrawalPin": '1234',
         "upiId": upiID.text,
         "qrCode": _uploadedBarCodeUrl,
       },
@@ -377,7 +377,7 @@ class AuthProvider extends ChangeNotifier {
       // "${documents.map((d) => d.toJson()).toList()}"
     };
 
-    print("kjhfdgkjdfg   ${data}");
+
 
     try {
       var result = await _authRepo.customerRegister(data);
@@ -398,7 +398,7 @@ class AuthProvider extends ChangeNotifier {
           context.showLoader(show: false);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("Vendor Register successful!"),
+              content: Text("Driver Register successful!"),
               backgroundColor: Colors.green,
             ),
           );
@@ -480,7 +480,7 @@ class AuthProvider extends ChangeNotifier {
         return true;
       },
       (response) {
-        print("dkjhssfdgdfgdfgfgjkdfkg");
+     
         return true;
       },
     );
@@ -493,12 +493,12 @@ class AuthProvider extends ChangeNotifier {
       "deviceTpe":"android"
       };
 
-    print("fcm token  ${"hjsdgffghhhh  ${data}"}");
+   
 
     var result = await _authRepo.updateDeviceToken(data, context);
     return result.fold(
       (error) {
-        print("dkjhsfgjkdfkg");
+       
         return true;
       },
       (response) {

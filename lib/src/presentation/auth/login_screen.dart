@@ -153,14 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Checkbox(value: true, onChanged: (bool? value) {}),
                       InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PdfViewerPage(
-                                assetPath: 'assets/terms_and_conditions.pdf',
-                              ),
-                            ),
-                          );
+                          context.push(MyRoutes.TERMANDCONDITIONS);
                         },
                         child: RichText(
                           text: TextSpan(
@@ -219,8 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           final success = await pageNotifier.sendOtp(
                               phoneController.text, context);
 
-                          if (success) 
-                          {
+                          if (success) {
                             context.push(MyRoutes.LOGINOTPSCREEN);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
