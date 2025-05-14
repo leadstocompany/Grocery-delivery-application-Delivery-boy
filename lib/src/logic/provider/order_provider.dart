@@ -375,8 +375,9 @@ class OrderProvider with ChangeNotifier {
   }
 
   String _profile = '';
-  
+
   String get profile => _profile;
+  String jhsjhdfg="";
   String _name = '';
   String get name => _name;
   String _email = '';
